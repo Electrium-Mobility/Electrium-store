@@ -15,23 +15,29 @@ type ProductsType = {
     [key: string]: Product;
 };
 
-function getProductData(productId: string): Product | null {
-    const products: ProductsType = {
-        "volter-electric-bike": {
-            name: "Volter Electric Bike",
-            price: "CA$9,999.00",
-            description: "Introducing Volter: Where Innovation Meets Adventure...",
-            image: "/img/bike-display.png",
-            overview: [
-                "With a top speed of 42 km/hr, Volter offers a thrilling ride...",
-                "Covering distances between 15 to 25 kilometers on a single charge...",
-                "Beautiful bike overview..."
-            ]
-        },
-        // Add other products here...
-    };
+const products: ProductsType = {
+    "volter-electric-bike": {
+        name: "Volter Electric Bike",
+        price: "CA$9,999.00",
+        description: "Introducing Volter: Where Innovation Meets Adventure...",
+        image: "/img/bike-display.png",
+        overview: [
+            "With a top speed of 42 km/hr, Volter offers a thrilling ride...",
+            "Covering distances between 15 to 25 kilometers on a single charge...",
+            "Beautiful bike overview..."
+        ]
+    },
+    // Add other products here...
+};
 
+function getProductData(productId: string): Product | null {
     return productId in products ? products[productId] : null;
+}
+
+export function generateStaticParams() {
+    return Object.keys(products).map((productId) => ({
+        productId: productId,
+    }));
 }
 
 export default function ProductPage({ params }: { params: { productId: string } }) {
