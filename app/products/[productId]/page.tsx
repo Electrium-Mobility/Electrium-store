@@ -3,24 +3,35 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-// This is a mock function. In a real app, you'd fetch this data from an API or database
-function getProductData(productId: string) {
-    const products = {
+type Product = {
+    name: string;
+    price: string;
+    description: string;
+    image: string;
+    overview: string[];
+};
+
+type ProductsType = {
+    [key: string]: Product;
+};
+
+function getProductData(productId: string): Product | null {
+    const products: ProductsType = {
         "volter-electric-bike": {
             name: "Volter Electric Bike",
             price: "CA$9,999.00",
-            description: "Introducing Volter: Where Innovation Meets Adventure. At the intersection of innovation and adventure, the Volter electric bicycle emerges as a true embodiment of cutting-edge design and engineering excellence.",
+            description: "Introducing Volter: Where Innovation Meets Adventure...",
             image: "/img/bike-display.png",
             overview: [
-                "With a top speed of 42 km/hr, Volter offers a thrilling ride that combines eco-friendly mobility with an exhilarating experience. Powered by a battery boasting a maximum voltage of 42 volts, this electric bicycle is not just a mode of transportation; it's a testament to the fusion of technology and style.",
-                "Covering distances between 15 to 25 kilometers on a single charge, Volter ensures that every journey is not only efficient but also filled with possibilities. Whether you're commuting through urban landscapes or embarking on scenic routes, Volter empowers you to explore with confidence, knowing that its robust design and advanced components are ready for any terrain.",
+                "With a top speed of 42 km/hr, Volter offers a thrilling ride...",
+                "Covering distances between 15 to 25 kilometers on a single charge...",
                 "Beautiful bike overview..."
             ]
         },
         // Add other products here...
     };
 
-    return products[productId] || null;
+    return productId in products ? products[productId] : null;
 }
 
 export default function ProductPage({ params }: { params: { productId: string } }) {
