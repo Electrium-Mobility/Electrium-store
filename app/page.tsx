@@ -42,16 +42,19 @@ export default function Home() {
 
   const rentals = [
     {
+      id: "volter-electric-bike",
       name: "Volter Electric Bike",
       price: "CA $10/hr",
       itemDisplay: "/img/bike-display.png",
     },
     {
+      id: "voltskate-electric-skateboard",
       name: "VoltSkate Electric Skateboard",
       price: "CA $10/hr",
       itemDisplay: "/img/skateboard-display.png",
     },
     {
+      id: "electric-one-wheel",
       name: "Electric One-Wheel",
       price: "CA $10/hr",
       itemDisplay: "/img/one-wheel-display.png",
@@ -81,7 +84,7 @@ export default function Home() {
               <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Rentals</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {rentals.map((item, index) => (
-                    <ProductDisplay key={index} itemDisplay={item.itemDisplay} name={item.name} price={item.price} />
+                    <ProductDisplay key={index} id={item.id} itemDisplay={item.itemDisplay} name={item.name} price={item.price} />
                 ))}
               </div>
             </section>
