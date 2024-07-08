@@ -34,8 +34,6 @@ async function getBike(productId: string) {
 }
 
 export async function generateStaticParams() {
-    // If you have a fixed set of product IDs, you can return them here
-    // Otherwise, return an empty array and handle dynamic routes
     return [];
 }
 
