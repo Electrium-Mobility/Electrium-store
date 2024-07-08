@@ -1,4 +1,4 @@
-import { createClient } from "../../../../../../Downloads/electrium-shop-supabase-main 2/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
