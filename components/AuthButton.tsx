@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "../../../../Downloads/electrium-shop-supabase-main 2/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
