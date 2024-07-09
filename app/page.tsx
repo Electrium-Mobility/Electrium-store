@@ -59,12 +59,12 @@ export default async function Index() {
 }
 */
 
-function ProductDisplay({ id, image, name, sell_price, rental_rate }: {
+function ProductDisplay({ id, image, name, price, isRental }: {
     id: number,
     image: string | null,
     name: string,
-    sell_price: number,
-    rental_rate: number
+    price: number,
+    isRental: boolean
 }) {
     return (
         <Link href={`/products/${id}`}>
@@ -73,13 +73,16 @@ function ProductDisplay({ id, image, name, sell_price, rental_rate }: {
                     <Image
                         src={image || '/img/placeholder.png'}
                         alt={name}
+                        unoptimized
                         width={192}
                         height={192}
-                        objectFit="contain"
+                        style={{ objectFit: "contain" }}
                     />
                 </div>
                 <h3 className="text-lg font-medium text-emerald-600 mb-2">{name}</h3>
-                <p className="text-slate-600">CA ${sell_price.toFixed(2)}</p>
+                <p className="text-slate-600">
+                    {isRental ? `CA $${price.toFixed(2)}/hour` : `CA $${price.toFixed(2)}`}
+                </p>
             </div>
         </Link>
     );
@@ -94,48 +97,51 @@ export default async function Home() {
         // Handle the error appropriately
     }
 
-        return (
-            <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <main className="flex-grow bg-white py-16 px-4">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-16">
-                            <h1 className="text-4xl font-bold text-emerald-600 mb-4">Shop</h1>
-                            <p className="text-xl text-slate-600">Take a look at our latest products and rentals!</p>
-                        </div>
-                        <section className="mb-16">
-                            <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Products</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {bikes && bikes.map((bike) => (
-                                    <ProductDisplay
-                                        key={bike.bike_id}
-                                        id={bike.bike_id}
-                                        image={bike.image}
-                                        name={bike.name}
-                                        sell_price={bike.sell_price}
-                                        rental_rate={bike.rental_rate}
-                                    />
-                                ))}
-                            </div>
-                        </section>
-                        <section>
-                            <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Rentals</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {bikes && bikes.map((bike) => (
-                                    <ProductDisplay
-                                        key={bike.bike_id}
-                                        id={bike.bike_id}
-                                        image={bike.image}
-                                        name={bike.name}
-                                        sell_price={bike.rental_rate}
-                                        rental_rate={bike.rental_rate}
-                                    />
-                                ))}
-                            </div>
-                        </section>
+    const products = bikes?.filter(bike => !bike.for_rent) || [];
+    const rentals = bikes?.filter(bike => bike.for_rent) || [];
+
+    return (
+        <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow bg-white py-16 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h1 className="text-4xl font-bold text-emerald-600 mb-4">Shop</h1>
+                        <p className="text-xl text-slate-600">Take a look at our latest products and rentals!</p>
                     </div>
-                </main>
-                <Footer />
-            </div>
-        );
-    }
+                    <section className="mb-16">
+                        <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Products</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {products.map((bike) => (
+                                <ProductDisplay
+                                    key={bike.bike_id}
+                                    id={bike.bike_id}
+                                    image={bike.image}
+                                    name={bike.name}
+                                    price={bike.sell_price}
+                                    isRental={false}
+                                />
+                            ))}
+                        </div>
+                    </section>
+                    <section>
+                        <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Rentals</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {rentals.map((bike) => (
+                                <ProductDisplay
+                                    key={bike.bike_id}
+                                    id={bike.bike_id}
+                                    image={bike.image}
+                                    name={bike.name}
+                                    price={bike.rental_rate}
+                                    isRental={true}
+                                />
+                            ))}
+                        </div>
+                    </section>
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
+}
