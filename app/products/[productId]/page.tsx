@@ -33,9 +33,7 @@ async function getBike(productId: string) {
     return bike;
 }
 
-export async function generateStaticParams() {
-    return [];
-}
+
 
 export default async function ProductPage({ params }: { params: { productId: string } }) {
     const bike = await getBike(params.productId);
