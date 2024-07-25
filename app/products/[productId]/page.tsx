@@ -2,42 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
-import {createClient} from "@/utils/supabase/server";
-import {notFound} from 'next/navigation'
-import {cookies} from 'next/headers';
+import {getOneBike} from "@/utils/getBike";
+import {notFound} from "next/navigation";
 
-type Bike = {
-    bike_id: number;
-    name: string;
-    description: string;
-    image: string | null;
-    amount_stocked: number;
-    rental_rate: number;
-    sell_price: number;
-    damage_rate: number;
-    for_rent: boolean;
-};
-
-async function getBike(productId: string) {
-    const cookieStore = cookies();
-    const supabase = createClient();
-    const {data: bike, error} = await supabase
-        .from('bikes')
-        .select('*')
-        .eq('bike_id', productId)
-        .single();
-
-    if (error || !bike) {
-        return null;
-    }
-
-    return bike as Bike;
-}
 
 
 export default async function ProductPage({params}: { params: { productId: string } }) {
-    const bike = await getBike(params.productId);
-
+    const bike = await getOneBike(params.productId);
     if (!bike) {
         notFound();
     }
