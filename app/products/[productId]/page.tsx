@@ -6,6 +6,36 @@ import {getOneBike} from "@/utils/getBike";
 import {notFound} from "next/navigation";
 
 
+function CartNotification({bike, subtotal, quantity, numItems}: {
+    bike: Bike,
+    subtotal: number,
+    quantity: number,
+    numItems: number
+}) {
+        return (
+            <div className="w-80 absolute mt-24 right-6 rounded-3xl bg-gray-50  space-y-7 flex-col align-center rounded-xl p-6 drop-shadow-lg">
+                <h1 className="text-base font-bold">Your Shopping Cart</h1>
+                <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-self-start text-sm">Subtotal: &nbsp;<div className="font-semibold"> CA${subtotal}</div></div>
+                    <div className="flex flex-row justify-self-end text-sm"><div className="font-semibold">{numItems}</div>&nbsp;item</div>
+                </div>
+                <div className="flex flex-row space-x-4">
+                    <img src={String(bike.image)}
+                        className="w-1/3 border-2 border-gray-200 bg-white rounded-xl"/>
+                    <div className="flex-col">
+                        <div className="text-sm">{bike.name}</div>
+                        <div className="text-sm">CA${bike.sell_price}</div>
+                        <div className="text-sm text-gray-400">Quantity: {quantity}</div>
+                    </div>
+                </div>
+                <div className="flex flex-col space-y-4">    
+                    <button className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">View and Edit Cart</button>
+                    <button className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">Secure Checkout</button>
+                </div>
+            </div>
+        );
+}
+
 
 export default async function ProductPage({params}: { params: { productId: string } }) {
     const bike = await getOneBike(params.productId);
