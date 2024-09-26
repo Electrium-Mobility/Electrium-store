@@ -25,3 +25,12 @@
     @apply border-foreground/20;
   }
 }
+
+.logo-opacity {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.logo-opacity:hover {
+  opacity: 1;
+}

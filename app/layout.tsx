@@ -1,6 +1,8 @@
 import '@fontsource/nunito/400.css';
 import '@fontsource/nunito/700.css';
 import "./globals.css";
+import Navbar from "@/components/shop/Navbar";
+import Footer from "@/components/shop/Footer";
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -23,7 +25,11 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body style={{ fontFamily: 'Nunito, sans-serif' }}>
-        {children}
+        <Navbar/>
+        <main className="pt-[75px]">
+            {children}
+        </main>
+        <Footer/>
         </body>
         </html>
     );

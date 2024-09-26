@@ -102,7 +102,6 @@ export default async function Home() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Navbar />
             <main className="flex-grow bg-white py-16 px-4">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
@@ -141,7 +140,6 @@ export default async function Home() {
                     </section>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 }

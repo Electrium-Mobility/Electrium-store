@@ -15,7 +15,6 @@ export default async function ProductPage({params}: { params: { productId: strin
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Navbar/>
             <main className="flex-grow bg-gray-100 py-16 px-4">
                 <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
                     <h1 className="text-3xl font-bold text-gray-800 mb-2">{bike.name}</h1>
@@ -68,7 +67,6 @@ export default async function ProductPage({params}: { params: { productId: strin
                     <p className="text-gray-700">Currently in stock: {bike.amount_stocked}</p>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 }

@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Navbar() {
     return (
+
         <nav className="flex justify-between items-center p-4 bg-white">
             <div className="flex items-center">
                 <Image src="/img/favicon.png" alt="Electrium Mobility" width={40} height={40} />
