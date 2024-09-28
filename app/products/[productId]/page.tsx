@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
-import {getOneBike} from "@/utils/getBike";
+import {Bike, getOneBike} from "@/utils/getBike";
 import {notFound} from "next/navigation";
 
 
