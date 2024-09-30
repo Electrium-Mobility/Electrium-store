@@ -62,7 +62,6 @@ export default async function CheckoutPage() {
 
     return (
         <div className="min-h-screen">
-            <Navbar/>
             <main className="bg-white py-16 px-16">
                 <h1 className="text-4xl font-bold text-green-600 mb-2 text-center w-full">Checkout</h1>
                 <div className="lg:flex lg:flex-row">
@@ -96,7 +95,6 @@ export default async function CheckoutPage() {
                     </div>
                 </div>
             </main>
-            <Footer/>
         </div>
     )
 }
