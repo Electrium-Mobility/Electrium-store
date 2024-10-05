@@ -39,28 +39,10 @@ function ProductDisplay({params}: { params: { bike: CheckoutBike }}){
 }
 
 export default function Cart() {
-    // temp, most likely get this stuff from session storage
-    //const productIdList = ['1', '2']
-    //const quantitiesList = [3, 5]
-    //const orderTypesList = ['rent', 'sell']
     const [cart, setCart] = React.useState<CheckoutBike[]>((() => {
         var val = sessionStorage.getItem('cart')
         return val ? JSON.parse(val) : []; 
     })());
-        /*{
-            quantity: 1,
-            orderType: 'rent',
-            bike_id: 3,
-            name: "biekee",
-            description: "cool bike",
-            image: null,
-            amount_stocked: 5,
-            rental_rate: 50,
-            sell_price: 30,
-            damage_rate: 20,
-            for_rent: true
-       },*/
-
     React.useEffect(() => {
         sessionStorage.setItem('cart', JSON.stringify(cart))
     }, [cart]);
@@ -72,7 +54,7 @@ export default function Cart() {
         }
     }, []);
 
-    const subtotal: number = cart.reduce((acc: number, cur: CheckoutBike) => acc + (cur.orderType=='rent' ? 0 : cur.sell_price), 0)
+    const subtotal: number = cart.reduce((acc: number, cur: CheckoutBike) => acc + (cur.orderType=='rent' ? 0 : cur.sell_price*cur.quantity), 0)
     const shipping: number = 1 // TODO
     return (
         <div className="flex-1 p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
