@@ -8,6 +8,7 @@ import Image from "next/image";
 import {PaymentOptions} from "@/app/checkout/paymentOptions";
 import Link from "next/link";
 import {Bike, CheckoutBike} from '@/utils/getBike'
+import useSessionStorage from "@/utils/useSessionStorage";
 
 function ProductDisplay({params}: { params: { bike: CheckoutBike }}){
     const  bike = params.bike
@@ -39,10 +40,10 @@ function ProductDisplay({params}: { params: { bike: CheckoutBike }}){
 }
 
 export default function Cart() {
-    const [cart, setCart] = React.useState<CheckoutBike[]>((() => {
-        var val = sessionStorage.getItem('cart')
-        return val ? JSON.parse(val) : []; 
-    })());
+    const cartText = useSessionStorage('cart');
+    const cart = cartText ? JSON.parse(cartText) : [];
+
+    /*
     React.useEffect(() => {
         sessionStorage.setItem('cart', JSON.stringify(cart))
     }, [cart]);
@@ -53,6 +54,7 @@ export default function Cart() {
             setCart(JSON.parse(val));
         }
     }, []);
+    */
 
     const subtotal: number = cart.reduce((acc: number, cur: CheckoutBike) => acc + (cur.orderType=='rent' ? 0 : cur.sell_price*cur.quantity), 0)
     const shipping: number = 1 // TODO
