@@ -43,19 +43,6 @@ export default function Cart() {
     const cartText = useSessionStorage('cart');
     const cart = cartText ? JSON.parse(cartText) : [];
 
-    /*
-    React.useEffect(() => {
-        sessionStorage.setItem('cart', JSON.stringify(cart))
-    }, [cart]);
-
-    React.useEffect(() => {
-        var val = sessionStorage.getItem('cart')
-        if (val) {
-            setCart(JSON.parse(val));
-        }
-    }, []);
-    */
-
     const subtotal: number = cart.reduce((acc: number, cur: CheckoutBike) => acc + (cur.orderType=='rent' ? 0 : cur.sell_price*cur.quantity), 0)
     const shipping: number = 1 // TODO
     return (
