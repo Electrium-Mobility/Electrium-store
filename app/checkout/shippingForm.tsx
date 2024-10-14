@@ -1,7 +1,5 @@
 'use client'
 import React from "react";
-import {Simulate} from "react-dom/test-utils";
-import drop = Simulate.drop;
 
 interface dropdownProps {
     options: string[],
