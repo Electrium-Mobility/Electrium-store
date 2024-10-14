@@ -11,7 +11,7 @@ function CartNotification({ setNotifInfo, bike, subtotal, quantity, numItems }: 
     numItems: number
 }) {
     return (
-        <div className="w-80 absolute mt-24 right-6 rounded-3xl bg-gray-50  space-y-7 flex-col align-center rounded-xl p-6 drop-shadow-lg">
+        <div className="w-80 absolute mt-24 right-6 rounded-xl bg-gray-50  space-y-7 flex-col align-center p-6 drop-shadow-lg">
             <div className='flex flex-row justify-between'>
                 <h1 className="text-base font-bold">Your Shopping Cart</h1>
                 <button onClick={() => setNotifInfo(undefined)}>
@@ -43,6 +43,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
     const [amount, setAmount] = useState<number>(1);
     const [notifInfo, setNotifInfo] = useState<{ bike: Bike, subtotal: number, quantity: number, numItems: number }>();
     function addToCart(e: React.MouseEvent<HTMLButtonElement>) {
+        if (amount == 0 || amount > bike.amount_stocked) return;
         var val = sessionStorage.getItem("cart");
         var currentCart: CheckoutBike[] = [];
         if (val) {
@@ -50,11 +51,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
         }
         var existingBike = currentCart.findIndex((b) => b.bike_id === bike.bike_id)
         if (existingBike != -1) {
-            if (amount == 0) {
-                currentCart.splice(existingBike, 1);
-            } else {
-                currentCart[existingBike].quantity = amount;
-            }
+            currentCart[existingBike].quantity = amount;
         } else {
             currentCart.push({
                 ...bike,
@@ -72,7 +69,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
     }
     return (
         <div className="flex items-center gap-4 mb-6">
-            <input id="select_amount" type="number" defaultValue={1} min={1} max={bike.amount_stocked}
+            <input id="select_amount" type="number" defaultValue={0} min={0} max={bike.amount_stocked}
                 className="border p-2 w-16 text-center text-gray-800"
                 onChange={(e) => setAmount(parseInt(e.currentTarget.value))} />
             {notifInfo ? <CartNotification
