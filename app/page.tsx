@@ -89,8 +89,8 @@ function ProductDisplay({ id, image, name, price, isRental }: {
 }
 
 export default async function Home() {
-    const supabase = createClient();
-    const { data: bikes, error } = await supabase.from('bikes').select('*');
+    const supabase = await createClient();
+    const { data: bikes, error } = await supabase.from("bikes").select();
 
     if (error) {
         console.error('Error fetching bikes:', error);

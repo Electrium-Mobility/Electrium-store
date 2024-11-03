@@ -4,7 +4,7 @@ import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
 import {Bike, getOneBike} from "@/utils/getBike";
 import {notFound} from "next/navigation";
-
+import { GetServerSideProps } from 'next';
 
 function CartNotification({bike, subtotal, quantity, numItems}: {
     bike: Bike,
@@ -36,9 +36,13 @@ function CartNotification({bike, subtotal, quantity, numItems}: {
         );
 }
 
+interface ProductPageProps {
+    params: Promise<{ productId: string }>;
+}
 
-export default async function ProductPage({params}: { params: { productId: string } }) {
-    const bike = await getOneBike(params.productId);
+export default async function ProductPage({ params }: ProductPageProps) {
+    const { productId } = await params;
+    const bike = await getOneBike(productId);
     if (!bike) {
         notFound();
     }
@@ -62,14 +66,15 @@ export default async function ProductPage({params}: { params: { productId: strin
                                 unoptimized
                                 width={500}
                                 height={500}
-                                style={{objectFit: "contain"}}
-                                className="rounded-lg"/>
+                                style={{ objectFit: "contain" }}
+                                className="rounded-lg"
+                            />
                         </div>
                         <div className="md:w-1/2">
                             <p className="text-gray-700 mb-4">{bike.description}</p>
                             <div className="flex items-center gap-4 mb-6">
                                 <input type="number" defaultValue={1} min={1} max={bike.amount_stocked}
-                                       className="border p-2 w-16 text-center text-gray-800"/>
+                                       className="border p-2 w-16 text-center text-gray-800" />
                                 <button className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-500">
                                     {bike.for_rent ? 'Rent Now' : 'Add to Cart'}
                                 </button>
