@@ -15,7 +15,7 @@ export interface Bike {
 
 export async function getOneBike(productId: string) {
     const cookieStore = cookies();
-    const supabase = createClient();
+    const supabase = await createClient();
     const {data: bike, error} = await supabase
         .from('bikes')
         .select('*')
@@ -30,7 +30,7 @@ export async function getOneBike(productId: string) {
 
 export async function getManyBikes(productIds: string[]) {
     const cookieStore = cookies();
-    const supabase = createClient();
+    const supabase = await createClient();
     const {data: bikes, error} = await supabase
         .from('bikes')
         .select('*')
