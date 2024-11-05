@@ -13,6 +13,11 @@ export interface Bike {
     for_rent: boolean;
 };
 
+export interface CheckoutBike extends Bike {
+    quantity: number;
+    orderType: string;
+}
+
 export async function getOneBike(productId: string) {
     const cookieStore = cookies();
     const supabase = await createClient();

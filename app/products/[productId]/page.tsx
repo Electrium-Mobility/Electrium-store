@@ -4,6 +4,7 @@ import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
 import {Bike, getOneBike} from "@/utils/getBike";
 import {notFound} from "next/navigation";
+import CartAdd from "./cartAdd";
 import { GetServerSideProps } from 'next';
 
 function CartNotification({bike, subtotal, quantity, numItems}: {
@@ -72,6 +73,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         </div>
                         <div className="md:w-1/2">
                             <p className="text-gray-700 mb-4">{bike.description}</p>
+
+                            <CartAdd bike={bike}/>
+
                             <div className="flex items-center gap-4 mb-6">
                                 <input type="number" defaultValue={1} min={1} max={bike.amount_stocked}
                                        className="border p-2 w-16 text-center text-gray-800" />
@@ -79,6 +83,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     {bike.for_rent ? 'Rent Now' : 'Add to Cart'}
                                 </button>
                             </div>
+
                             <div className="mb-8">
                                 {bike.for_rent ? (
                                     <>
