@@ -150,7 +150,7 @@ export default function ShoppingCartPage() {
                             <h3>Order Total</h3>
                             <h3>CA${total.toLocaleString("en", {minimumFractionDigits:2})}</h3>
                         </div>
-                        <button className="bg-green-700 text-white w-full h-11 mb-10 rounded-2xl hover:bg-green-600">Secure Checkout</button>
+                        <Link href="/checkout"><button className="bg-green-700 text-white w-full h-11 mb-10 rounded-2xl hover:bg-green-600">Secure Checkout</button> </Link>
                         <h2 className="font-bold mb-4 text-lg">Discount</h2>
                         <p className="text-gray-400 mb-3">Enter code for discount.</p>
                         <input type="text" placeholder="Enter code" className="border rounded-md p-2 mb-6 w-full"/>

@@ -22,7 +22,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
                 <button className="bg-blue-500 text-white px-4 py-2 rounded">Join Our Team</button>
                 <button className="text-blue-500 border border-blue-500 px-4 py-2 rounded">Donate</button>
-                <Link href="/checkout" className="text-gray-600 hover:text-gray-900">
+                <Link href="/cart" className="text-gray-600 hover:text-gray-900">
                     <i className="fas fa-shopping-cart"></i>
                 </Link>
                 <button className="text-gray-600 hover:text-gray-900">
