@@ -7,10 +7,12 @@ export default function Navbar() {
     return (
 
         <nav className="flex justify-between items-center p-4 bg-white">
-            <div className="flex items-center">
-                <Image src="/img/favicon.png" alt="Electrium Mobility" width={40} height={40} />
-                <span className="ml-2 text-xl font-semibold">electrium mobility</span>
-            </div>
+            <Link href="/">
+                <div className="flex items-center">
+                    <Image src="/img/favicon.png" alt="Electrium Mobility" width={40} height={40} />
+                    <span className="ml-2 text-xl font-semibold">electrium mobility</span>
+                </div>
+            </Link>
             <div className="space-x-4">
                 <Link href="https://electriummobility.com/about" className="text-gray-600 hover:text-gray-900">About</Link>
                 <Link href="https://electriummobility.com/team" className="text-gray-600 hover:text-gray-900">Team</Link>
@@ -26,7 +28,7 @@ export default function Navbar() {
                     <i className="fas fa-shopping-cart"></i>
                 </Link>
                 <button className="text-gray-600 hover:text-gray-900">
-                    <i className="fas fa-sun"></i>
+                    <Link href="/settingsPage"><i className="fas fa-sun"></i></Link>
                 </button>
             </div>
         </nav>
