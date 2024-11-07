@@ -1,15 +1,14 @@
+'use client'
 import React from "react";
-import Navbar from '@/components/shop/Navbar';
-import Footer from '@/components/shop/Footer';
-
 import ShippingForm from "@/app/checkout/shippingForm";
-import Image from "next/image";
 import {PaymentOptions} from "@/app/checkout/paymentOptions";
-import Link from "next/link";
+import {Elements} from '@stripe/react-stripe-js'; 
 import Cart from "./cart"
+import {loadStripe} from '@stripe/stripe-js'; 
+
+const stripePromise = loadStripe('STRIPE_API_KEY'); // replace this with the stripe API Key once we get one 
 
 export default async function CheckoutPage() {
-
     return (
         <div className="min-h-screen">
             <main className="bg-white py-16 px-16">
@@ -20,7 +19,9 @@ export default async function CheckoutPage() {
                             <ShippingForm/>
                         </div>
                         <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
-                            <PaymentOptions/>
+                            <Elements stripe = {stripePromise}>
+                                <PaymentOptions/>
+                            </Elements>
                         </div>
                     </div>
                     <div className='flex-1'>
