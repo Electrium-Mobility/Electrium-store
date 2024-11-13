@@ -10,7 +10,7 @@ const CheckoutButton: React.FC = () => {
     const handleCheckout = async () => {
         setLoading(true);
 
-        const response = await fetch('/api/create-checkout-session', {
+        const response = await fetch('/api/checkout_sessions', {
             method: 'POST',
         });
 
