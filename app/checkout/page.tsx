@@ -1,33 +1,57 @@
-import React from "react";
-import Navbar from '@/components/shop/Navbar';
-import Footer from '@/components/shop/Footer';
+'use client';
+import React from 'react';
+import { loadStripe } from '@stripe/stripe-js';
 
-import ShippingForm from "@/app/checkout/shippingForm";
-import Image from "next/image";
-import {PaymentOptions} from "@/app/checkout/paymentOptions";
-import Link from "next/link";
-import Cart from "./cart"
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise =  loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+export default function PreviewPage() {
+    React.useEffect(() => {
+        // Check to see if this is a redirect back from Checkout
+        const query = new URLSearchParams(window.location.search);
+        if (query.get('success')) {
+            console.log('Order placed! You will receive an email confirmation.');
+        }
 
-export default async function CheckoutPage() {
+        if (query.get('canceled')) {
+            console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+        }
+    }, []);
 
     return (
-        <div className="min-h-screen">
-            <main className="bg-white py-16 px-16">
-                <h1 className="text-4xl font-bold text-green-600 mb-2 text-center w-full">Checkout</h1>
-                <div className="lg:flex lg:flex-row">
-                    <div className="flex-1">
-                        <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
-                            <ShippingForm/>
-                        </div>
-                        <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
-                            <PaymentOptions/>
-                        </div>
-                    </div>
-                    <div className='flex-1'>
-                        <Cart/>
-                    </div>
-                </div>
-            </main>
-        </div>
-    )
+        <form action="/api/checkout_sessions" method="POST">
+            <section>
+                <button type="submit" role="link">
+                    Checkout
+                </button>
+            </section>
+            <style jsx>
+                {`
+          section {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            height: 112px;
+            border-radius: 6px;
+            justify-content: space-between;
+          }
+          button {
+            height: 36px;
+            background: #556cd6;
+            border-radius: 4px;
+            color: white;
+            border: 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+          }
+          button:hover {
+            opacity: 0.8;
+          }
+        `}
+            </style>
+        </form>
+    );
 }
