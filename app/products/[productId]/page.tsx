@@ -2,8 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
-import {Bike, getOneBike} from "@/utils/getBike";
-import {notFound} from "next/navigation";
+import { Bike, getOneBike } from "@/utils/getBike";
+import { notFound } from "next/navigation";
 import CartAdd from "./cartAdd";
 import { GetServerSideProps } from 'next';
 
@@ -48,11 +48,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
         notFound();
     }
 
+    // Function to generate rating star HTML
+    function generateStarsHTML(rating: number) {
+        const fullStar = '<svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/></svg>';
+        const emptyStar = '<svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/></svg>';
+
+        let starHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            starHTML += i <= Math.floor(rating) ? fullStar : emptyStar;
+        }
+        return starHTML;
+    }
+
     return (
         <div className="flex flex-col min-h-screen">
             <main className="flex-grow bg-gray-100 py-16 px-4">
                 <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
                     <h1 className="text-3xl font-bold text-gray-800 mb-2">{bike.name}</h1>
+                    <div className="flex items-center">
+                        <div id="star-rating" className="flex items-center" dangerouslySetInnerHTML={{ __html: generateStarsHTML(bike.rating) }}></div>
+                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{bike.rating}</p>
+                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
+                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
+                    </div>
                     <p className="text-xl text-gray-600 mb-6">
                         {bike.for_rent
                             ? `CA $${bike.rental_rate.toFixed(2)} per hour`

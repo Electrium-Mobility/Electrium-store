@@ -11,6 +11,7 @@ export interface Bike {
     sell_price: number;
     damage_rate: number;
     for_rent: boolean;
+    rating: number;
 };
 
 export interface CheckoutBike extends Bike {
