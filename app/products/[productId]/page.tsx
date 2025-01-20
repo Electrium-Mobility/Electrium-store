@@ -6,6 +6,45 @@ import { Bike, getOneBike } from "@/utils/getBike";
 import { notFound } from "next/navigation";
 import CartAdd from "./cartAdd";
 import { GetServerSideProps } from 'next';
+import {createClient} from "@/utils/supabase/server";
+import { cookies } from 'next/headers';
+
+
+function generateStarSVG(percentage : number) {
+    const fillPercentage = percentage * 100;
+    return `
+      <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20">
+        <defs>
+          <linearGradient id="customGradient">
+            <stop offset="${fillPercentage}%" stop-color="currentColor"/>
+            <stop offset="${fillPercentage}%" stop-color="gray"/>
+          </linearGradient>
+        </defs> 
+        <path fill="url(#customGradient)" d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+      </svg>
+    `;
+}
+  
+function Stars({ rating }: {
+    rating: number
+}) {
+    const fullStar = '<svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/></svg>';
+    const emptyStar = '<svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/></svg>';
+    
+    let starHTML = '';
+    // Add full stars
+    for (let i = 0; i < Math.floor(rating); i++) {
+        starHTML += fullStar;
+    }
+    // Add gradient star
+    starHTML += generateStarSVG(rating - Math.floor(rating));
+    // Add empty stars
+    for (let i = 0; i < 5 - Math.ceil(rating); i++) {
+        starHTML += emptyStar;
+    }
+    return <div id="star-rating" className="flex items-center" dangerouslySetInnerHTML={{ __html: starHTML }}></div>
+}
+
 
 function CartNotification({bike, subtotal, quantity, numItems}: {
     bike: Bike,
@@ -37,6 +76,25 @@ function CartNotification({bike, subtotal, quantity, numItems}: {
         );
 }
 
+function RatingCard({ rating, description, name, date }: {
+    rating: number,
+    description: string,
+    name: string,
+    date: string
+}) {
+    return (
+        <div className="min-w-[400px] max-w-[400px] min-h-[200px] max-h-[400px] bg-white rounded-lg shadow-md p-4 m-2">
+            <div className="flex-row ">
+                <div className="text-lg font-semibold overflow-x-auto">{name}</div>
+                <div className="text-sm text-gray-400">{date}</div>
+                <Stars rating={rating} />
+                <div className="text-sm overflow-y-auto max-h-[300px]">{description}</div>
+            </div>
+        </div>
+    );
+}
+
+
 interface ProductPageProps {
     params: Promise<{ productId: string }>;
 }
@@ -44,20 +102,14 @@ interface ProductPageProps {
 export default async function ProductPage({ params }: ProductPageProps) {
     const { productId } = await params;
     const bike = await getOneBike(productId);
+
+    const cookieStore = cookies();
+    const supabase = await createClient();
+    const { data: reviews, error } = await supabase.from('reviews').select('*').eq('bike_id', productId);
+    const bike_rating = reviews ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length : 0;
+
     if (!bike) {
         notFound();
-    }
-
-    // Function to generate rating star HTML
-    function generateStarsHTML(rating: number) {
-        const fullStar = '<svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/></svg>';
-        const emptyStar = '<svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/></svg>';
-
-        let starHTML = '';
-        for (let i = 1; i <= 5; i++) {
-            starHTML += i <= Math.floor(rating) ? fullStar : emptyStar;
-        }
-        return starHTML;
     }
 
     return (
@@ -66,10 +118,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
                     <h1 className="text-3xl font-bold text-gray-800 mb-2">{bike.name}</h1>
                     <div className="flex items-center">
-                        <div id="star-rating" className="flex items-center" dangerouslySetInnerHTML={{ __html: generateStarsHTML(bike.rating) }}></div>
-                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{bike.rating}</p>
-                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
-                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
+                        <Stars rating={bike_rating} />
+                        <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{bike_rating.toFixed(1)}</p>
                     </div>
                     <p className="text-xl text-gray-600 mb-6">
                         {bike.for_rent
@@ -123,6 +173,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                     <h2 className="text-2xl font-semibold mb-4 text-gray-800">Stock Information</h2>
                     <p className="text-gray-700">Currently in stock: {bike.amount_stocked}</p>
+                </div>
+                <div className="flex overflow-x-scroll px-16 py-8 space-x-8 bg-transparent">        
+                    {reviews?.map(review => (
+                        <RatingCard key={review.id} rating={review.rating} description={review.description} name={review.name} date={review.date}/>
+                    ))}
                 </div>
             </main>
         </div>

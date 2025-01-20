@@ -93,9 +93,12 @@ export default async function Home() {
     const { data: bikes, error } = await supabase.from("bikes").select();
 
     if (error) {
-        console.error('Error fetching bikes:', error);
-        // Handle the error appropriately
+          console.error('Error fetching bikes:', error);
+          // Handle the error appropriately
+    } else {
+        console.log(bikes);
     }
+  
 
     const products = bikes?.filter(bike => !bike.for_rent) || [];
     const rentals = bikes?.filter(bike => bike.for_rent) || [];
