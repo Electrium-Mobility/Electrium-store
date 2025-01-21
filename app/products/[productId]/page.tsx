@@ -3,6 +3,7 @@ import Image from "next/image";
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import RatingStars from "@/components/shop/RatingStars";
+import RatingCard from "./reviewCards";
 import { Bike, getOneBike } from "@/utils/getBike";
 import { notFound } from "next/navigation";
 import CartAdd from "./cartAdd";
@@ -58,51 +59,24 @@ function CartNotification({
     );
 }
 
-function RatingCard({
-    rating,
-    description,
-    name,
-    date,
-}: {
-    rating: number;
-    description: string;
-    name: string;
-    date: string;
-}) {
-    return (
-        <div className="min-w-[400px] max-w-[400px] min-h-[200px] max-h-[400px] bg-white rounded-lg shadow-md p-4 m-2">
-            <div className="flex-row ">
-                <div className="text-lg font-semibold overflow-x-auto">
-                    {name}
-                </div>
-                <div className="text-sm text-gray-400">{date}</div>
-                <RatingStars rating={rating} />
-                <div className="text-sm overflow-y-auto max-h-[300px]">
-                    {description}
-                </div>
-            </div>
-        </div>
-    );
-}
-
 interface ProductPageProps {
     params: Promise<{ productId: string }>;
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
     const { productId } = await params;
+
+    // Get bike information
     const bike = await getOneBike(productId);
 
+    // Get reviews information
     const cookieStore = cookies();
     const supabase = await createClient();
     const { data: reviews, error } = await supabase
         .from("reviews")
         .select("*")
         .eq("bike_id", productId);
-    const bike_rating = reviews
-        ? reviews.reduce((acc, review) => acc + review.rating, 0) /
-          reviews.length
-        : 0;
+    const bike_rating = (!reviews || reviews.length == 0) ? 0 : reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
 
     if (!bike) {
         notFound();
@@ -118,7 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <div className="flex items-center">
                         <RatingStars rating={bike_rating} />
                         <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
-                            {bike_rating.toFixed(1)}
+                            {(!reviews || reviews.length == 0) ? "No Reviews" : bike_rating.toFixed(1)}
                         </p>
                     </div>
                     <p className="text-xl text-gray-600 mb-6">
