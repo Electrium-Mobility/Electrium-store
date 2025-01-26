@@ -1,3 +1,5 @@
+"use server";
+
 import { createClient } from "@/utils/supabase/client";
 import { SignUpSchema } from "../lib/definitions";
 import { redirect } from "next/navigation";
