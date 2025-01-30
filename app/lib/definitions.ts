@@ -2,10 +2,14 @@ import { z } from "zod";
 
 // Schema validation to ensure the password and email are valid. Feel freet o change this to your liking.
 export const SignUpSchema = z.object({
-  // name: z
-  //   .string()
-  //   .min(2, { message: "Name must be at least 2 characters long." })
-  //   .trim(),
+  first_name: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters long." })
+    .trim(),
+  last_name: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters long." })
+    .trim(),
   email: z.string().email({ message: "Please enter a valid email." }).trim(),
   password: z
     .string()

@@ -7,7 +7,8 @@ import { revalidatePath } from "next/cache";
 
 export async function signup(formData: FormData) {
   const validatedFields = SignUpSchema.safeParse({
-    // name: formData.get("name"),
+    first_name: formData.get("first_name"),
+    last_name: formData.get("last_name"),
     email: formData.get("email"),
     password: formData.get("password"),
   });
@@ -23,6 +24,12 @@ export async function signup(formData: FormData) {
   const data = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
+    options: {
+      data: {
+        first_name: formData.get("first_name") as string,
+        last_name: formData.get("last_name") as string,
+      }
+    }
   };
 
   const { error } = await supabase.auth.signUp(data);
