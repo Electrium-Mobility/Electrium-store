@@ -1,13 +1,13 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import { SignUpSchema } from "../lib/definitions";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 export async function signup(formData: FormData) {
   const validatedFields = SignUpSchema.safeParse({
-    name: formData.get("name"),
+    // name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
   });
@@ -18,7 +18,6 @@ export async function signup(formData: FormData) {
     };
   }
 
-  // TODO: Implement signup functionality
   const supabase = await createClient();
 
   const data = {
@@ -33,7 +32,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/checkout");
 }
 
 export async function login(formData: FormData) {
@@ -51,5 +50,5 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/checkout");
 }
