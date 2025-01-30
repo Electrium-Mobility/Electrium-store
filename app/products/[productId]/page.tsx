@@ -76,14 +76,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                             <CartAdd bike={bike}/>
 
-                            <div className="flex items-center gap-4 mb-6">
-                                <input type="number" defaultValue={1} min={1} max={bike.amount_stocked}
-                                       className="border p-2 w-16 text-center text-gray-800" />
-                                <button className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-500">
-                                    {bike.for_rent ? 'Rent Now' : 'Add to Cart'}
-                                </button>
-                            </div>
-
                             <div className="mb-8">
                                 {bike.for_rent ? (
                                     <>
