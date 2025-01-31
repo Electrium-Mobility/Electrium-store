@@ -33,7 +33,7 @@ export default function SignupPage() {
   
   return (
     <div className="h-screen w-full flex items-center justify-center">
-      <form className="bg-gray-100 border border-gray-200 p-8 rounded-lg w-full max-w-sm" action={signup}>
+      <form className="bg-gray-100 border border-gray-200 p-8 rounded-lg w-full max-w-sm" action={(data) => {setPassword(""); setConfirmPassword(""); signup(data)}}>
         <h2 className="text-2xl font-bold mb-6 text-green-700">Sign Up</h2>
         <label htmlFor="first_name" className="block text-black mb-2">First Name:</label>
         <input id="first_name" name="first_name" type="text" required className="w-full p-2 mb-4 border border-green-300 rounded" />
@@ -80,7 +80,7 @@ export default function SignupPage() {
           </span>
         </div>
         {!passwordMatch && <p className="text-red-500 mt-[-5px] mb-[-5px] text-sm">Passwords do not match</p>}
-        <button type="submit" className="w-full bg-green-600 font-bold text-white px-4 py-2 mt-4 rounded hover:bg-green-500">Sign Up</button>
+        <button disabled={!passwordMatch} type="submit" className="w-full bg-green-600 font-bold text-white px-4 py-2 mt-4 rounded hover:bg-green-500">Sign Up</button>
         <Link href="/login">
           <p className="block text-center text-green-500 mt-4 hover:underline">Go back to login</p>
         </Link>
