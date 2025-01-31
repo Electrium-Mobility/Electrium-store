@@ -66,7 +66,7 @@ export default function SignupPage() {
             id="confirmpassword"
             name="confirmpassword"
             value={confirmPassword}
-            type={showPassword ? "text" : "password"}
+            type={showConfirmPassword ? "text" : "password"}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             className="w-full p-2 mb-4 border border-green-300 rounded"
