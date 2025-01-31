@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { login } from "../action/auth";
 import Link from "next/link";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 
 export default function LoginPage() {
