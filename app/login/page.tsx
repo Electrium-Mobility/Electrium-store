@@ -26,11 +26,11 @@ export default function LoginPage() {
             name="password"
             type={showPassword ? "text" : "password"}
             required
-            className="w-full p-2 mb-4 border border-green-300 rounded"
+            className="w-full p-2 pr-9 mb-4 border border-green-300 rounded"
           />
           <span
             onClick={togglePasswordVisibility}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer h-69"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
             style={{ height: '69%' }}
           >
             {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
