@@ -14,12 +14,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-green-100">
-      <form className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm" action={login}>
+    <div className="h-screen w-full flex items-center justify-center">
+      <form className="border border-gray-200 bg-gray-100 p-8 rounded-lg w-full max-w-sm" action={login}>
         <h2 className="text-2xl font-bold mb-6 text-green-700">Login</h2>
-        <label htmlFor="email" className="block text-green-700 mb-2">Email:</label>
+        <label htmlFor="email" className="block text-black mb-2">Email:</label>
         <input id="email" name="email" type="email" required className="w-full p-2 mb-4 border border-green-300 rounded" />
-        <label htmlFor="password" className="block text-green-700 mb-2">Password:</label>
+        <label htmlFor="password" className="block text-black mb-2">Password:</label>
         <div className="relative">
           <input
             id="password"
@@ -36,9 +36,9 @@ export default function LoginPage() {
             {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
           </span>
         </div>
-        <button type="submit" className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">Log in</button>
+        <button type="submit" className="w-full bg-green-600 text-white font-bold px-4 py-2 mt-4 rounded hover:bg-green-500">Log in</button>
         <Link href="/signup">
-          <p className="block text-center text-green-500 mt-4 hover:underline">Sign up</p>
+          <p className="block text-center text-green-500 mt-4 hover:underline">Create an account?</p>
         </Link>
       </form>
     </div>
