@@ -50,7 +50,7 @@ export default function SignupPage() {
             type={showPassword ? "text" : "password"}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full p-2 mb-4 border border-green-300 rounded"
+            className="w-full p-2 pr-9 mb-4 border border-green-300 rounded"
           />
           <span
             onClick={togglePasswordVisibility}
@@ -69,7 +69,7 @@ export default function SignupPage() {
             type={showConfirmPassword ? "text" : "password"}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full p-2 mb-4 border border-green-300 rounded"
+            className="w-full p-2 pr-9 mb-4 border border-green-300 rounded"
           />
           <span
             onClick={toggleConfirmPasswordVisibility}
