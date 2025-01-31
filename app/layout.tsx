@@ -26,7 +26,7 @@ export default function RootLayout({
         <html lang="en">
         <body style={{ fontFamily: 'Nunito, sans-serif' }}>
         <Navbar/>
-        <main className="pt-[75px]">
+        <main>
             {children}
         </main>
         <Footer/>
