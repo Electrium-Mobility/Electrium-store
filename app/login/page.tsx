@@ -16,10 +16,9 @@ export default function LoginPage() {
   };
 
   async function handleSubmit(formData: FormData): Promise<void> {
-    if (await login(formData)) { 
-      console.log("Logged in"); 
-    } else {
-      setUnsuccessfulLogin(true); // Display "invalid email or password" message
+    const success = await login(formData);
+    if (!success) {
+      setUnsuccessfulLogin(true);
     }
   }
 
