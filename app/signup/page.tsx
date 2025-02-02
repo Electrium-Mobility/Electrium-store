@@ -49,8 +49,11 @@ export default function SignupPage() {
             value={password}
             type={showPassword ? "text" : "password"}
             onChange={(e) => setPassword(e.target.value)}
+            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])[\S]{8,}$"
             required
             className="w-full p-2 pr-9 mb-4 border border-green-300 rounded"
+            onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Please enter a valid email address")} // Set custom message on invalid
+            onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")} // Clear custom message on input
           />
           <span
             onClick={togglePasswordVisibility}
