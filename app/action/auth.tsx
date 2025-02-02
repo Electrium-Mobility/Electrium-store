@@ -53,7 +53,7 @@ export async function login(formData: FormData): Promise<boolean> {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    return false;
+    return false; // Display "invalid email or password" message in the UI
   }
 
   revalidatePath("/", "layout");
