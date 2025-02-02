@@ -42,7 +42,7 @@ export async function signup(formData: FormData) {
   redirect("/checkout");
 }
 
-export async function login(formData: FormData) {
+export async function login(formData: FormData): Promise<boolean> {
   const supabase = await createClient();
 
   const data = {
@@ -53,7 +53,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/error");
+    return false; // Display "invalid email or password" message in the UI
   }
 
   revalidatePath("/", "layout");
