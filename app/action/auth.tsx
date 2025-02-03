@@ -39,7 +39,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/checkout");
+  redirect("/email-verification");
 }
 
 export async function login(formData: FormData): Promise<boolean> {
