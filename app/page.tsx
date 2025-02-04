@@ -68,21 +68,40 @@ function ProductDisplay({ id, image, name, price, isRental }: {
 }) {
     return (
         <Link href={`/products/${id}`}>
-            <div className="flex flex-col items-center bg-white rounded-lg shadow-md p-6 transition-transform hover:scale-105">
-                <div className="relative w-48 h-48 mb-4">
+            <div className="flex flex-col items-center bg-white rounded-xl border-2
+             border-emerald-200 p-4 transition-all duration-300 hover:-translate-y-1 hover-border-glow">
+                <div className="relative w-48 h-48 mb-6">
                     <Image
                         src={image || '/img/placeholder.png'}
                         alt={name}
                         unoptimized
                         width={192}
                         height={192}
+                        className="rounded-lg"
                         style={{ objectFit: "contain" }}
                     />
                 </div>
-                <h3 className="text-lg font-medium text-emerald-600 mb-2">{name}</h3>
-                <p className="text-slate-600">
-                    {isRental ? `CA $${price.toFixed(2)}/hour` : `CA $${price.toFixed(2)}`}
-                </p>
+                <div className="text-center space-y-2 w-full bg-slate-100 p-3 rounded-lg border border-slate-200">
+                    <h3 className="text-lg font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                        {name}
+                    </h3>
+                    <div className="px-4 py-2 bg-slate-200 rounded-lg border border-slate-200">
+                        {isRental ? (
+                            <div className="space-y-1">
+                                <p className="text-gray-700 font-medium">
+                                    CA ${price.toFixed(2)}/hour
+                                </p>
+                                <p className="text-sm text-emerald-600">
+                                    Available for Rent
+                                </p>
+                            </div>
+                        ) : (
+                            <p className="text-gray-700 font-medium">
+                                CA ${price.toFixed(2)}
+                            </p>
+                        )}
+                    </div>
+                </div>
             </div>
         </Link>
     );
@@ -97,21 +116,21 @@ export default async function Home() {
         // Handle the error appropriately
     }
 
-    const products = bikes?.filter(bike => !bike.for_rent) || [];
-    const rentals = bikes?.filter(bike => bike.for_rent) || [];
+   
+    const allBikes = bikes || [];
 
     return (
         <div className="flex flex-col min-h-screen">
             <main className="flex-grow bg-white py-16 px-4">
                 <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h1 className="text-4xl font-bold text-emerald-600 mb-4">Shop</h1>
-                        <p className="text-xl text-slate-600">Take a look at our latest products and rentals!</p>
+                    <div className="text-center mb-12 mt-[-6rem]">
+                        <h1 className="text-[120px] bubble-text">SHOP</h1>
+                        <p className="text-[22px] text-slate-600 font-light tracking-wide">Take a look at our latest products and rentals!</p>
                     </div>
-                    <section className="mb-16">
-                        <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Products</h2>
+                    <section className="mb-16 animate-border-glow rounded-xl p-8 shadow-[0_0_25px_rgba(100,100,100,0.35)]">
+                        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">Products</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {products.map((bike) => (
+                            {allBikes.map((bike) => (
                                 <ProductDisplay
                                     key={bike.bike_id}
                                     id={bike.bike_id}
@@ -123,10 +142,10 @@ export default async function Home() {
                             ))}
                         </div>
                     </section>
-                    <section>
-                        <h2 className="text-3xl font-semibold text-left mb-8 text-gray-800">Rentals</h2>
+                    <section className="animate-border-glow rounded-xl p-8 shadow-[0_0_25px_rgba(100,100,100,0.35)]">
+                        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">Rentals</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {rentals.map((bike) => (
+                            {allBikes.map((bike) => (
                                 <ProductDisplay
                                     key={bike.bike_id}
                                     id={bike.bike_id}
