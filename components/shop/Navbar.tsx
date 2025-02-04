@@ -1,9 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { createClient } from "@/utils/supabase/server";
+import { signOutAction } from '@/app/action/auth';
 
+export default async function Navbar() {
+    const supabase = await createClient();
 
-export default function Navbar() {
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
     return (
 
         <nav className="flex justify-between items-center p-4 bg-white">
@@ -28,6 +35,10 @@ export default function Navbar() {
                 <button className="text-gray-600 hover:text-gray-900">
                     <i className="fas fa-sun"></i>
                 </button>
+                {user ? 
+                <button className="text-gray-600 hover:text-gray-900" onClick={signOutAction}>
+                    <i className="fas fa-sign-out"></i>
+                </button> : ""}
             </div>
         </nav>
     );

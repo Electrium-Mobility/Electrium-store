@@ -29,7 +29,15 @@ export default function LoginPage() {
         {unsuccessfulLogin && <p className="text-red-600 mb-3 mt-[-15px]">Invalid email or password</p>}
         <label htmlFor="email" className="block text-black mb-2">Email:</label>
         <input id="email" name="email" type="email" value={displayEmail} onChange={(e) => setDisplayEmail(e.target.value)} required className="w-full p-2 mb-4 border border-green-300 rounded" />
-        <label htmlFor="password" className="block text-black mb-2">Password:</label>
+        <div className="flex justify-between items-center">
+          <label htmlFor="password" className="block text-black mb-2">Password:</label>
+          <Link
+            className="text-xs text-foreground underline"
+            href="/forgot-password"
+          >
+            Forgot Password?
+          </Link>
+        </div>
         <div className="relative">
           <input
             id="password"
