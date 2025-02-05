@@ -14,7 +14,7 @@ function CartNotification({bike, subtotal, quantity, numItems}: {
     numItems: number
 }) {
         return (
-            <div className="w-80 absolute mt-24 right-6 rounded-3xl bg-gray-50  space-y-7 flex-col align-center rounded-xl p-6 drop-shadow-lg">
+            <div className="w-80 absolute mt-24 right-6 rounded-3xl bg-gray-50  space-y-7 flex-col align-center p-6 drop-shadow-lg">
                 <h1 className="text-base font-bold">Your Shopping Cart</h1>
                 <div className="flex flex-row justify-between">
                     <div className="flex flex-row justify-self-start text-sm">Subtotal: &nbsp;<div className="font-semibold"> CA${subtotal}</div></div>
