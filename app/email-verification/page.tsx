@@ -5,11 +5,22 @@ import { createClient } from '@/utils/supabase/client';
 import { useSearchParams } from 'next/navigation';
 
 const EmailVerification = () => {
-    const [cooldown, setCooldown] = useState(60);
+    const [cooldown, setCooldown] = useState(0);
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
 
     useEffect(() => {
+        // Check localStorage for existing cooldown
+        const cooldownEndTime = localStorage.getItem('cooldownEndTime');
+        if (cooldownEndTime) {
+            const remainingTime = Math.ceil((parseInt(cooldownEndTime) - Date.now()) / 1000);
+            if (remainingTime > 0) {
+                setCooldown(remainingTime);
+            } else {
+                localStorage.removeItem('cooldownEndTime');
+            }
+        }
+
         const timer = setInterval(() => {
             if (cooldown > 0) {
                 setCooldown(prev => prev - 1);
@@ -34,7 +45,9 @@ const EmailVerification = () => {
                 return;
             }
 
-            // Set 60 second cooldown
+            // Set 60 second cooldown and store end time in localStorage
+            const endTime = Date.now() + (60 * 1000);
+            localStorage.setItem('cooldownEndTime', endTime.toString());
             setCooldown(60);
         } catch (error) {
             console.error('Failed to resend verification email:', error);
