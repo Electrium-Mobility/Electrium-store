@@ -41,7 +41,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  return redirect("/email-verification");
+  return redirect(`/email-verification?email=${encodeURIComponent(data.email)}`);
 }
 
 export async function login(formData: FormData): Promise<boolean> {
