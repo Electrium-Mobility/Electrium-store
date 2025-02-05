@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/client';
 import { useSearchParams } from 'next/navigation';
 
 const EmailVerification = () => {
-    const [cooldown, setCooldown] = useState(0);
+    const [cooldown, setCooldown] = useState(60);
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
 
