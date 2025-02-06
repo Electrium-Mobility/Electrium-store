@@ -32,7 +32,7 @@ export default function LoginPage() {
         <div className="flex justify-between items-center">
           <label htmlFor="password" className="block text-black mb-2">Password:</label>
           <Link
-            className="text-xs text-foreground underline"
+            className="text-xs text-black underline"
             href="/forgot-password"
           >
             Forgot Password?
