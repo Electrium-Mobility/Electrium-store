@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     --background: 200 20% 98%;
@@ -33,4 +34,31 @@
 
 .logo-opacity:hover {
   opacity: 1;
+}
+
+@keyframes border-glow {
+    0% {
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+                   0 0 20px rgba(16, 185, 129, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.5),
+                   0 0 40px rgba(16, 185, 129, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+                   0 0 20px rgba(16, 185, 129, 0.2);
+    }
+}
+
+.hover-border-glow:hover {
+    animation: border-glow 3s linear infinite;
+}
+
+.bubble-text {
+    color: #10B981;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    -webkit-text-stroke: 2px #0D9488;
 }
