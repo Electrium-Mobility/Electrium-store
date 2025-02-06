@@ -25,6 +25,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+#vscode
+.vscode
+
+#supabase
+supabase
+
 # local env files
 .env*.local
 .env
@@ -35,3 +41,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.aider*
