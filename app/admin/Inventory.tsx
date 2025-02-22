@@ -1,77 +1,195 @@
-'use client'
-import { useState } from "react"
+"use client"
 
-interface InventoryItem {
-  id: number
-  name: string
-  stock: number
-  price: number
-}
-
-const initialInventoryData: InventoryItem[] = [
-  { id: 1, name: "Product 1", stock: 50, price: 19.99 },
-  { id: 2, name: "Product 2", stock: 30, price: 29.99 },
-  { id: 3, name: "Product 3", stock: 20, price: 39.99 },
-]
+import { useEffect, useState, type ChangeEvent } from "react"
+import type { Bike } from "@/utils/getBike"
+import path from 'path';
+import { createClient } from "@/utils/supabase/client";
 
 export default function Inventory() {
-  const [inventoryData, setInventoryData] = useState<InventoryItem[]>(initialInventoryData)
+  const [inventoryData, setInventoryData] = useState<Bike[]>([])
   const [editingId, setEditingId] = useState<number | null>(null)
+  const [uploading, setUploading] = useState(false)
 
-  const handleStockChange = (id: number, newStock: number) => {
-    setInventoryData(inventoryData.map((item) => (item.id === id ? { ...item, stock: newStock } : item)))
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function fetchInventory() {
+      const { data, error } = await supabase.from("bikes").select("*")
+
+      if (error) {
+        console.error("Error fetching inventory:", error.message)
+      } else if (data) {
+        setInventoryData(data)
+      }
+    }
+    fetchInventory()
+  }, [])
+  const handleChange = async (id: number, field: keyof Bike, value: string | number | boolean) => {
+    setInventoryData(inventoryData.map((item) => (item.bike_id === id ? { ...item, [field]: value } : item)))
   }
 
-  const handleSave = (id: number) => {
-    console.log(`Saving stock update for product ${id}`)
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.error("No file selected")
+      return
+    }
+
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append("file", file)
+
+    setUploading(true)
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error("Upload failed")
+      }
+
+      const data = await response.json()
+
+      if (data.success) {
+        await new Promise(r => setTimeout(r, 1000));
+        console.log('Data:', data)
+        const {data: result, error} = await supabase.storage.from('Images').createSignedUrl(data.data.path, 315569520);
+        if (error) {
+          throw error;
+        }
+        handleChange(id, "image", result.signedUrl)
+      } else {
+        console.error("Upload failed")
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleSave = async (id: number) => {
+    await supabase.from("bikes").upsert(inventoryData).eq("bike_id", id)
+    console.log(inventoryData)
     setEditingId(null)
   }
 
   return (
-    <div id="inventory">
-      <h2 className="text-2xl font-bold mb-4 text-green-700">Inventory</h2>
+    <div id="inventory" className="overflow-x-auto">
+      <h2 className="text-2xl font-bold mb-4 text-green-700">Bike Inventory</h2>
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
             <th className="py-2 px-4 border-b">ID</th>
             <th className="py-2 px-4 border-b">Name</th>
+            <th className="py-2 px-4 border-b">Description</th>
+            <th className="py-2 px-4 border-b">Image</th>
             <th className="py-2 px-4 border-b">Stock</th>
-            <th className="py-2 px-4 border-b">Price</th>
+            <th className="py-2 px-4 border-b">Rental Rate</th>
+            <th className="py-2 px-4 border-b">Sell Price</th>
             <th className="py-2 px-4 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {inventoryData.map((item) => (
-            <tr key={item.id}>
-              <td className="py-2 px-4 border-b">{item.id}</td>
-              <td className="py-2 px-4 border-b">{item.name}</td>
+          {inventoryData.map((bike) => (
+            <tr key={bike.bike_id}>
+              <td className="py-2 px-4 border-b">{bike.bike_id}</td>
               <td className="py-2 px-4 border-b">
-                {editingId === item.id ? (
+                {editingId === bike.bike_id ? (
+                  <input
+                    type="text"
+                    value={bike.name}
+                    onChange={(e) => handleChange(bike.bike_id, "name", e.target.value)}
+                    className="w-full p-1 border rounded"
+                  />
+                ) : (
+                  bike.name
+                )}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {editingId === bike.bike_id ? (
+                  <textarea
+                    value={bike.description}
+                    onChange={(e) => handleChange(bike.bike_id, "description", e.target.value)}
+                    className="w-full p-1 border rounded"
+                  />
+                ) : (
+                  bike.description
+                )}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {editingId === bike.bike_id ? (
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, bike.bike_id)}
+                      className="w-full p-1 border rounded"
+                    />
+                    {uploading && <p className="mt-2 text-sm text-gray-500">Uploading...</p>}
+                    {bike.image && <p className="mt-2 text-sm text-gray-500">Current image: 
+                    <img src={bike.image} alt={bike.name} className="w-16 h-16"/></p>}
+                  </div>
+                ) : bike.image ? (
+                  <img src={bike.image} alt={bike.name} className="w-32 h-32 object-cover" />
+                ) : (
+                  "No image"
+                )}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {editingId === bike.bike_id ? (
                   <input
                     type="number"
-                    value={item.stock}
-                    onChange={(e) => handleStockChange(item.id, Number.parseInt(e.target.value))}
+                    value={bike.amount_stocked}
+                    onChange={(e) => handleChange(bike.bike_id, "amount_stocked", Number(e.target.value))}
                     className="w-20 p-1 border rounded"
                   />
                 ) : (
-                  item.stock
+                  bike.amount_stocked
                 )}
               </td>
-              <td className="py-2 px-4 border-b">${item.price.toFixed(2)}</td>
               <td className="py-2 px-4 border-b">
-                {editingId === item.id ? (
+                {editingId === bike.bike_id ? (
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={bike.rental_rate}
+                    onChange={(e) => handleChange(bike.bike_id, "rental_rate", Number(e.target.value))}
+                    className="w-20 p-1 border rounded"
+                  />
+                ) : (
+                  `$${bike.rental_rate.toFixed(2)}`
+                )}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {editingId === bike.bike_id ? (
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={bike.sell_price}
+                    onChange={(e) => handleChange(bike.bike_id, "sell_price", Number(e.target.value))}
+                    className="w-20 p-1 border rounded"
+                  />
+                ) : (
+                  `$${bike.sell_price.toFixed(2)}`
+                )}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {editingId === bike.bike_id ? (
                   <button
-                    onClick={() => handleSave(item.id)}
+                    onClick={() => handleSave(bike.bike_id)}
                     className="bg-green-700 text-white px-3 py-1 rounded hover:bg-green-600"
                   >
                     Save
                   </button>
                 ) : (
                   <button
-                    onClick={() => setEditingId(item.id)}
+                    onClick={() => setEditingId(bike.bike_id)}
                     className="border border-green-700 text-green-700 px-3 py-1 rounded hover:bg-green-50"
                   >
-                    Edit Stock
+                    Edit
                   </button>
                 )}
               </td>
