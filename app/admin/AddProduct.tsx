@@ -4,8 +4,10 @@ import { useState, type ChangeEvent } from "react"
 import type { Bike } from "@/utils/getBike"
 import type React from "react" // Import React
 import uploadImage from "./image";
+import { useRouter } from "next/navigation";
 
 export default function AddProduct() {
+  const router = useRouter();
   const [newBike, setNewBike] = useState<Omit<Bike, "bike_id">>({
     name: "",
     description: "",
@@ -39,6 +41,23 @@ export default function AddProduct() {
     console.log("New bike to be added:", newBike)
     // Here you would typically send the data to your backend API
     // Reset the form after submission
+    try {
+      const response = await fetch("/api/add-bike", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBike),
+      })
+      if (!response.ok) {
+        throw new Error("Failed to add bike")
+      } else {
+        console.log("Bike added successfully")
+        router.refresh()
+      }
+    } catch (error) {
+      console.error("Error adding bike:", error)
+    }
     setNewBike({
       name: "",
       description: "",
