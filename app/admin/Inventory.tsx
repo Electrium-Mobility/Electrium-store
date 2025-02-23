@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState, type ChangeEvent } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import type { Bike } from "@/utils/getBike"
-import path from 'path';
 import { createClient } from "@/utils/supabase/client";
+import uploadImage from "./image";
 
 export default function Inventory() {
   const [inventoryData, setInventoryData] = useState<Bike[]>([])
@@ -24,50 +24,20 @@ export default function Inventory() {
     }
     fetchInventory()
   }, [])
-  const handleChange = async (id: number, field: keyof Bike, value: string | number | boolean) => {
-    setInventoryData(inventoryData.map((item) => (item.bike_id === id ? { ...item, [field]: value } : item)))
-  }
 
-  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, id: number) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      console.error("No file selected")
-      return
-    }
-
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append("file", file)
-
+  const handleUpload = async (e: ChangeEvent<HTMLInputElement>, id: number) => {
     setUploading(true)
 
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error("Upload failed")
-      }
-
-      const data = await response.json()
-
-      if (data.success) {
-        await new Promise(r => setTimeout(r, 1000));
-        console.log('Data:', data)
-        const {data: result, error} = await supabase.storage.from('Images').createSignedUrl(data.data.path, 315569520);
-        if (error) {
-          throw error;
-        }
-        handleChange(id, "image", result.signedUrl)
-      } else {
-        console.error("Upload failed")
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error)
-    } finally {
-      setUploading(false)
+    const signedUrl = await uploadImage(e)
+    if (signedUrl) {
+      handleChange(id, "image", signedUrl)
+    } else {
+      console.error("Error uploading image")
     }
+  }
+
+  const handleChange = async (id: number, field: keyof Bike, value: string | number | boolean) => {
+    setInventoryData(inventoryData.map((item) => (item.bike_id === id ? { ...item, [field]: value } : item)))
   }
 
   const handleSave = async (id: number) => {
@@ -125,12 +95,12 @@ export default function Inventory() {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleImageUpload(e, bike.bike_id)}
+                      onChange={(e) => handleUpload(e, bike.bike_id)}
                       className="w-full p-1 border rounded"
                     />
                     {uploading && <p className="mt-2 text-sm text-gray-500">Uploading...</p>}
-                    {bike.image && <p className="mt-2 text-sm text-gray-500">Current image: 
-                    <img src={bike.image} alt={bike.name} className="w-16 h-16"/></p>}
+                    {bike.image && <p className="mt-2 text-sm text-gray-500">Current image:
+                      <img src={bike.image} alt={bike.name} className="w-16 h-16" /></p>}
                   </div>
                 ) : bike.image ? (
                   <img src={bike.image} alt={bike.name} className="w-32 h-32 object-cover" />

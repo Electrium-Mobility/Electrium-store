@@ -3,6 +3,7 @@
 import { useState, type ChangeEvent } from "react"
 import type { Bike } from "@/utils/getBike"
 import type React from "react" // Import React
+import uploadImage from "./image";
 
 export default function AddProduct() {
   const [newBike, setNewBike] = useState<Omit<Bike, "bike_id">>({
@@ -21,43 +22,19 @@ export default function AddProduct() {
     setNewBike((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      console.error("No file selected")
-      return
-    }
-
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append("file", file)
-
+  const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     setUploading(true)
-
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error("Upload failed")
-      }
-
-      const data = await response.json()
-
-      if (data.success) {
-        handleChange("image", data.filename)
+    uploadImage(e).then((signedUrl) => {
+      if (signedUrl) {
+        setNewBike((prev) => ({ ...prev, image: signedUrl }))
       } else {
-        console.error("Upload failed")
+        console.error("Error uploading image")
       }
-    } catch (error) {
-      console.error("Error uploading file:", error)
-    } finally {
       setUploading(false)
-    }
+    })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log("New bike to be added:", newBike)
     // Here you would typically send the data to your backend API
@@ -111,7 +88,7 @@ export default function AddProduct() {
             id="image"
             type="file"
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={handleUpload}
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
           />
           {uploading && <p className="mt-2 text-sm text-gray-500">Uploading...</p>}
