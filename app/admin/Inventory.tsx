@@ -14,7 +14,7 @@ export default function Inventory() {
 
   useEffect(() => {
     async function fetchInventory() {
-      const { data, error } = await supabase.from("bikes").select("*")
+      const { data, error } = await supabase.from("bikes").select("*").order("bike_id")
 
       if (error) {
         console.error("Error fetching inventory:", error.message)
@@ -44,6 +44,11 @@ export default function Inventory() {
     await supabase.from("bikes").upsert(inventoryData).eq("bike_id", id)
     console.log(inventoryData)
     setEditingId(null)
+  }
+
+  const handleDelete = async (id: number) => {
+    await supabase.from("bikes").delete().eq("bike_id", id)
+    setInventoryData(inventoryData.filter((item) => item.bike_id !== id))
   }
 
   return (
@@ -162,6 +167,12 @@ export default function Inventory() {
                     Edit
                   </button>
                 )}
+                  <button
+                    onClick={() => handleDelete(bike.bike_id)}
+                    className="border border-red-700 text-red-700 px-3 py-1 rounded hover:bg-red-700 hover:text-white"
+                  >
+                    Delete
+                  </button>
               </td>
             </tr>
           ))}
