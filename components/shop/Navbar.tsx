@@ -170,7 +170,6 @@ export default function Navbar() {
                     <Link href="https://electriummobility.com/team" className="text-gray-600 hover:text-gray-900">Team</Link>
                     <Link href="https://electriummobility.com/docs/W2024-projects/project1_2023" className="text-gray-600 hover:text-gray-900">Projects</Link>
                     <Link href="https://electriummobility.com/sponsors" className="text-gray-600 hover:text-gray-900">Sponsors</Link>
-                    <Link href="/" className="text-gray-600 hover:text-gray-900">Shop</Link>
                     <Link href="https://electriummobility.com/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
                 </div>
 
