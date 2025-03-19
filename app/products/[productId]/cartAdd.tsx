@@ -32,8 +32,12 @@ function CartNotification({ setNotifInfo, bike, subtotal, quantity, numItems }: 
                 </div>
             </div>
             <div className="flex flex-col space-y-4">
-                <Link href="/checkout" className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">View and Edit Cart</Link>
-                <button className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">Secure Checkout</button>
+                <Link href="/cart" className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">
+                    View and Edit Cart
+                </Link>
+                <Link href="/checkout">
+                    <button className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">Secure Checkout</button>
+                </Link>
             </div>
         </div>
     );
@@ -61,7 +65,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
         }
         setNotifInfo({
             bike: bike,
-            subtotal: currentCart.reduce((acc: number, cur: CheckoutBike) => acc + (cur.orderType == 'rent' ? 0 : cur.sell_price*cur.quantity), 0),
+            subtotal: currentCart.reduce((acc: number, cur: CheckoutBike) => acc + (cur.orderType == 'rent' ? 0 : cur.sell_price * cur.quantity), 0),
             quantity: amount,
             numItems: currentCart.length
         })
