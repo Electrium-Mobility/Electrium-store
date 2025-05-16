@@ -39,15 +39,32 @@ export async function POST(request: Request) {
 
     // Update inventory
     for (const item of cart) {
-      const { error: inventoryError } = await supabase
+      // 1. Fetch current stock
+      const { data: bike, error: fetchError } = await supabase
         .from("bikes")
-        .update({
-          amount_stocked: supabase.raw("amount_stocked - ?", [item.quantity]),
-        })
+        .select("amount_stocked")
+        .eq("bike_id", item.bike_id)
+        .single();
+
+      if (fetchError) {
+        console.error("Error fetching bike stock:", fetchError);
+        return NextResponse.json(
+          { error: "Failed to fetch bike stock" },
+          { status: 500 }
+        );
+      }
+
+      // 2. Calculate new stock
+      const newStock = (bike?.amount_stocked || 0) - item.quantity;
+
+      // 3. Update with new value
+      const { error: updateError } = await supabase
+        .from("bikes")
+        .update({ amount_stocked: newStock })
         .eq("bike_id", item.bike_id);
 
-      if (inventoryError) {
-        console.error("Error updating inventory:", inventoryError);
+      if (updateError) {
+        console.error("Error updating inventory:", updateError);
         return NextResponse.json(
           { error: "Failed to update inventory" },
           { status: 500 }

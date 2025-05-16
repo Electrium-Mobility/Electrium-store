@@ -64,7 +64,7 @@ function CheckoutForm({
       setIsProcessing(false);
     }
   };
-/*
+  /*
   const handlePaymentSuccess = async (paymentDetails: any) => {
     setIsProcessing(true);
     setErrorMessage(null);
@@ -216,7 +216,11 @@ export function PaymentOptions({
               <PayPalButtons
                 style={{ layout: "vertical" }}
                 createOrder={(data, actions) => {
-                  if (!actions.order) return "";
+                  if (!actions.order) {
+                    return Promise.reject(
+                      new Error("PayPal actions.order is undefined")
+                    );
+                  }
                   return actions.order.create({
                     intent: "CAPTURE",
                     purchase_units: [
