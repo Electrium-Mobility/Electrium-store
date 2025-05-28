@@ -21,12 +21,14 @@ interface PaymentOptionsProps {
   total: number;
   onPaymentSuccess: (details: any) => void;
   onPaymentError: (error: string) => void;
+  email: string;
 }
 
 function CheckoutForm({
   total,
   onPaymentSuccess,
   onPaymentError,
+  email,
 }: PaymentOptionsProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -44,17 +46,21 @@ function CheckoutForm({
     setErrorMessage(null);
 
     try {
-      const { error: submitError } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/order-success`,
-        },
-      });
+      const { error: submitError, paymentIntent } = await stripe.confirmPayment(
+        {
+          elements,
+          confirmParams: {
+            // Do NOT provide return_url here for manual handling
+          },
+          redirect: "if_required", // or "never" for full manual
+        }
+      );
 
       if (submitError) {
         setErrorMessage(submitError.message || "An error occurred");
         onPaymentError(submitError.message || "Payment failed");
-      } else {
+      } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        console.log("Calling onPaymentSuccess from CheckoutForm");
         onPaymentSuccess({ status: "succeeded" });
       }
     } catch (err) {
@@ -64,43 +70,6 @@ function CheckoutForm({
       setIsProcessing(false);
     }
   };
-  /*
-  const handlePaymentSuccess = async (paymentDetails: any) => {
-    setIsProcessing(true);
-    setErrorMessage(null);
-
-    try {
-      const response = await fetch("/api/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          orderDetails: paymentDetails,
-          shippingInfo: {
-            * ... *
-          },
-          cart: cart,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Payment processing failed");
-      }
-
-      // Clear cart and redirect to success page
-      sessionStorage.removeItem("cart");
-      window.location.href = `/order-success/${data.orderId}`;
-    } catch (err) {
-      setErrorMessage(
-        err instanceof Error
-          ? err.message
-          : "An error occurred during payment processing"
-      );
-    } finally {
-      setIsProcessing(false);
-    }
-  }; */
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -127,6 +96,7 @@ export function PaymentOptions({
   total,
   onPaymentSuccess,
   onPaymentError,
+  email,
 }: PaymentOptionsProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"stripe" | "paypal">(
@@ -201,6 +171,7 @@ export function PaymentOptions({
               total={total}
               onPaymentSuccess={onPaymentSuccess}
               onPaymentError={onPaymentError}
+              email={email}
             />
           </Elements>
         )}

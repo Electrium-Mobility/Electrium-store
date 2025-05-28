@@ -1,171 +1,211 @@
-'use client'
+"use client";
 import React from "react";
+import Select from "react-select";
+import { countries } from "countries-list";
 
-interface dropdownProps {
-    options: string[],
-    selection: number
-    selectCallback: (index: number) => void,
+interface ShippingFormProps {
+  onChange: (info: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    address: string;
+    country: string | null;
+    province: string | null;
+    city: string;
+    postalCode: string;
+    phone: string;
+  }) => void;
 }
 
-function Dropdown({options, selection, selectCallback}: dropdownProps) {
-    const [dropdownOpen, setDropdownOpen] = React.useState(false);
-    const menuRef = React.useRef<HTMLDivElement>(null);
+// Convert countries object to array format for react-select
+const countryOptions = Object.entries(countries).map(([code, country]) => ({
+  value: code,
+  label: country.name,
+}));
 
-    React.useEffect(()=> {
-        console.log("HI")
-        function onClickOutside(e: MouseEvent) {
-            console.log("clicked")
-            if (dropdownOpen && !menuRef.current?.contains(e.target as Node)) {
-                setDropdownOpen(false)
-            }
-        }
+// Canadian provinces
+const provinceOptions = [
+  { value: "AB", label: "Alberta" },
+  { value: "BC", label: "British Columbia" },
+  { value: "MB", label: "Manitoba" },
+  { value: "NB", label: "New Brunswick" },
+  { value: "NL", label: "Newfoundland and Labrador" },
+  { value: "NS", label: "Nova Scotia" },
+  { value: "NT", label: "Northwest Territories" },
+  { value: "NU", label: "Nunavut" },
+  { value: "ON", label: "Ontario" },
+  { value: "PE", label: "Prince Edward Island" },
+  { value: "QC", label: "Quebec" },
+  { value: "SK", label: "Saskatchewan" },
+  { value: "YT", label: "Yukon" },
+];
 
-        // god i hate nextjs :(
-        if (typeof window !== 'undefined') {
-            document.addEventListener('mousedown', onClickOutside);
-            console.log("Event listener added");
+type CountryOption = {
+  value: string;
+  label: string;
+};
 
-            return () => {
-                document.removeEventListener('mousedown', onClickOutside);
-                console.log("Event listener removed");
-            };
-        }
-    },[dropdownOpen])
+type ProvinceOption = {
+  value: string;
+  label: string;
+};
 
+export default function ShippingForm({ onChange }: ShippingFormProps) {
+  const [email, setEmail] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [selectedCountry, setSelectedCountry] = React.useState<any>(null);
+  const [selectedProvince, setSelectedProvince] = React.useState<any>(null);
+  const [city, setCity] = React.useState("");
+  const [postalCode, setPostalCode] = React.useState("");
+  const [phone, setPhone] = React.useState("");
 
-    return(
-        <div className="flex-1 relative">
-            <button
-                onClick={e => {
-                e.preventDefault()
-                setDropdownOpen(!dropdownOpen)
-            }}
-                className="w-full bg-white border border-gray-200 rounded-md py-2 px-4">
-                <p className={ `text-left ${selection==-1 ? 'text-gray-400' : ''}`}>{options[0]}</p>
-            </button>
-            <div ref={menuRef}
-                className={`${dropdownOpen? 'max-h-48' : 'max-h-0 invisible'} transition-all duration-300 ease-in-out delay-150 flex-1 bg-white shadow-lg border border-gray-200 rounded-md px-2 absolute w-full overflow-y-auto mt-1`}>
-                {options.map((optionName, index) => (
-                    <button key={index} className={`leading-5 py-2 px-4 block text-left ${index == selection ? '' : 'text-gray-400'}`}
-                       onClick={(e) => {
-                           e.preventDefault();
-                           selectCallback(index)
-                           setDropdownOpen(false)
-                       }}
-                    >{optionName}</button>
-                ))}
-            </div>
+  const handleCountryChange = (option: any) => {
+    setSelectedCountry(option);
+    setSelectedProvince(null);
+  };
+
+  React.useEffect(() => {
+    onChange({
+      email,
+      firstName,
+      lastName,
+      address,
+      country: selectedCountry ? selectedCountry.value : null,
+      province: selectedProvince ? selectedProvince.value : null,
+      city,
+      postalCode,
+      phone,
+    });
+  }, [
+    email,
+    firstName,
+    lastName,
+    address,
+    selectedCountry,
+    selectedProvince,
+    city,
+    postalCode,
+    phone,
+    onChange,
+  ]);
+
+  return (
+    <form>
+      <p className="font-bold text-xl pb-2">Shipping Information</p>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center">
+          <p className="font-medium w-36">Email Address</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"email"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter Email"
+          />
+        </label>
+      </div>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center my-2">
+          <p className="font-medium w-36">First Name</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"text"}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Enter First Name"
+          />
+        </label>
+      </div>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center my-2">
+          <p className="font-medium w-36">Last Name</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"text"}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Enter Last Name"
+          />
+        </label>
+      </div>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center my-2">
+          <p className="font-medium w-36">Street Address</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"text"}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Enter Street Address"
+          />
+        </label>
+      </div>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center">
+          <p className="font-medium w-36">Country</p>
+          <Select
+            className="flex-1"
+            options={countryOptions}
+            value={selectedCountry}
+            onChange={handleCountryChange}
+            placeholder="Select a country"
+            isSearchable
+          />
+        </label>
+      </div>
+      {selectedCountry?.value === "CA" && (
+        <div className="mt-6">
+          <label className="lg:flex lg:flex-row items-center">
+            <p className="font-medium w-36">Province</p>
+            <Select
+              className="flex-1"
+              options={provinceOptions}
+              value={selectedProvince}
+              onChange={setSelectedProvince}
+              placeholder="Select a province"
+              isSearchable
+            />
+          </label>
         </div>
-    )
-}
-
-export default function ShippingForm() {
-    const [email, setEmail] = React.useState('')
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('')
-    const [address, setAddress] = React.useState('')
-    const [countryIndex, setCountryIndex] = React.useState(-1)
-    const [provinceIndex, setProvinceIndex] = React.useState(-1)
-    const [city, setCity] = React.useState('')
-    const [postalCode, setPostalCode] = React.useState('')
-    const [phone, setPhone] = React.useState('')
-
-    const countryOptions = ['Canada']
-    const provinceOptions = ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut"]
-
-    return (
-        <form>
-            <p className="font-bold text-xl pb-2">Shipping Information</p>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center">
-                    <p className="font-medium w-36">Email Address</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"email"}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter Email"
-                    />
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center my-2">
-                    <p className="font-medium w-36">First Name</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"text"}
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="Enter First Name"
-                    />
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center my-2">
-                    <p className="font-medium w-36">Last Name</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"text"}
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Enter Last Name"
-                    />
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center my-2">
-                    <p className="font-medium w-36">Street Address</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"text"}
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="Enter Street Address"
-                    />
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center relative z-40">
-                    <p className="font-medium w-36">Country</p>
-                    <Dropdown options={countryOptions} selection={countryIndex} selectCallback={setCountryIndex}/>
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center relative z-30">
-                    <p className="font-medium w-36">State/Province</p>
-                    <Dropdown options={provinceOptions} selection={provinceIndex} selectCallback={setProvinceIndex}/>
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center my-2">
-                    <p className="font-medium w-36">City</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"text"}
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        placeholder="Enter City"
-                    />
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center my-2">
-                    <p className="font-medium w-36">Zip/Postal Code</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"text"}
-                        value={postalCode}
-                        onChange={(e) => setPostalCode(e.target.value)}
-                        placeholder="Enter Zip/Postal Code"
-                    />
-                </label></div>
-            <div className="mt-6">
-                <label className="lg:flex lg:flex-row items-center">
-                    <p className="font-medium w-36">Phone Number</p>
-                    <input
-                        className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-                        type={"text"}
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="Enter Phone Number"
-                    />
-                </label>
-            </div>
-
-
-        </form>
-    )
+      )}
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center my-2">
+          <p className="font-medium w-36">City</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"text"}
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Enter City"
+          />
+        </label>
+      </div>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center my-2">
+          <p className="font-medium w-36">Zip/Postal Code</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"text"}
+            value={postalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
+            placeholder="Enter Zip/Postal Code"
+          />
+        </label>
+      </div>
+      <div className="mt-6">
+        <label className="lg:flex lg:flex-row items-center">
+          <p className="font-medium w-36">Phone Number</p>
+          <input
+            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            type={"text"}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Enter Phone Number"
+          />
+        </label>
+      </div>
+    </form>
+  );
 }
