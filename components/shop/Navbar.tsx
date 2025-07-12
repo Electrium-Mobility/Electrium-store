@@ -160,14 +160,30 @@ export default function Navbar() {
             <i className="fas fa-sun"></i>
           </button>
           {user ? (
-            <button
-              className="text-gray-600 hover:text-gray-900"
-              onClick={handleSignOut}
-            >
-              <i className="fas fa-sign-out"></i>
-            </button>
+            <>
+              <Link
+                href="/dashboard"
+                className="text-gray-600 hover:text-gray-900 mx-2"
+                title="Dashboard"
+              >
+                <i className="fas fa-user-circle fa-lg"></i>
+              </Link>
+              <button
+                className="text-gray-600 hover:text-gray-900"
+                onClick={handleSignOut}
+                title="Sign Out"
+              >
+                <i className="fas fa-sign-out"></i>
+              </button>
+            </>
           ) : (
-            ""
+            <Link
+              href="/login"
+              className="text-gray-600 hover:text-gray-900 mx-2"
+              title="Login"
+            >
+              <i className="fas fa-user-circle fa-lg"></i>
+            </Link>
           )}
         </div>
       </div>
