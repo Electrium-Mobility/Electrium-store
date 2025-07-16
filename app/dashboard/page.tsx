@@ -61,8 +61,8 @@ export default async function DashboardPage() {
   return (
     <DashboardClient
       userName={userName}
-      orders={orders}
-      payments={payments}
+      orders={orders || []}
+      payments={payments || []}
       paymentMap={paymentMap}
     />
   );

@@ -5,7 +5,7 @@ import { TrendingUp, DollarSign, CheckCircle, Gift } from "lucide-react";
 interface AnalyticsChartsProps {
   orders: any[];
   payments: any[];
-  orderStatusBreakdown: any;
+  orderStatusBreakdown: Record<string, number>;
   topProducts: any[];
   range: "7d" | "30d" | "all";
   onRangeChange: (range: "7d" | "30d" | "all") => void;
@@ -394,13 +394,12 @@ export default function AnalyticsCharts({
                         : "bg-yellow-500"
                     }`}
                     style={{
-                      width: `${((count as number) / orders.length) * 100}%`,
+                      width: `${(count / orders.length) * 100}%`,
                     }}
                   ></div>
                 </div>
                 <span className="text-sm font-semibold text-gray-600">
-                  {count} (
-                  {(((count as number) / orders.length) * 100).toFixed(0)}%)
+                  {count} ({((count / orders.length) * 100).toFixed(0)}%)
                 </span>
               </div>
             </div>

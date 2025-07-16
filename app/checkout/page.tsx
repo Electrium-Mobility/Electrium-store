@@ -33,8 +33,33 @@ export default function CheckoutPage() {
     setError(null);
 
     try {
+      // 1. Create order in database via payment API
+      const orderResponse = await fetch("/api/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderDetails: {
+            amount: total,
+            id: paymentDetails.id || `pay_${Date.now()}`,
+            method: paymentDetails.method || "unknown",
+          },
+          shippingInfo: shippingInfo,
+          cart: cart,
+        }),
+      });
+
+      if (!orderResponse.ok) {
+        const errorData = await orderResponse.json();
+        throw new Error(errorData.error || "Failed to create order");
+      }
+
+      const orderData = await orderResponse.json();
+      const orderId = orderData.orderId;
+
+      console.log("[Checkout] Order created successfully:", orderId);
+
+      // 2. Send the order confirmation email
       console.log("[Checkout] Sending order confirmation email...");
-      // 1. Send the order confirmation email and await the result
       const emailRes = await fetch("/api/send-order-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,26 +68,20 @@ export default function CheckoutPage() {
           order: {
             items: cart,
             total: total,
+            orderId: orderId,
           },
         }),
       });
 
       if (!emailRes.ok) {
-        // Optionally handle email send failure (show a warning, etc.)
         console.error("[Checkout] Order confirmation email failed to send.");
       } else {
         console.log("[Checkout] Order confirmation email sent!");
       }
 
-      // 2. Continue with your payment logic (e.g., save order, clear cart, redirect)
-      // If you have a payment API, call it here (or skip if not needed)
-      // const response = await fetch("/api/payment", ...);
-      // const data = await response.json();
-      // if (!response.ok) throw new Error(data.error || "Payment processing failed");
-
-      // 3. Only redirect after all async work is done
+      // 3. Clear cart and redirect to success page
       sessionStorage.removeItem("cart");
-      window.location.href = `/order-success/12345`;
+      window.location.href = `/order-success/${orderId}`;
     } catch (err) {
       setError(
         err instanceof Error

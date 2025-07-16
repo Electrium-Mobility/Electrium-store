@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { updateProfile } from "@/app/action/profile";
+import { updateProfileData } from "@/app/action/profile";
 
 interface ProfileFormProps {
   profile: {
@@ -27,10 +27,17 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
     setMessage(null);
 
     try {
-      const result = await updateProfile(formData);
+      const profileData = {
+        first_name: formData.get('first_name') as string,
+        last_name: formData.get('last_name') as string,
+        phone: formData.get('phone') as string,
+        address: formData.get('address') as string,
+      };
+
+      const result = await updateProfileData(profileData);
 
       if (result && "error" in result) {
-        setMessage({ type: "error", text: result.error });
+        setMessage({ type: "error", text: result.error || "An error occurred" });
       } else {
         setMessage({ type: "success", text: "Profile updated successfully!" });
       }

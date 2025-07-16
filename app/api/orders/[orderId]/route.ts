@@ -18,8 +18,8 @@ export async function GET(
     const { data: order, error } = await supabase
       .from("orders")
       .select("*")
-      .eq("id", params.orderId)
-      .eq("user_id", user.id)
+      .eq("order_id", params.orderId)
+      .eq("customer_id", user.id)
       .single();
 
     if (error) {
@@ -34,7 +34,45 @@ export async function GET(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    return NextResponse.json(order);
+    // Fetch order items
+    const { data: orderItems, error: itemsError } = await supabase
+      .from("order_items")
+      .select(`
+        *,
+        bikes (
+          name,
+          description,
+          image
+        )
+      `)
+      .eq("order_id", params.orderId);
+
+    if (itemsError) {
+      console.error("Error fetching order items:", itemsError);
+    }
+
+    // Fetch payment for this order
+    const { data: payment } = await supabase
+      .from("payments")
+      .select("payment_amount")
+      .eq("order_id", params.orderId)
+      .single();
+
+    // Combine order with items and total
+    const orderWithItems = {
+      ...order,
+      total_amount: payment?.payment_amount || 0,
+      items: orderItems?.map(item => ({
+        bike_id: item.bike_id,
+        name: item.bikes?.name || `Product ${item.bike_id}`,
+        quantity: item.quantity,
+        sell_price: item.unit_price,
+        rental_rate: item.unit_price,
+        orderType: item.order_type
+      })) || []
+    };
+
+    return NextResponse.json(orderWithItems);
   } catch (error) {
     console.error("Error in order details endpoint:", error);
     return NextResponse.json(

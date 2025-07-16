@@ -1,5 +1,45 @@
 import { useRouter } from "next/navigation";
-// ... existing code ...
+import { ListOrdered, User, Heart, CreditCard } from "lucide-react";
+
+const quickActions = [
+  {
+    id: "orders",
+    label: "View Orders",
+    href: "/dashboard/orders",
+    icon: ListOrdered,
+    bgColor: "bg-blue-100",
+    hoverColor: "hover:bg-blue-200",
+    iconColor: "text-blue-600",
+  },
+  {
+    id: "profile",
+    label: "Edit Profile",
+    href: "/dashboard/profile",
+    icon: User,
+    bgColor: "bg-green-100",
+    hoverColor: "hover:bg-green-200",
+    iconColor: "text-green-600",
+  },
+  {
+    id: "wishlist",
+    label: "View Wishlist",
+    href: "/dashboard/wishlist",
+    icon: Heart,
+    bgColor: "bg-pink-100",
+    hoverColor: "hover:bg-pink-200",
+    iconColor: "text-pink-600",
+  },
+  {
+    id: "billing",
+    label: "Billing",
+    href: "/dashboard/billing",
+    icon: CreditCard,
+    bgColor: "bg-yellow-100",
+    hoverColor: "hover:bg-yellow-200",
+    iconColor: "text-yellow-600",
+  },
+];
+
 export default function QuickActions() {
   const router = useRouter();
 

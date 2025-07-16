@@ -17,6 +17,12 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
 );
 
+// Add debugging
+console.log(
+  "Stripe publishable key:",
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ? "Present" : "Missing"
+);
+
 interface PaymentOptionsProps {
   total: number;
   onPaymentSuccess: (details: any) => void;
@@ -61,7 +67,11 @@ function CheckoutForm({
         onPaymentError(submitError.message || "Payment failed");
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         console.log("Calling onPaymentSuccess from CheckoutForm");
-        onPaymentSuccess({ status: "succeeded" });
+        onPaymentSuccess({
+          status: "succeeded",
+          id: paymentIntent.id,
+          method: "stripe",
+        });
       }
     } catch (err) {
       setErrorMessage("An unexpected error occurred");
@@ -105,16 +115,27 @@ export function PaymentOptions({
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
+    console.log("Creating payment intent for amount:", total);
+
     fetch("/api/stripe/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: total }),
     })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret))
+      .then((res) => {
+        console.log("Payment intent response status:", res.status);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Payment intent response:", data);
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        setClientSecret(data.clientSecret);
+      })
       .catch((err) => {
-        console.error("Error:", err);
-        onPaymentError("Failed to initialize payment system");
+        console.error("Payment intent error:", err);
+        onPaymentError(`Failed to initialize payment system: ${err.message}`);
       });
   }, [total, onPaymentError]);
 
@@ -159,22 +180,42 @@ export function PaymentOptions({
           </button>
         </div>
 
-        {paymentMethod === "stripe" && clientSecret && (
-          <Elements
-            stripe={stripePromise}
-            options={{
-              clientSecret,
-              appearance,
-            }}
-          >
-            <CheckoutForm
-              total={total}
-              onPaymentSuccess={onPaymentSuccess}
-              onPaymentError={onPaymentError}
-              email={email}
-            />
-          </Elements>
-        )}
+        {paymentMethod === "stripe" &&
+          clientSecret &&
+          process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY && (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                appearance,
+              }}
+            >
+              <CheckoutForm
+                total={total}
+                onPaymentSuccess={onPaymentSuccess}
+                onPaymentError={onPaymentError}
+                email={email}
+              />
+            </Elements>
+          )}
+
+        {paymentMethod === "stripe" &&
+          (!clientSecret ||
+            !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) && (
+            <div className="text-center py-8">
+              <p className="text-red-600 mb-4">
+                {!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+                  ? "Stripe is not configured. Please check your environment variables."
+                  : "Loading payment system..."}
+              </p>
+              {!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY && (
+                <p className="text-sm text-gray-500">
+                  Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in environment
+                  variables
+                </p>
+              )}
+            </div>
+          )}
 
         {paymentMethod === "paypal" && (
           <div className="text-center py-4">
@@ -207,7 +248,10 @@ export function PaymentOptions({
                 onApprove={async (data, actions) => {
                   if (!actions.order) return;
                   const details = await actions.order.capture();
-                  onPaymentSuccess(details);
+                  onPaymentSuccess({
+                    ...details,
+                    method: "paypal",
+                  });
                 }}
                 onError={(err) => {
                   onPaymentError("PayPal payment failed");

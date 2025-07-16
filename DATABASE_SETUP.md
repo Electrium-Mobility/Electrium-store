@@ -10,9 +10,9 @@ This document explains how to set up the database schema for the Electrium Store
 
 ## Database Schema Setup
 
-### 1. Create the Profiles Table
+### 1. Complete Database Schema
 
-Run the following SQL commands in your Supabase SQL Editor:
+Run the following SQL commands in your Supabase SQL Editor to create all necessary tables:
 
 ```sql
 -- Create profiles table to store user profile information

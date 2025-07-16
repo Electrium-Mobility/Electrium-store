@@ -19,12 +19,9 @@ export async function POST(request: Request) {
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .insert({
-        user_id: user.id,
-        total_amount: orderDetails.amount,
-        status: "pending",
-        shipping_address: shippingInfo,
-        payment_id: orderDetails.id,
-        items: cart,
+        customer_id: user.id,
+        order_date: new Date().toISOString(),
+        is_complete: false,
       })
       .select()
       .single();
@@ -35,6 +32,48 @@ export async function POST(request: Request) {
         { error: "Failed to create order" },
         { status: 500 }
       );
+    }
+
+    // Create order items records (if order_items table exists)
+    try {
+      for (const item of cart) {
+        const { error: itemError } = await supabase.from("order_items").insert({
+          order_id: order.order_id,
+          bike_id: item.bike_id,
+          quantity: item.quantity,
+          unit_price:
+            item.orderType === "rent" ? item.rental_rate : item.sell_price,
+          order_type: item.orderType,
+        });
+
+        if (itemError) {
+          console.error("Error creating order item:", itemError);
+          // Continue with other items even if one fails
+        }
+      }
+    } catch (error) {
+      console.log(
+        "order_items table may not exist, skipping order items creation"
+      );
+    }
+
+    // Create payment record
+    try {
+      const { error: paymentError } = await supabase.from("payments").insert({
+        order_id: order.order_id,
+        payment_amount: orderDetails.amount,
+        payment_date: new Date().toISOString(),
+        payment_method: orderDetails.method || "unknown",
+        status: "completed",
+      });
+
+      if (paymentError) {
+        console.error("Error creating payment record:", paymentError);
+        // Don't fail the order creation if payment record fails
+      }
+    } catch (error) {
+      console.error("Error creating payment record:", error);
+      // Don't fail the order creation if payment record fails
     }
 
     // Update inventory
@@ -77,7 +116,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      orderId: order.id,
+      orderId: order.order_id,
     });
   } catch (error) {
     console.error("Payment processing error:", error);

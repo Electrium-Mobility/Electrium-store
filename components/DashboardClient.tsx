@@ -11,12 +11,19 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+interface DashboardClientProps {
+  userName: string;
+  orders: any[];
+  payments: any[];
+  paymentMap: Map<string, number>;
+}
+
 export default function DashboardClient({
   userName,
   orders,
   payments,
   paymentMap,
-}) {
+}: DashboardClientProps) {
   const [range, setRange] = useState(7);
 
   // Calculate stats
@@ -34,7 +41,7 @@ export default function DashboardClient({
   const recentOrders = orders?.slice(0, 5) || [];
 
   // Generate chart data (last N days)
-  const chartData = [];
+  const chartData: { date: string; orders: number }[] = [];
   const today = new Date();
   for (let i = range - 1; i >= 0; i--) {
     const date = new Date(today);
@@ -44,6 +51,59 @@ export default function DashboardClient({
       orders?.filter((order) => order.order_date?.startsWith(dateStr)).length ||
       0;
     chartData.push({ date: dateStr, orders: dayOrders });
+  }
+
+  // Calculate chart dimensions and scaling
+  const maxOrders = Math.max(...chartData.map((p) => p.orders), 1);
+  const chartWidth = 400;
+  const chartHeight = 240; // Increased height for better label spacing
+  const padding = 40;
+  const plotWidth = chartWidth - 2 * padding;
+  const plotHeight = chartHeight - 2 * padding;
+
+  // Generate x-axis labels based on range
+  const getXAxisLabels = () => {
+    if (range === 7) {
+      // Show every day for 7 days
+      return chartData.map((point, index) => ({
+        x: padding + (index / (chartData.length - 1)) * plotWidth,
+        label: new Date(point.date).toLocaleDateString("en-US", {
+          weekday: "short",
+        }),
+        show: true,
+      }));
+    } else if (range === 30) {
+      // Show every 5th day for 30 days
+      return chartData.map((point, index) => ({
+        x: padding + (index / (chartData.length - 1)) * plotWidth,
+        label: new Date(point.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        show: index % 5 === 0 || index === chartData.length - 1,
+      }));
+    } else {
+      // Show every 10th day for 90 days
+      return chartData.map((point, index) => ({
+        x: padding + (index / (chartData.length - 1)) * plotWidth,
+        label: new Date(point.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        show: index % 10 === 0 || index === chartData.length - 1,
+      }));
+    }
+  };
+
+  const xAxisLabels = getXAxisLabels();
+
+  // Generate y-axis labels (simplified)
+  const yAxisLabels = [];
+  const ySteps = 3; // Reduced from 5 to 3 for cleaner look
+  for (let i = 0; i <= ySteps; i++) {
+    const value = Math.round((maxOrders * i) / ySteps);
+    const y = chartHeight - padding - (i / ySteps) * plotHeight;
+    yAxisLabels.push({ y, value });
   }
 
   const statusBreakdown = {
@@ -174,18 +234,39 @@ export default function DashboardClient({
                 </button>
               </div>
             </div>
-            <div className="relative h-64">
-              <svg className="w-full h-full" viewBox="0 0 400 200">
+            <div className="relative h-80">
+              <svg
+                className="w-full h-full"
+                viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+              >
+                {/* Background */}
                 <rect width="100%" height="100%" fill="#fff" />
+
+                {/* Grid lines */}
+                {yAxisLabels.map((label, index) => (
+                  <g key={index}>
+                    <line
+                      x1={padding}
+                      y1={label.y}
+                      x2={chartWidth - padding}
+                      y2={label.y}
+                      stroke="#e5e7eb"
+                      strokeWidth="1"
+                      opacity="0.5"
+                    />
+                  </g>
+                ))}
+
+                {/* Chart line */}
                 <path
                   d={chartData
                     .map((point, index) => {
-                      const x = (index / (chartData.length - 1)) * 360 + 20;
+                      const x =
+                        padding + (index / (chartData.length - 1)) * plotWidth;
                       const y =
-                        180 -
-                        (point.orders /
-                          Math.max(...chartData.map((p) => p.orders), 1)) *
-                          140;
+                        chartHeight -
+                        padding -
+                        (point.orders / maxOrders) * plotHeight;
                       return `${index === 0 ? "M" : "L"} ${x} ${y}`;
                     })
                     .join(" ")}
@@ -194,56 +275,81 @@ export default function DashboardClient({
                   strokeWidth="3"
                   className="drop-shadow-sm"
                 />
+
+                {/* Chart area fill */}
                 <path
                   d={`${chartData
                     .map((point, index) => {
-                      const x = (index / (chartData.length - 1)) * 360 + 20;
+                      const x =
+                        padding + (index / (chartData.length - 1)) * plotWidth;
                       const y =
-                        180 -
-                        (point.orders /
-                          Math.max(...chartData.map((p) => p.orders), 1)) *
-                          140;
+                        chartHeight -
+                        padding -
+                        (point.orders / maxOrders) * plotHeight;
                       return `${index === 0 ? "M" : "L"} ${x} ${y}`;
                     })
                     .join(
                       " "
-                    )} L ${((chartData.length - 1) / (chartData.length - 1)) * 360 + 20} 180 L 20 180 Z`}
+                    )} L ${chartWidth - padding} ${chartHeight - padding} L ${padding} ${chartHeight - padding} Z`}
                   fill="#3b82f6"
                   opacity="0.08"
                 />
+
+                {/* Data points */}
                 {chartData.map((point, index) => {
                   if (point.orders === 0) return null;
-                  const x = (index / (chartData.length - 1)) * 360 + 20;
+                  const x =
+                    padding + (index / (chartData.length - 1)) * plotWidth;
                   const y =
-                    180 -
-                    (point.orders /
-                      Math.max(...chartData.map((p) => p.orders), 1)) *
-                      140;
+                    chartHeight -
+                    padding -
+                    (point.orders / maxOrders) * plotHeight;
                   return (
                     <g key={index}>
                       <circle
                         cx={x}
                         cy={y}
-                        r="5"
+                        r="4"
                         fill="#fff"
                         stroke="#3b82f6"
                         strokeWidth="2"
                         className="cursor-pointer"
                       />
-                      <title>{`${point.date}: ${point.orders} orders`}</title>
+                      <title>{`${new Date(point.date).toLocaleDateString()}: ${point.orders} orders`}</title>
                     </g>
                   );
                 })}
-              </svg>
-              <div className="flex justify-between mt-2 text-xs text-gray-500">
-                {chartData.map((point, index) => (
-                  <span key={index} className="flex-1 text-center">
-                    {new Date(point.date).toLocaleDateString("en-US", {
-                      weekday: "short",
-                    })}
-                  </span>
+
+                {/* Y-axis labels */}
+                {yAxisLabels.map((label, index) => (
+                  <text
+                    key={index}
+                    x={padding - 8}
+                    y={label.y + 4}
+                    textAnchor="end"
+                    fontSize="12"
+                    fill="#6b7280"
+                  >
+                    {label.value}
+                  </text>
                 ))}
-              </div>
+
+                {/* X-axis labels */}
+                {xAxisLabels
+                  .filter((label) => label.show)
+                  .map((label, index) => (
+                    <text
+                      key={index}
+                      x={label.x}
+                      y={chartHeight - padding + 20}
+                      textAnchor="middle"
+                      fontSize="11"
+                      fill="#6b7280"
+                    >
+                      {label.label}
+                    </text>
+                  ))}
+              </svg>
             </div>
           </div>
 
@@ -354,7 +460,7 @@ export default function DashboardClient({
             </h3>
             <div className="space-y-3">
               <Link
-                href="/items"
+                href="/"
                 className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="p-2 bg-blue-100 rounded-lg">

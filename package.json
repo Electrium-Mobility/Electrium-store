@@ -18,6 +18,7 @@
     "countries-list": "^3.1.1",
     "geist": "^1.2.1",
     "install": "^0.13.0",
+    "lucide-react": "^0.525.0",
     "next": "latest",
     "nodemailer": "^7.0.3",
     "npm": "^10.8.2",
