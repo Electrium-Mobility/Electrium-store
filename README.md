@@ -58,14 +58,3 @@ The application requires the following environment variables to be set in your `
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
 - `RESEND_API_KEY` - Your Resend API key for sending emails
 
-### For Production Deployment:
-
-When deploying to platforms like Netlify, Vercel, or Railway, you'll need to add these same environment variables to your deployment platform's settings.
-
-**Note**: The code is designed to handle missing environment variables gracefully during build time, so the application will compile successfully even without these variables, but features like payments and emails won't work until the variables are properly configured.
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
