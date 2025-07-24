@@ -1,166 +1,231 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { FaAngleLeft } from "react-icons/fa";
-
-type Bike = {
-    bike_id: number;
-    name: string;
-    image: string | null;
-    sell_price: number;
-    quantity: number
-};
+import { CheckoutBike } from "@/utils/getBike";
+import useSessionStorage from "@/utils/useSessionStorage";
 
 // Display products in shopping cart
-function Product({ id, name, image, price, quantity, subtotal, handleQuantityChange, handleDelete }: {
-    id: number,
-    name: string,
-    image: string | null,
-    price: number,
-    quantity: number,
-    subtotal: number,
-    handleQuantityChange: (id: number, newQuantity: number) => void,
-    handleDelete: (id: number) => void
+function Product({
+  bike,
+  handleQuantityChange,
+  handleDelete,
+}: {
+  bike: CheckoutBike;
+  handleQuantityChange: (id: number, newQuantity: number) => void;
+  handleDelete: (id: number) => void;
 }) {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuantity = parseInt(event.target.value, 10);
+    handleQuantityChange(bike.bike_id, newQuantity);
+  };
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newQuantity = parseInt(event.target.value, 10);
-        handleQuantityChange(id, newQuantity);
-    };
+  const handleOnClick = () => {
+    handleDelete(bike.bike_id);
+  };
 
-    const handleOnClick = () => {
-        handleDelete(id);
-    }
+  const subtotal =
+    bike.orderType === "rent"
+      ? bike.rental_rate * bike.quantity
+      : bike.sell_price * bike.quantity;
 
-    return (
-        <div className="flex align-center w-full h-fit md:w-[750px] md:h-64 bg-gray-100 mb-10 p-8 rounded-2xl shadow-md">
-            <div className="flex min-w-fit items-center">
-                <Image
-                    src={image || '/img/placeholder.png'}
-                    alt={name}
-                    unoptimized
-                    width={180}
-                    height={180}
-                    style={{ objectFit: "contain" }}
-                    className="rounded-lg" />
-            </div>
-            <div className="flex flex-col w-full ml-14">
-                <h3 className="font-bold mb-12 text-green-700 ">{name}</h3>
-                <div className="flex flex-col md:flex-row w-full justify-between">
-                    <div className="flex flex-col mb-8">
-                        <p className="mb-3">Price</p>
-                        <p>CA${price.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
-                    </div>
-                    <div className="flex flex-col mb-8">
-                        <p>Quantity</p>
-                        <div className="flex flex-row items-center gap-3 mt-1">
-                            <p>X</p>
-                            <input type="number"
-                                defaultValue={quantity} min={1}
-                                className="border rounded-lg p-2 w-14 text-center"
-                                onChange={handleInputChange} />
-                        </div>
-                    </div>
-                    <div className="flex flex-col mr-6 mb-8">
-                        <p className="mb-3">Subtotal</p>
-                        <p>CA${subtotal.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
-                    </div>
-                </div>
-                <div className="flex w-full justify-end">
-                    <button className="underline text-gray-400" onClick={handleOnClick}>Delete</button>
-                </div>
-            </div>
+  return (
+    <div className="flex w-full md:w-[750px] bg-gray-100 mb-8 p-6 rounded-2xl shadow-md items-center">
+      {/* Product Image */}
+      <div className="flex-shrink-0 mr-6">
+        <Image
+          src={bike.image || "/img/placeholder.png"}
+          alt={bike.name}
+          unoptimized
+          width={100}
+          height={100}
+          style={{ objectFit: "contain" }}
+          className="rounded-lg bg-white border border-gray-200 p-2"
+        />
+      </div>
+      {/* Product Details */}
+      <div className="flex flex-1 flex-col md:flex-row md:items-center w-full justify-between gap-4">
+        {/* Name */}
+        <div className="min-w-[120px] flex-1">
+          <p className="font-bold text-lg text-green-700 mb-1">{bike.name}</p>
         </div>
-    )
+        {/* Price */}
+        <div className="min-w-[100px] text-gray-700 text-center">
+          <p className="text-sm font-semibold mb-1">Price</p>
+          <p>
+            {bike.orderType === "rent"
+              ? `CA $${bike.rental_rate.toFixed(2)}/hour`
+              : `CA $${bike.sell_price.toFixed(2)}`}
+          </p>
+        </div>
+        {/* Quantity */}
+        <div className="min-w-[100px] text-center">
+          <p className="text-sm font-semibold mb-1">Quantity</p>
+          <input
+            type="number"
+            value={bike.quantity}
+            min={1}
+            max={bike.amount_stocked}
+            className="border rounded-lg p-2 w-16 text-center"
+            onChange={handleInputChange}
+          />
+        </div>
+        {/* Subtotal */}
+        <div className="min-w-[100px] text-center">
+          <p className="text-sm font-semibold mb-1">Subtotal</p>
+          <p>CA${subtotal.toFixed(2)}</p>
+        </div>
+        {/* Delete Button */}
+        <div className="min-w-[80px] text-center">
+          <button className="text-red-500 underline" onClick={handleOnClick}>
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ShoppingCartPage() {
-    // Get this from database once set up (user is associated with a list of products that they have added to the cart?)
-    const initialProducts: Bike[] = [{ bike_id: 0, name: "Volter Electric Bike", image: "/img/bike-display.png", sell_price: 9999, quantity: 1 },
-    { bike_id: 1, name: "VoltSkate Electric Skateboard", image: "/img/skateboard-display.png", sell_price: 1111, quantity: 1 }];
+  const cartText = useSessionStorage("cart");
+  const [cart, setCart] = useState<CheckoutBike[]>([]);
 
+  useEffect(() => {
+    if (cartText) {
+      setCart(JSON.parse(cartText));
+    }
+  }, [cartText]);
 
-    const [products, setProducts] = useState(initialProducts);
-
-    const subtotal = products.reduce((sum, bike) => {
-        return sum + (bike.sell_price * bike.quantity);
-    }, 0);
-
-    let shipping = 1; // arbitrary number for now
-    let total = subtotal + shipping;
-
-    const handleQuantityChange = (id: number, newQuantity: number) => {
-        const updatedProducts = products.map(product => {
-            if (product.bike_id === id) {
-                return { ...product, quantity: newQuantity };
-            }
-            return product;
-        });
-        setProducts(updatedProducts);
-    };
-
-    const handleDelete = (id: number) => {
-        const updatedProducts = products.filter(product => product.bike_id !== id);
-        setProducts(updatedProducts);
-    };
-
+  const subtotal = cart.reduce((sum, bike) => {
     return (
-        <div className="flex flex-col items-center min-h-screen">
-            <main className="w-full p-16">
-                <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-green-600">
-                    Your Shopping Cart
-                </h1>
-                <div className="flex flex-col md:flex-row pb-8 justify-center">
-                    <div className="flex flex-col md:mr-10">
-                        {products.map((bike) => (
-                            <Product
-                                key={bike.bike_id}
-                                id={bike.bike_id}
-                                name={bike.name}
-                                image={bike.image}
-                                price={bike.sell_price}
-                                quantity={bike.quantity}
-                                subtotal={bike.sell_price * bike.quantity}
-                                handleQuantityChange={handleQuantityChange}
-                                handleDelete={handleDelete}
-                            />
-                        ))}
+      sum +
+      (bike.orderType === "rent"
+        ? bike.rental_rate * bike.quantity
+        : bike.sell_price * bike.quantity)
+    );
+  }, 0);
 
-                        <Link href="/" className="bg-green-700 text-white flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-green-600">
-                            <FaAngleLeft size={24} className="text-green-800" />
-                            Continue Shopping
-                        </Link>
-                    </div>
+  let shipping = 10; // Fixed shipping cost for now
+  let total = subtotal + shipping;
 
-                    <div className="w-full min-w-80 md:w-[400px] bg-gray-100 p-8 rounded-2xl border">
-                        <h2 className="font-bold mb-6 text-lg">Cart Summary</h2>
-                        <p className="text-gray-400 mb-6">Shipping and tax are determined based on your selected option.</p>
-                        <div className="flex mb-6 justify-between text-gray-400">
-                            <p>Subtotal</p>
-                            <p>CA${subtotal.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
-                        </div>
-                        <div className="flex mb-6 justify-between text-gray-400">
-                            <p>Shipping</p>
-                            <p>CA${shipping.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
-                        </div>
-                        <hr className="border-black" />
-                        <div className="flex my-6 justify-between font-bold text-green-700">
-                            <h3>Order Total</h3>
-                            <h3>CA${total.toLocaleString("en", { minimumFractionDigits: 2 })}</h3>
-                        </div>
+  const handleQuantityChange = (id: number, newQuantity: number) => {
+    const updatedCart = cart.map((item) => {
+      if (item.bike_id === id) {
+        return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+    setCart(updatedCart);
+    sessionStorage.setItem("cart", JSON.stringify(updatedCart));
 
-                        <Link href="/checkout">
-                            <button className="bg-green-700 text-white w-full h-11 mb-10 rounded-2xl hover:bg-green-600">Secure Checkout</button>
-                        </Link>
-                        <h2 className="font-bold mb-4 text-lg">Discount</h2>
-                        <p className="text-gray-400 mb-3">Enter code for discount.</p>
-                        <input type="text" placeholder="Enter code" className="border rounded-md p-2 mb-6 w-full" />
-                        <button className="bg-green-700 text-white w-full h-11 rounded-2xl hover:bg-green-600">Apply</button>
-                    </div>
-                </div>
-            </main>
+    // Dispatch custom event for same-window updates
+    window.dispatchEvent(
+      new CustomEvent("sessionStorageChange", {
+        detail: { key: "cart", value: JSON.stringify(updatedCart) },
+      })
+    );
+  };
+
+  const handleDelete = (id: number) => {
+    const updatedCart = cart.filter((item) => item.bike_id !== id);
+    setCart(updatedCart);
+    sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    // Dispatch custom event for same-window updates
+    window.dispatchEvent(
+      new CustomEvent("sessionStorageChange", {
+        detail: { key: "cart", value: JSON.stringify(updatedCart) },
+      })
+    );
+  };
+
+  if (cart.length === 0) {
+    return (
+      <div className="flex flex-col items-center min-h-screen">
+        <main className="w-full p-16">
+          <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-green-600">
+            Your Shopping Cart
+          </h1>
+          <div className="text-center">
+            <p className="text-gray-600 mb-8">Your cart is empty</p>
+            <Link
+              href="/"
+              className="bg-green-700 text-white flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-green-600 mx-auto"
+            >
+              <FaAngleLeft size={24} className="text-green-800" />
+              Continue Shopping
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-center min-h-screen">
+      <main className="w-full p-16">
+        <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-green-600">
+          Your Shopping Cart
+        </h1>
+        <div className="flex flex-col md:flex-row pb-8 justify-center">
+          <div className="flex flex-col md:mr-10">
+            {cart.map((bike) => (
+              <Product
+                key={bike.bike_id}
+                bike={bike}
+                handleQuantityChange={handleQuantityChange}
+                handleDelete={handleDelete}
+              />
+            ))}
+
+            <Link
+              href="/"
+              className="bg-green-700 text-white flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-green-600"
+            >
+              <FaAngleLeft size={24} className="text-green-800" />
+              Continue Shopping
+            </Link>
+          </div>
+
+          <div className="bg-white p-8 rounded-lg shadow-md h-fit">
+            <h2 className="font-bold mb-6 text-lg">Cart Summary</h2>
+            <p className="text-gray-400 mb-6">
+              Shipping and tax are determined based on your selected option.
+            </p>
+            <div className="flex mb-6 justify-between text-gray-400">
+              <p>Subtotal</p>
+              <p>CA${subtotal.toFixed(2)}</p>
+            </div>
+            <div className="flex mb-6 justify-between text-gray-400">
+              <p>Shipping</p>
+              <p>CA${shipping.toFixed(2)}</p>
+            </div>
+            <hr className="border-black" />
+            <div className="flex my-6 justify-between font-bold text-green-700">
+              <h3>Order Total</h3>
+              <h3>CA${total.toFixed(2)}</h3>
+            </div>
+
+            <Link href="/checkout">
+              <button className="bg-green-700 text-white w-full h-11 mb-10 rounded-2xl hover:bg-green-600">
+                Secure Checkout
+              </button>
+            </Link>
+            <h2 className="font-bold mb-4 text-lg">Discount</h2>
+            <p className="text-gray-400 mb-3">Enter code for discount.</p>
+            <input
+              type="text"
+              placeholder="Enter code"
+              className="border rounded-md p-2 mb-6 w-full"
+            />
+            <button className="bg-green-700 text-white w-full h-11 rounded-2xl hover:bg-green-600">
+              Apply
+            </button>
+          </div>
         </div>
-    )
+      </main>
+    </div>
+  );
 }

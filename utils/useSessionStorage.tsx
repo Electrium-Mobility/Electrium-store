@@ -1,16 +1,46 @@
 import { useState, useEffect } from "react";
 
 const useSessionStorage = (name: string) => {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState("");
 
   useEffect(() => {
-    let val = sessionStorage.getItem(name)
+    // Initial value
+    const val = sessionStorage.getItem(name);
     if (val) {
-        setValue(val)
+      setValue(val);
     }
-  }, [])
 
-  return value
-}
+    // Listen for changes
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === name) {
+        setValue(e.newValue || "");
+      }
+    };
 
-export default useSessionStorage
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [name]);
+
+  // Custom event for same-window updates
+  useEffect(() => {
+    const handleCustomStorageChange = (e: CustomEvent) => {
+      if (e.detail.key === name) {
+        setValue(e.detail.value || "");
+      }
+    };
+
+    window.addEventListener(
+      "sessionStorageChange",
+      handleCustomStorageChange as EventListener
+    );
+    return () =>
+      window.removeEventListener(
+        "sessionStorageChange",
+        handleCustomStorageChange as EventListener
+      );
+  }, [name]);
+
+  return value;
+};
+
+export default useSessionStorage;
