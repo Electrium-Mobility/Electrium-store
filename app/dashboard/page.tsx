@@ -52,10 +52,25 @@ export default async function DashboardPage() {
     .select("order_id, payment_amount")
     .in("order_id", orderIds);
 
+  // Get order items for all orders
+  const { data: orderItems } = await supabase
+    .from("order_items")
+    .select("order_id, order_type")
+    .in("order_id", orderIds);
+
   // Create a map of order_id to payment amount
   const paymentMap = new Map();
   payments?.forEach((payment) => {
     paymentMap.set(payment.order_id, payment.payment_amount);
+  });
+
+  // Create a map of order_id to order items
+  const orderItemsMap = new Map();
+  orderItems?.forEach((item) => {
+    if (!orderItemsMap.has(item.order_id)) {
+      orderItemsMap.set(item.order_id, []);
+    }
+    orderItemsMap.get(item.order_id).push(item);
   });
 
   return (
@@ -64,6 +79,7 @@ export default async function DashboardPage() {
       orders={orders || []}
       payments={payments || []}
       paymentMap={paymentMap}
+      orderItemsMap={orderItemsMap}
     />
   );
 }
