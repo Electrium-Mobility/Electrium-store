@@ -30,8 +30,8 @@ export async function signup(formData: FormData) {
       data: {
         first_name: formData.get("first_name") as string,
         last_name: formData.get("last_name") as string,
-      }
-    }
+      },
+    },
   };
 
   const { error } = await supabase.auth.signUp(data);
@@ -41,7 +41,9 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  return redirect(`/email-verification?email=${encodeURIComponent(data.email)}`);
+  return redirect(
+    `/email-verification?email=${encodeURIComponent(data.email)}`
+  );
 }
 
 export async function login(formData: FormData): Promise<boolean> {
@@ -59,7 +61,7 @@ export async function login(formData: FormData): Promise<boolean> {
   }
 
   revalidatePath("/", "layout");
-  return redirect("/checkout");
+  return true; // Return true to indicate successful login
 }
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -69,30 +71,30 @@ export const forgotPasswordAction = async (formData: FormData) => {
   const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
-      return encodedRedirect("error", "/forgot-password", "Email is required");
+    return encodedRedirect("error", "/forgot-password", "Email is required");
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
+    redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
   });
 
   if (error) {
-      console.error(error.message);
-      return encodedRedirect(
-          "error",
-          "/forgot-password",
-          "Could not reset password",
-      );
+    console.error(error.message);
+    return encodedRedirect(
+      "error",
+      "/forgot-password",
+      "Could not reset password"
+    );
   }
 
   if (callbackUrl) {
-      return redirect(callbackUrl);
+    return redirect(callbackUrl);
   }
 
   return encodedRedirect(
-      "success",
-      "/forgot-password",
-      "Check your email for a link to reset your password.",
+    "success",
+    "/forgot-password",
+    "Check your email for a link to reset your password."
   );
 };
 
@@ -103,31 +105,27 @@ export const resetPasswordAction = async (formData: FormData) => {
   const confirmPassword = formData.get("confirmPassword") as string;
 
   if (!password || !confirmPassword) {
-      encodedRedirect(
-          "error",
-          "/reset-password",
-          "Password and confirm password are required",
-      );
+    encodedRedirect(
+      "error",
+      "/reset-password",
+      "Password and confirm password are required"
+    );
   }
 
   if (password !== confirmPassword) {
-    encodedRedirect(
-          "error",
-          "/reset-password",
-          "Passwords do not match",
-      );
+    encodedRedirect("error", "/reset-password", "Passwords do not match");
   }
 
   const { error } = await supabase.auth.updateUser({
-      password: password,
+    password: password,
   });
 
   if (error) {
-      encodedRedirect(
-          "error",
-          "/reset-password",
-          "Password update failed (Code: " + error.code?.toString() + ")",
-      );
+    encodedRedirect(
+      "error",
+      "/reset-password",
+      "Password update failed (Code: " + error.code?.toString() + ")"
+    );
   }
 
   encodedRedirect("success", "/reset-password", "Password updated");

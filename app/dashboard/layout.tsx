@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { LayoutDashboard, User, ShoppingCart, Settings } from "lucide-react";
+import { LayoutDashboard, User, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -18,7 +18,6 @@ export default function DashboardLayout({
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { name: "My Orders", href: "/dashboard/orders", icon: ShoppingCart },
     { name: "Profile", href: "/dashboard/profile", icon: User },
-    { name: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ShoppingCart,
   DollarSign,
@@ -7,7 +7,7 @@ import {
   Package,
   Eye,
   Plus,
-  Settings,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -16,6 +16,7 @@ interface DashboardClientProps {
   orders: any[];
   payments: any[];
   paymentMap: Map<string, number>;
+  orderItemsMap: Map<string, any[]>;
 }
 
 export default function DashboardClient({
@@ -23,8 +24,14 @@ export default function DashboardClient({
   orders,
   payments,
   paymentMap,
+  orderItemsMap,
 }: DashboardClientProps) {
   const [range, setRange] = useState(7);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Calculate stats
   const totalOrders = orders?.length || 0;
@@ -35,9 +42,17 @@ export default function DashboardClient({
     ) || 0;
   const completedOrders =
     orders?.filter((order) => order.is_complete).length || 0;
+
+  // Calculate active rentals - only count orders that have rental items and are not complete
   const activeRentals =
-    orders?.filter((order) => !order.is_complete).length || 0;
-  const avgDeliveryTime = totalOrders > 0 ? "2.4 days" : "0 days";
+    orders?.filter((order) => {
+      if (order.is_complete) return false; // Order must not be complete
+
+      const orderItems = orderItemsMap.get(order.order_id) || [];
+      // Check if any item in this order is a rental
+      return orderItems.some((item) => item.order_type === "rent");
+    }).length || 0;
+
   const recentOrders = orders?.slice(0, 5) || [];
 
   // Generate chart data (last N days)
@@ -106,6 +121,19 @@ export default function DashboardClient({
     yAxisLabels.push({ y, value });
   }
 
+  // Calculate order status breakdown
+  const ordersWithRentals =
+    orders?.filter((order) => {
+      const orderItems = orderItemsMap.get(order.order_id) || [];
+      return orderItems.some((item) => item.order_type === "rent");
+    }).length || 0;
+
+  const ordersWithPurchases =
+    orders?.filter((order) => {
+      const orderItems = orderItemsMap.get(order.order_id) || [];
+      return orderItems.some((item) => item.order_type === "buy");
+    }).length || 0;
+
   const statusBreakdown = {
     completed: completedOrders,
     pending: activeRentals,
@@ -124,83 +152,68 @@ export default function DashboardClient({
             Here's what's happening with your account today.
           </p>
         </div>
-        <Link
-          href="/dashboard/settings"
-          className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm shadow-sm"
-        >
-          <Settings className="h-4 w-4 mr-2" /> Settings
-        </Link>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Link
-          href="/dashboard/orders"
-          className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
-          style={{ minHeight: 120 }}
-        >
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm font-medium text-gray-500">
-              Total Orders
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {mounted && (
+          <Link
+            href="/dashboard/orders"
+            className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
+            style={{ minHeight: 120 }}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm font-medium text-gray-500">
+                Total Orders
+              </span>
+              <span className="p-2 bg-blue-100 rounded-lg">
+                <ShoppingCart className="h-6 w-6 text-blue-600" />
+              </span>
+            </div>
+            <span className="text-3xl font-bold text-gray-900 mt-2">
+              {totalOrders}
             </span>
-            <span className="p-2 bg-blue-100 rounded-lg">
-              <ShoppingCart className="h-6 w-6 text-blue-600" />
+          </Link>
+        )}
+        {mounted && (
+          <Link
+            href="/dashboard/orders"
+            className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
+            style={{ minHeight: 120 }}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm font-medium text-gray-500">
+                Money Spent
+              </span>
+              <span className="p-2 bg-green-100 rounded-lg">
+                <DollarSign className="h-6 w-6 text-green-600" />
+              </span>
+            </div>
+            <span className="text-3xl font-bold text-gray-900 mt-2">
+              ${totalSpent.toFixed(2)}
             </span>
-          </div>
-          <span className="text-3xl font-bold text-gray-900 mt-2">
-            {totalOrders}
-          </span>
-        </Link>
-        <Link
-          href="/dashboard/orders"
-          className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
-          style={{ minHeight: 120 }}
-        >
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm font-medium text-gray-500">
-              Money Spent
+          </Link>
+        )}
+
+        {mounted && (
+          <Link
+            href="/dashboard/orders"
+            className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
+            style={{ minHeight: 120 }}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm font-medium text-gray-500">
+                Active Rentals
+              </span>
+              <span className="p-2 bg-orange-100 rounded-lg">
+                <Package className="h-6 w-6 text-orange-600" />
+              </span>
+            </div>
+            <span className="text-3xl font-bold text-gray-900 mt-2">
+              {activeRentals}
             </span>
-            <span className="p-2 bg-green-100 rounded-lg">
-              <DollarSign className="h-6 w-6 text-green-600" />
-            </span>
-          </div>
-          <span className="text-3xl font-bold text-gray-900 mt-2">
-            ${totalSpent.toFixed(2)}
-          </span>
-        </Link>
-        <div
-          className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between"
-          style={{ minHeight: 120 }}
-        >
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm font-medium text-gray-500">
-              Avg. Delivery Time
-            </span>
-            <span className="p-2 bg-purple-100 rounded-lg">
-              <Clock className="h-6 w-6 text-purple-600" />
-            </span>
-          </div>
-          <span className="text-3xl font-bold text-gray-900 mt-2">
-            {avgDeliveryTime}
-          </span>
-        </div>
-        <Link
-          href="/dashboard/orders"
-          className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
-          style={{ minHeight: 120 }}
-        >
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm font-medium text-gray-500">
-              Active Rentals
-            </span>
-            <span className="p-2 bg-orange-100 rounded-lg">
-              <Package className="h-6 w-6 text-orange-600" />
-            </span>
-          </div>
-          <span className="text-3xl font-bold text-gray-900 mt-2">
-            {activeRentals}
-          </span>
-        </Link>
+          </Link>
+        )}
       </div>
 
       {/* Main Content */}
@@ -433,11 +446,29 @@ export default function DashboardClient({
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Pending</span>
+                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Active Rentals</span>
                 </div>
                 <span className="text-sm font-medium text-gray-900">
                   {statusBreakdown.pending}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Rental Orders</span>
+                </div>
+                <span className="text-sm font-medium text-gray-900">
+                  {ordersWithRentals}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Purchase Orders</span>
+                </div>
+                <span className="text-sm font-medium text-gray-900">
+                  {ordersWithPurchases}
                 </span>
               </div>
               <div className="pt-3 border-t border-gray-200">
@@ -459,39 +490,45 @@ export default function DashboardClient({
               Quick Actions
             </h3>
             <div className="space-y-3">
-              <Link
-                href="/"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Plus className="h-4 w-4 text-blue-600" />
-                </div>
-                <span className="text-sm font-medium text-gray-700">
-                  Browse Products
-                </span>
-              </Link>
-              <Link
-                href="/dashboard/orders"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Eye className="h-4 w-4 text-green-600" />
-                </div>
-                <span className="text-sm font-medium text-gray-700">
-                  View Orders
-                </span>
-              </Link>
-              <Link
-                href="/dashboard/profile"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Settings className="h-4 w-4 text-purple-600" />
-                </div>
-                <span className="text-sm font-medium text-gray-700">
-                  Edit Profile
-                </span>
-              </Link>
+              {mounted && (
+                <Link
+                  href="/"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Plus className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">
+                    Browse Products
+                  </span>
+                </Link>
+              )}
+              {mounted && (
+                <Link
+                  href="/dashboard/orders"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Eye className="h-4 w-4 text-green-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">
+                    View Orders
+                  </span>
+                </Link>
+              )}
+              {mounted && (
+                <Link
+                  href="/dashboard/profile"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <User className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">
+                    Edit Profile
+                  </span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
