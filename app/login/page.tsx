@@ -26,9 +26,8 @@ export default function LoginPage() {
       if (!success) {
         setUnsuccessfulLogin(true);
       } else {
-        // Use Next.js router for proper navigation
-        router.push("/");
-        router.refresh(); // Refresh to update auth state
+        // Simple redirect that works
+        window.location.href = "/";
       }
     } catch (error) {
       console.error("Login error:", error);

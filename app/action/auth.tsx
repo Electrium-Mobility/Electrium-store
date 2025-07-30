@@ -62,30 +62,6 @@ export async function checkUserExists(email: string): Promise<boolean> {
 }
 
 export async function login(formData: FormData): Promise<boolean> {
-  // Check if environment variables are loaded
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  ) {
-    console.error("Missing Supabase environment variables");
-    console.error("URL exists:", !!process.env.NEXT_PUBLIC_SUPABASE_URL);
-    console.error(
-      "ANON_KEY exists:",
-      !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    );
-    return false;
-  }
-
-  // Debug: Show which Supabase project we're connecting to
-  console.log(
-    "Connecting to Supabase URL:",
-    process.env.NEXT_PUBLIC_SUPABASE_URL
-  );
-  console.log(
-    "Using anon key starting with:",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + "..."
-  );
-
   const supabase = await createClient();
 
   const data = {
@@ -94,28 +70,11 @@ export async function login(formData: FormData): Promise<boolean> {
   };
 
   console.log("Login attempt for:", data.email);
-  console.log("Email length:", data.email.length);
-  console.log("Password length:", data.password.length);
-  console.log("Email contains @:", data.email.includes("@"));
 
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
     console.error("Login error:", error.message);
-    console.error("Error code:", error.status);
-    console.error("Full error object:", error);
-
-    // Provide more specific error messages
-    if (error.message === "Invalid login credentials") {
-      console.error("Possible causes:");
-      console.error("1. User account doesn't exist");
-      console.error("2. Password is incorrect");
-      console.error(
-        "3. Email is not verified (if email verification is enabled)"
-      );
-      console.error("4. Wrong Supabase project (check URL above)");
-    }
-
     return false; // Display "invalid email or password" message in the UI
   }
 

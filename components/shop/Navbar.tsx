@@ -55,7 +55,6 @@ export default function Navbar() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log("Navbar: User fetched:", user?.email);
       setUser(user);
     };
 
@@ -64,7 +63,6 @@ export default function Navbar() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Navbar: Auth state changed:", event, session?.user?.email);
       setUser(session?.user ?? null);
     });
 
