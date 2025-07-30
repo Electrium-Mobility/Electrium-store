@@ -49,8 +49,8 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-emerald-50 via-white to-white shadow-xl flex flex-col rounded-r-3xl m-2">
+      {/* Sidebar - Hidden on mobile, visible on desktop */}
+      <aside className="hidden lg:block w-64 bg-gradient-to-b from-emerald-50 via-white to-white shadow-xl flex flex-col rounded-r-3xl m-2">
         <div className="flex flex-col items-center p-8 border-b">
           <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mb-3 shadow-md">
             {/* User avatar placeholder */}
@@ -83,10 +83,55 @@ export default function DashboardLayout({
           &copy; {new Date().getFullYear()} Electrium Mobility
         </div>
       </aside>
-      {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="p-8">{children}</div>
-      </main>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col w-full lg:w-auto">
+        {/* Mobile Navigation Bar - Only visible on mobile, truly sticky */}
+        <div className="lg:hidden bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                <span className="text-lg font-bold text-emerald-600">
+                  {userInitials}
+                </span>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-gray-800">My Account</h1>
+                <p className="text-sm text-gray-500">Dashboard</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Tabs */}
+          <div className="flex px-4 pb-4 space-x-2">
+            {navigation.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-sm
+                    ${
+                      isActive
+                        ? "bg-emerald-100 text-emerald-700 shadow-sm"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    }`}
+                >
+                  <item.icon
+                    className={`w-4 h-4 ${isActive ? "text-emerald-600" : "text-gray-400"}`}
+                  />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Scrollable Content Area */}
+        <main className="flex-1 overflow-auto">
+          <div className="p-4 lg:p-8">{children}</div>
+        </main>
+      </div>
     </div>
   );
 }
