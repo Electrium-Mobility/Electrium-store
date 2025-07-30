@@ -3,24 +3,38 @@
 import { useState } from "react";
 import { login } from "../action/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function LoginPage() {
   const [displayEmail, setDisplayEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [unsuccessfulLogin, setUnsuccessfulLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   async function handleSubmit(formData: FormData): Promise<void> {
-    const success = await login(formData);
-    if (!success) {
+    setIsLoading(true);
+    setUnsuccessfulLogin(false);
+
+    try {
+      const success = await login(formData);
+      if (!success) {
+        setUnsuccessfulLogin(true);
+      } else {
+        // Use Next.js router for proper navigation
+        router.push("/");
+        router.refresh(); // Refresh to update auth state
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       setUnsuccessfulLogin(true);
-    } else {
-      // Redirect to home page on successful login
-      window.location.href = "/";
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -46,7 +60,8 @@ export default function LoginPage() {
           value={displayEmail}
           onChange={(e) => setDisplayEmail(e.target.value)}
           required
-          className="w-full p-2 mb-4 border border-green-300 rounded"
+          disabled={isLoading}
+          className="w-full p-2 mb-4 border border-green-300 rounded disabled:opacity-50"
         />
         <div className="flex justify-between items-center">
           <label htmlFor="password" className="block text-black mb-2">
@@ -65,7 +80,8 @@ export default function LoginPage() {
             name="password"
             type={showPassword ? "text" : "password"}
             required
-            className="w-full p-2 pr-9 mb-4 border border-green-300 rounded"
+            disabled={isLoading}
+            className="w-full p-2 pr-9 mb-4 border border-green-300 rounded disabled:opacity-50"
           />
           <span
             onClick={togglePasswordVisibility}
@@ -77,9 +93,10 @@ export default function LoginPage() {
         </div>
         <button
           type="submit"
-          className="w-full bg-green-600 text-white font-bold px-4 py-2 mt-4 rounded hover:bg-green-500"
+          disabled={isLoading}
+          className="w-full bg-green-600 text-white font-bold px-4 py-2 mt-4 rounded hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Log in
+          {isLoading ? "Logging in..." : "Log in"}
         </button>
         <Link href="/signup">
           <p className="block text-center text-green-500 mt-4 hover:underline">
