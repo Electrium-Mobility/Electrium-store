@@ -2,28 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 200 20% 98%;
+    --header-background: 200 20% 98%;
     --btn-background: 200 10% 91%;
     --btn-background-hover: 200 10% 89%;
     --foreground: 200 50% 3%;
+    --border: 220 13% 91%;
+    --border-subtle: 220 13% 95%;
+    --border-hover: 220 13% 85%;
+
+    /* Text hierarchy */
+    --text-primary: 200 50% 3%;
+    --text-secondary: 200 30% 25%;
+    --text-muted: 200 20% 45%;
+
+    /* Button colors */
+    --btn-primary: 142 76% 36%;
+    --btn-primary-hover: 142 76% 32%;
+    --btn-secondary: 220 13% 91%;
+    --btn-secondary-hover: 220 13% 85%;
+
+    /* Footer - 浅色模式使用指定的深色背景 */
+    --footer-background: 220 13% 22%;
+    --footer-text-primary: 0 0% 100%; /* 白色 - h3和a标签 */
+    --footer-text-muted: 220 9% 65%; /* rgb(156 163 175) - p标签 */
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --header-background: 0 0% 5%;
+    --btn-background: 0 0% 13%;
+    --btn-background-hover: 0 0% 16%;
+    --foreground: 210 40% 98%;
+    --border: 220 13% 25%;
+    --border-subtle: 0 0% 17%;
+    --border-hover: 0 0% 20%;
+    --text-primary: 210 40% 98%;
+    --text-secondary: 215 20% 65%;
+    --text-muted: 215 16% 47%;
+    --btn-primary: 142 76% 36%;
+    --btn-primary-hover: 142 76% 42%;
+    --btn-secondary: 0 0% 13%;
+    --btn-secondary-hover: 0 0% 16%;
+    --footer-background: 0 0% 8%;
+    --footer-text-primary: 210 40% 98%; /* 暗色模式保持原有颜色 */
+    --footer-text-muted: 215 16% 47%; /* 暗色模式保持原有颜色 */
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --background: 200 50% 3%;
-      --btn-background: 200 10% 9%;
-      --btn-background-hover: 200 10% 12%;
-      --foreground: 200 20% 96%;
+      --background: 0 0% 10%;
+      --header-background: 0 0% 5%;
+      --btn-background: 0 0% 13%;
+      --btn-background-hover: 0 0% 16%;
+      --foreground: 210 40% 98%;
+      --border: 220 13% 25%;
+      --border-subtle: 0 0% 17%;
+      --border-hover: 0 0% 20%;
+      --text-primary: 210 40% 98%;
+      --text-secondary: 215 20% 65%;
+      --text-muted: 215 16% 47%;
+      --btn-primary: 142 76% 36%;
+      --btn-primary-hover: 142 76% 42%;
+      --btn-secondary: 0 0% 13%;
+      --btn-secondary-hover: 0 0% 16%;
+      --footer-background: 0 0% 8%;
+      --footer-text-primary: 210 40% 98%; /* 暗色模式保持原有颜色 */
+      --footer-text-muted: 215 16% 47%; /* 暗色模式保持原有颜色 */
     }
   }
 }
 
 @layer base {
   * {
-    @apply border-foreground/20;
+    @apply border-border;
   }
 }
 
@@ -37,28 +91,31 @@
 }
 
 @keyframes border-glow {
-    0% {
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
-                   0 0 20px rgba(16, 185, 129, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.5),
-                   0 0 40px rgba(16, 185, 129, 0.4);
-    }
-    100% {
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
-                   0 0 20px rgba(16, 185, 129, 0.2);
-    }
+  0% {
+    box-shadow:
+      0 0 10px rgba(16, 185, 129, 0.3),
+      0 0 20px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(16, 185, 129, 0.5),
+      0 0 40px rgba(16, 185, 129, 0.4);
+  }
+  100% {
+    box-shadow:
+      0 0 10px rgba(16, 185, 129, 0.3),
+      0 0 20px rgba(16, 185, 129, 0.2);
+  }
 }
 
 .hover-border-glow:hover {
-    animation: border-glow 3s linear infinite;
+  animation: border-glow 3s linear infinite;
 }
 
 .bubble-text {
-    color: #10B981;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    -webkit-text-stroke: 2px #0D9488;
+  color: #10b981;
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  -webkit-text-stroke: 2px #0d9488;
 }

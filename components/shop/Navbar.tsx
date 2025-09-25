@@ -11,14 +11,29 @@ import { User } from "@supabase/supabase-js";
 import { CheckoutBike } from "@/utils/getBike";
 
 export default function Navbar() {
-  const [user, setUser] = useState<User | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CheckoutBike[]>([]);
-  const [showCart, setShowCart] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const pathname = usePathname();
 
   // Handle hydration
   useEffect(() => {
     setMounted(true);
+
+    // Check for dark mode preference in localStorage
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("theme");
+      if (stored === "dark") {
+        setDarkMode(true);
+        document.documentElement.classList.add("dark");
+      } else {
+        setDarkMode(false);
+        document.documentElement.classList.remove("dark");
+      }
+    }
   }, []);
 
   // Simple auth state management
@@ -83,7 +98,24 @@ export default function Navbar() {
     };
   }, []);
 
-  const handleSignOut = async () => {
+  const handleDarkModeToggle = () => {
+    setDarkMode((prev) => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        const root = document.documentElement;
+        if (next) {
+          root.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          root.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+      }
+      return next;
+    });
+  };
+
+  const handleLogout = async () => {
     if (!user) {
       toast.error("You are not logged in!");
       return;
@@ -101,7 +133,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="p-4 bg-white shadow-md relative">
+    <nav className="p-4 bg-header-background shadow-md relative">
       <div className="flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
@@ -120,8 +152,8 @@ export default function Navbar() {
           {/* Cart Button */}
           <div className="relative">
             <button
-              className="text-gray-600 hover:text-gray-900 relative"
-              onClick={() => setShowCart(!showCart)}
+              className="text-[hsl(var(--foreground))] hover:text-emerald-600 relative"
+              onClick={() => setIsCartOpen(!isCartOpen)}
             >
               <i className="fas fa-shopping-cart"></i>
               {cartTotal > 0 && (
@@ -132,12 +164,14 @@ export default function Navbar() {
             </button>
 
             {/* Cart Dropdown */}
-            {showCart && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg p-4 z-50">
+            {isCartOpen && (
+              <div className="absolute right-0 mt-2 w-80 bg-[hsl(var(--background))] rounded-lg shadow-lg p-4 z-50 border border-emerald-200">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-bold">Shopping Cart</h3>
-                  <button onClick={() => setShowCart(false)}>
-                    <i className="fas fa-times"></i>
+                  <h3 className="font-bold text-[hsl(var(--foreground))]">
+                    Shopping Cart
+                  </h3>
+                  <button onClick={() => setIsCartOpen(false)}>
+                    <i className="fas fa-times text-[hsl(var(--foreground))]"></i>
                   </button>
                 </div>
 
@@ -157,8 +191,10 @@ export default function Navbar() {
                             className="rounded"
                           />
                           <div className="flex-1">
-                            <p className="text-sm font-medium">{item.name}</p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-sm font-medium text-[hsl(var(--foreground))]">
+                              {item.name}
+                            </p>
+                            <p className="text-xs text-[hsl(var(--foreground))] opacity-70">
                               {item.orderType === "rent"
                                 ? `CA $${item.rental_rate}/hour x ${item.quantity}`
                                 : `CA $${item.sell_price} x ${item.quantity}`}
@@ -167,8 +203,8 @@ export default function Navbar() {
                         </div>
                       ))}
                     </div>
-                    <div className="mt-4 pt-4 border-t">
-                      <div className="flex justify-between mb-2">
+                    <div className="mt-4 pt-4 border-t border-emerald-200">
+                      <div className="flex justify-between mb-2 text-[hsl(var(--foreground))]">
                         <span>Subtotal:</span>
                         <span>CA ${cartSubtotal.toFixed(2)}</span>
                       </div>
@@ -182,8 +218,10 @@ export default function Navbar() {
                   </>
                 ) : (
                   <div className="text-center py-8">
-                    <i className="fas fa-shopping-cart text-gray-400 text-3xl mb-2"></i>
-                    <p className="text-gray-500">Cart is empty</p>
+                    <i className="fas fa-shopping-cart text-[hsl(var(--foreground))] opacity-40 text-3xl mb-2"></i>
+                    <p className="text-[hsl(var(--foreground))] opacity-70">
+                      Cart is empty
+                    </p>
                   </div>
                 )}
               </div>
@@ -191,8 +229,12 @@ export default function Navbar() {
           </div>
 
           {/* Theme Toggle */}
-          <button className="text-gray-600 hover:text-gray-900">
-            <i className="fas fa-sun"></i>
+          <button
+            className="text-[hsl(var(--foreground))] hover:text-emerald-600"
+            onClick={handleDarkModeToggle}
+            title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            <i className={`fas ${darkMode ? "fa-moon" : "fa-sun"}`}></i>
           </button>
 
           {/* Authentication Buttons */}
@@ -201,7 +243,7 @@ export default function Navbar() {
               {/* Always show dashboard link for testing */}
               <Link
                 href="/dashboard"
-                className="text-gray-600 hover:text-gray-900 mx-2"
+                className="text-[hsl(var(--foreground))] hover:text-emerald-600 mx-2"
                 title="Dashboard"
               >
                 <i className="fas fa-user-circle fa-lg"></i>
@@ -211,8 +253,8 @@ export default function Navbar() {
                 <>
                   {/* Logout Button - Only show when user is logged in */}
                   <button
-                    className="text-gray-600 hover:text-gray-900"
-                    onClick={handleSignOut}
+                    className="text-[hsl(var(--foreground))] hover:text-emerald-600"
+                    onClick={handleLogout}
                     title="Sign Out"
                   >
                     <i className="fas fa-sign-out-alt fa-lg"></i>
