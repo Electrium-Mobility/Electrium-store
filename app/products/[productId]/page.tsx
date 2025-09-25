@@ -39,10 +39,14 @@ function CartNotification({bike, subtotal, quantity, numItems}: {
 
 interface ProductPageProps {
     params: Promise<{ productId: string }>;
+    searchParams: Promise<{ rental?: string }>;
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params, searchParams }: ProductPageProps) {
     const { productId } = await params;
+    const { rental } = await searchParams;
+    const isRentalMode = rental === 'true';
+    
     const bike = await getOneBike(productId);
     if (!bike) {
         notFound();
@@ -54,9 +58,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="max-w-6xl mx-auto bg-background p-8 rounded-lg shadow-md">
                     <h1 className="text-3xl font-bold text-text-primary mb-2">{bike.name}</h1>
                     <p className="text-xl text-text-secondary mb-6">
-                        {bike.for_rent
-                            ? `CA $${bike.rental_rate.toFixed(2)} per hour`
-                            : `CA $${bike.sell_price.toFixed(2)}`
+                        {isRentalMode
+                            ? `CA $${bike.rental_rate?.toFixed(2) || '0.00'} per hour`
+                            : `CA $${bike.sell_price?.toFixed(2) || '0.00'}`
                         }
                     </p>
                     <div className="flex flex-col md:flex-row gap-8">
@@ -74,19 +78,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         <div className="md:w-1/2">
                             <p className="text-text-secondary mb-4">{bike.description}</p>
 
-                            <CartAdd bike={bike}/>
+                            {!isRentalMode && <CartAdd bike={bike}/>}
 
                             <div className="mb-8">
-                                {bike.for_rent ? (
+                                {isRentalMode ? (
                                     <>
                                         <h2 className="text-xl font-semibold mb-4 text-text-primary">Rental Information</h2>
-                                        <p className="text-text-secondary">Rental rate: CA ${bike.rental_rate.toFixed(2)} per hour</p>
-                                        <p className="text-text-secondary">Damage rate: {(bike.damage_rate * 100).toFixed(2)}%</p>
+                                        <p className="text-text-secondary">Rental rate: CA ${bike.rental_rate?.toFixed(2) || '0.00'} per hour</p>
+                                        <p className="text-text-secondary">Damage rate: {((bike.damage_rate || 0) * 100).toFixed(2)}%</p>
+                                        <div className="mt-6">
+                                            <button className="w-full bg-emerald-600 text-white py-3 px-6 rounded-lg hover:bg-emerald-700 transition-colors">
+                                                Rent Now
+                                            </button>
+                                        </div>
                                     </>
                                 ) : (
                                     <>
                                         <h2 className="text-xl font-semibold mb-4 text-text-primary">Product Information</h2>
-                                        <p className="text-text-secondary">Price: CA ${bike.sell_price.toFixed(2)}</p>
+                                        <p className="text-text-secondary">Price: CA ${bike.sell_price?.toFixed(2) || '0.00'}</p>
                                     </>
                                 )}
                             </div>

@@ -76,7 +76,7 @@ export default function Home() {
                   href={
                     activeTab === "product"
                       ? `/products/${bike.bike_id}`
-                      : `/rentals/${bike.bike_id}`
+                      : `/products/${bike.bike_id}?rental=true`
                   }
                 >
                   <div className="group flex flex-col items-center bg-[hsl(var(--btn-background))] rounded-xl border border-border-subtle p-4 transition-all duration-300 hover:-translate-y-1 hover:border-border-hover hover:shadow-xl hover:shadow-black/20">

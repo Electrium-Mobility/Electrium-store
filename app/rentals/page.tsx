@@ -59,7 +59,7 @@ export default function RentalsPage() {
                     <section className="animate-border-glow rounded-xl p-8 shadow-md">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {rentals.map((rental) => (
-                                <Link key={rental.bike_id} href={`/rentals/${rental.bike_id}`}>
+                                <Link key={rental.bike_id} href={`/products/${rental.bike_id}?rental=true`}>
                                     <div className="flex flex-col items-center bg-background rounded-xl border-2 border-emerald-200 p-4 transition-all duration-300 hover:-translate-y-1 hover-border-glow">
                                         <div className="relative w-48 h-48 mb-6">
                                             <Image
