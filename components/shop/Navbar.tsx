@@ -152,12 +152,12 @@ export default function Navbar() {
           {/* Cart Button */}
           <div className="relative">
             <button
-              className="text-[hsl(var(--foreground))] hover:text-emerald-600 relative"
+              className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--btn-primary))] relative"
               onClick={() => setIsCartOpen(!isCartOpen)}
             >
               <i className="fas fa-shopping-cart"></i>
               {cartTotal > 0 && (
-                <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartTotal}
                 </span>
               )}
@@ -165,13 +165,13 @@ export default function Navbar() {
 
             {/* Cart Dropdown */}
             {isCartOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-[hsl(var(--background))] rounded-lg shadow-lg p-4 z-50 border border-emerald-200">
+              <div className="absolute right-0 mt-2 w-80 bg-[hsl(var(--background))] rounded-lg shadow-lg p-4 z-50 border border-[hsl(var(--border))]">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-bold text-[hsl(var(--foreground))]">
+                  <h3 className="font-bold text-[hsl(var(--text-primary))]">
                     Shopping Cart
                   </h3>
                   <button onClick={() => setIsCartOpen(false)}>
-                    <i className="fas fa-times text-[hsl(var(--foreground))]"></i>
+                    <i className="fas fa-times text-[hsl(var(--text-primary))]"></i>
                   </button>
                 </div>
 
@@ -181,7 +181,7 @@ export default function Navbar() {
                       {cartItems.map((item, index) => (
                         <div
                           key={index}
-                          className="flex items-center space-x-2 mb-2 pb-2 border-b"
+                          className="flex items-center space-x-2 mb-2 pb-2 border-b border-[hsl(var(--border))]"
                         >
                           <Image
                             src={item.image || "/img/placeholder.png"}
@@ -191,10 +191,10 @@ export default function Navbar() {
                             className="rounded"
                           />
                           <div className="flex-1">
-                            <p className="text-sm font-medium text-[hsl(var(--foreground))]">
+                            <p className="text-sm font-medium text-[hsl(var(--text-primary))]">
                               {item.name}
                             </p>
-                            <p className="text-xs text-[hsl(var(--foreground))] opacity-70">
+                            <p className="text-xs text-[hsl(var(--text-secondary))]">
                               {item.orderType === "rent"
                                 ? `CA $${item.rental_rate}/hour x ${item.quantity}`
                                 : `CA $${item.sell_price} x ${item.quantity}`}
@@ -203,14 +203,14 @@ export default function Navbar() {
                         </div>
                       ))}
                     </div>
-                    <div className="mt-4 pt-4 border-t border-emerald-200">
-                      <div className="flex justify-between mb-2 text-[hsl(var(--foreground))]">
+                    <div className="mt-4 pt-4 border-t border-[hsl(var(--border))]">
+                      <div className="flex justify-between mb-2 text-[hsl(var(--text-primary))]">
                         <span>Subtotal:</span>
                         <span>CA ${cartSubtotal.toFixed(2)}</span>
                       </div>
                       <Link
                         href="/cart"
-                        className="block w-full text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-500"
+                        className="block w-full text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] py-2 rounded-lg hover:bg-[hsl(var(--btn-primary-hover))]"
                       >
                         View Cart
                       </Link>
@@ -218,8 +218,8 @@ export default function Navbar() {
                   </>
                 ) : (
                   <div className="text-center py-8">
-                    <i className="fas fa-shopping-cart text-[hsl(var(--foreground))] opacity-40 text-3xl mb-2"></i>
-                    <p className="text-[hsl(var(--foreground))] opacity-70">
+                    <i className="fas fa-shopping-cart text-[hsl(var(--text-muted))] text-3xl mb-2"></i>
+                    <p className="text-[hsl(var(--text-secondary))]">
                       Cart is empty
                     </p>
                   </div>
@@ -230,7 +230,7 @@ export default function Navbar() {
 
           {/* Theme Toggle */}
           <button
-            className="text-[hsl(var(--foreground))] hover:text-emerald-600"
+            className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--btn-primary))]"
             onClick={handleDarkModeToggle}
             title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
@@ -264,7 +264,7 @@ export default function Navbar() {
                 /* Login Button - Only show when user is NOT logged in */
                 <Link
                   href="/login"
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                  className="bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] px-4 py-2 rounded-lg font-medium transition-colors duration-200"
                 >
                   Log In
                 </Link>

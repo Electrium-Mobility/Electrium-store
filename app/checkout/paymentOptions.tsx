@@ -85,15 +85,15 @@ function CheckoutForm({
     <form onSubmit={handleSubmit} className="w-full">
       <PaymentElement />
       {errorMessage && (
-        <div className="text-red-600 mt-4 text-sm">{errorMessage}</div>
+        <div className="text-status-error-text mt-4 text-sm">{errorMessage}</div>
       )}
       <button
         type="submit"
         disabled={!stripe || isProcessing}
-        className={`w-full mt-4 py-2 px-4 rounded-lg text-white font-bold ${
+        className={`w-full mt-4 py-2 px-4 rounded-lg text-text-inverse font-bold ${
           !stripe || isProcessing
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-green-600 hover:bg-green-500"
+            ? "bg-btn-disabled cursor-not-allowed"
+            : "bg-green-600 hover:bg-status-success"
         }`}
       >
         {isProcessing ? "Processing..." : `Pay CA $${total.toFixed(2)}`}
@@ -157,7 +157,7 @@ export function PaymentOptions({
             className={`flex-1 py-2 px-4 rounded-lg border ${
               paymentMethod === "stripe"
                 ? "border-green-600 bg-green-50"
-                : "border-gray-200"
+                : "border-border"
             }`}
           >
             Credit Card
@@ -167,7 +167,7 @@ export function PaymentOptions({
             className={`flex-1 py-2 px-4 rounded-lg border ${
               paymentMethod === "paypal"
                 ? "border-green-600 bg-green-50"
-                : "border-gray-200"
+                : "border-border"
             }`}
           >
             <Image
@@ -203,13 +203,13 @@ export function PaymentOptions({
           (!clientSecret ||
             !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) && (
             <div className="text-center py-8">
-              <p className="text-red-600 mb-4">
+              <p className="text-status-error-text mb-4">
                 {!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
                   ? "Stripe is not configured. Please check your environment variables."
                   : "Loading payment system..."}
               </p>
               {!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-muted">
                   Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in environment
                   variables
                 </p>
@@ -262,7 +262,7 @@ export function PaymentOptions({
         )}
       </div>
 
-      <div className="mt-4 text-sm text-gray-500">
+      <div className="mt-4 text-sm text-text-muted">
         <p>Secure payment powered by Stripe</p>
         <p>Your payment information is encrypted and secure</p>
       </div>

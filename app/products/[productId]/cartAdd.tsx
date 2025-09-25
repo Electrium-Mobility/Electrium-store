@@ -17,41 +17,41 @@ function CartNotification({
   numItems: number;
 }) {
   return (
-    <div className="w-80 absolute mt-24 right-6 rounded-xl bg-gray-50  space-y-7 flex-col align-center p-6 drop-shadow-lg">
+    <div className="w-80 absolute mt-24 right-6 rounded-xl bg-[hsl(var(--surface))] space-y-7 flex-col align-center p-6 drop-shadow-lg">
       <div className="flex flex-row justify-between">
-        <h1 className="text-base font-bold">Your Shopping Cart</h1>
+        <h1 className="text-base font-bold text-[hsl(var(--text-primary))]">Your Shopping Cart</h1>
         <button onClick={() => setNotifInfo(undefined)}>
-          <i className="fas fa-xmark"></i>
+          <i className="fas fa-xmark text-[hsl(var(--text-primary))]"></i>
         </button>
       </div>
       <div className="flex flex-row justify-between">
-        <div className="flex flex-row justify-self-start text-sm">
+        <div className="flex flex-row justify-self-start text-sm text-[hsl(var(--text-primary))]">
           Subtotal: &nbsp;<div className="font-semibold"> CA${subtotal}</div>
         </div>
-        <div className="flex flex-row justify-self-end text-sm">
+        <div className="flex flex-row justify-self-end text-sm text-[hsl(var(--text-primary))]">
           <div className="font-semibold">{numItems}</div>&nbsp;item
         </div>
       </div>
       <div className="flex flex-row space-x-4">
         <img
           src={String(bike.image)}
-          className="w-1/3 border-2 border-gray-200 bg-white rounded-xl"
+          className="w-1/3 border-2 border-[hsl(var(--border))] bg-[hsl(var(--background))] rounded-xl"
         />
         <div className="flex-col">
-          <div className="text-sm">{bike.name}</div>
-          <div className="text-sm">CA${bike.sell_price}</div>
-          <div className="text-sm text-gray-400">Quantity: {quantity}</div>
+          <div className="text-sm text-[hsl(var(--text-primary))]">{bike.name}</div>
+          <div className="text-sm text-[hsl(var(--text-primary))]">CA${bike.sell_price}</div>
+          <div className="text-sm text-[hsl(var(--text-muted))]">Quantity: {quantity}</div>
         </div>
       </div>
       <div className="flex flex-col space-y-4">
         <Link
           href="/cart"
-          className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl"
+          className="w-100 h-100 text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] p-3 text-m rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))]"
         >
           View and Edit Cart
         </Link>
         <Link href="/checkout">
-          <button className="w-100 h-100 text-center bg-emerald-600 text-white p-3 text-m rounded-2xl">
+          <button className="w-100 h-100 text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] p-3 text-m rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))]">
             Secure Checkout
           </button>
         </Link>
@@ -114,7 +114,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
         defaultValue={0}
         min={0}
         max={bike.amount_stocked}
-        className="border p-2 w-16 text-center text-gray-800"
+        className="border border-[hsl(var(--border))] bg-[hsl(var(--surface))] p-2 w-16 text-center text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
         onChange={(e) => setAmount(parseInt(e.currentTarget.value))}
       />
       {notifInfo ? (
@@ -129,7 +129,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
         ""
       )}
       <button
-        className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-500"
+        className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] px-6 py-2 rounded hover:bg-[hsl(var(--btn-primary-hover))]"
         onClick={addToCart}
       >
         {bike.for_rent ? "Rent Now" : "Add to Cart"}

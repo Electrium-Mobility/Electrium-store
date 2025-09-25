@@ -35,7 +35,9 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-xl mb-4 text-footer-text-primary">Recent Projects</h3>
+            <h3 className="text-xl mb-4 text-footer-text-primary">
+              Recent Projects
+            </h3>
             <ul className="space-y-2">
               <li>
                 <a
@@ -64,7 +66,9 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-xl mb-4 text-footer-text-primary">Get Involved</h3>
+            <h3 className="text-xl mb-4 text-footer-text-primary">
+              Get Involved
+            </h3>
             <ul className="space-y-2">
               <li>
                 <a

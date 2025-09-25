@@ -57,8 +57,8 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
         <div
           className={`mb-4 p-4 rounded-md ${
             message.type === "success"
-              ? "bg-green-50 border border-green-200 text-green-800"
-              : "bg-red-50 border border-red-200 text-red-800"
+              ? "bg-green-50 border border-green-200 text-status-success-text"
+              : "bg-red-50 border border-red-200 text-status-error-text"
           }`}
         >
           {message.text}
@@ -69,11 +69,11 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
         <div className="space-y-6">
           {/* Profile Photo */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-text-secondary">
               Photo
             </label>
             <div className="mt-2 flex items-center space-x-5">
-              <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+              <div className="h-12 w-12 rounded-full bg-surface-hover flex items-center justify-center">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -82,7 +82,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   />
                 ) : (
                   <svg
-                    className="h-8 w-8 text-gray-400"
+                    className="h-8 w-8 text-text-muted"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -92,7 +92,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
               </div>
               <button
                 type="button"
-                className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                className="rounded-md bg-background px-2.5 py-1.5 text-sm font-semibold text-text-primary shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-surface"
               >
                 Change
               </button>
@@ -104,7 +104,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             <div className="sm:col-span-3">
               <label
                 htmlFor="first_name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-text-secondary"
               >
                 First name
               </label>
@@ -113,7 +113,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="text"
                   name="first_name"
                   id="first_name"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={profile.first_name}
                   required
                 />
@@ -123,7 +123,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             <div className="sm:col-span-3">
               <label
                 htmlFor="last_name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-text-secondary"
               >
                 Last name
               </label>
@@ -132,7 +132,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="text"
                   name="last_name"
                   id="last_name"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={profile.last_name}
                   required
                 />
@@ -142,7 +142,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             <div className="sm:col-span-4">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-text-secondary"
               >
                 Email address
               </label>
@@ -151,7 +151,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="email"
                   name="email"
                   id="email"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={profile.email || ""}
                   required
                 />
@@ -161,7 +161,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             <div className="sm:col-span-3">
               <label
                 htmlFor="phone"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-text-secondary"
               >
                 Phone number
               </label>
@@ -170,7 +170,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="tel"
                   name="phone"
                   id="phone"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={profile.phone}
                 />
               </div>
@@ -179,7 +179,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
 
           {/* Address */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-text-secondary">
               Address
             </label>
             <div className="mt-1">
@@ -187,7 +187,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                 type="text"
                 name="address"
                 id="address"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 defaultValue={profile.address}
               />
             </div>
@@ -198,10 +198,10 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className={`ml-3 inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              className={`ml-3 inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-text-inverse shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                 isLoading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-500 hover:bg-green-600 focus:ring-green-500"
+                  ? "bg-btn-disabled cursor-not-allowed"
+                  : "bg-status-success hover:bg-green-600 focus:ring-green-500"
               }`}
             >
               {isLoading ? "Saving..." : "Save Changes"}

@@ -141,14 +141,14 @@ export default function DashboardClient({
   };
 
   return (
-    <div className="space-y-8 bg-gray-50 min-h-screen py-8 px-4 md:px-8">
+    <div className="space-y-8 bg-surface min-h-screen py-8 px-4 md:px-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl md:text-3xl font-bold text-text-primary">
             Welcome back, {userName.split(" ")[0]}!
           </h1>
-          <p className="text-base text-gray-600 mt-1">
+          <p className="text-base text-text-secondary mt-1">
             Here's what's happening with your account today.
           </p>
         </div>
@@ -159,18 +159,18 @@ export default function DashboardClient({
         {mounted && (
           <Link
             href="/dashboard/orders"
-            className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
+            className="group bg-background rounded-xl shadow border border-border p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
             style={{ minHeight: 120 }}
           >
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-text-muted">
                 Total Orders
               </span>
-              <span className="p-2 bg-blue-100 rounded-lg">
-                <ShoppingCart className="h-6 w-6 text-blue-600" />
+              <span className="p-2 bg-status-info-bg rounded-lg">
+                <ShoppingCart className="h-6 w-6 text-text-link" />
               </span>
             </div>
-            <span className="text-3xl font-bold text-gray-900 mt-2">
+            <span className="text-3xl font-bold text-text-primary mt-2">
               {totalOrders}
             </span>
           </Link>
@@ -178,18 +178,18 @@ export default function DashboardClient({
         {mounted && (
           <Link
             href="/dashboard/orders"
-            className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
+            className="group bg-background rounded-xl shadow border border-border p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
             style={{ minHeight: 120 }}
           >
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-text-muted">
                 Money Spent
               </span>
-              <span className="p-2 bg-green-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-green-600" />
+              <span className="p-2 bg-status-success-bg rounded-lg">
+                <DollarSign className="h-6 w-6 text-status-success-text" />
               </span>
             </div>
-            <span className="text-3xl font-bold text-gray-900 mt-2">
+            <span className="text-3xl font-bold text-text-primary mt-2">
               ${totalSpent.toFixed(2)}
             </span>
           </Link>
@@ -198,18 +198,18 @@ export default function DashboardClient({
         {mounted && (
           <Link
             href="/dashboard/orders"
-            className="group bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
+            className="group bg-background rounded-xl shadow border border-border p-6 flex flex-col justify-between transition-shadow hover:shadow-lg focus:outline-none"
             style={{ minHeight: 120 }}
           >
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-text-muted">
                 Active Rentals
               </span>
-              <span className="p-2 bg-orange-100 rounded-lg">
-                <Package className="h-6 w-6 text-orange-600" />
+              <span className="p-2 bg-[hsl(var(--status-warning-bg))] rounded-lg">
+                <Package className="h-6 w-6 text-[hsl(var(--status-warning-text))]" />
               </span>
             </div>
-            <span className="text-3xl font-bold text-gray-900 mt-2">
+            <span className="text-3xl font-bold text-text-primary mt-2">
               {activeRentals}
             </span>
           </Link>
@@ -221,26 +221,26 @@ export default function DashboardClient({
         {/* Main Content Area */}
         <div className="lg:col-span-2 space-y-6">
           {/* Orders Chart */}
-          <div className="bg-white rounded-xl shadow border border-gray-200 p-6 mb-2">
+          <div className="bg-background rounded-xl shadow border border-border p-6 mb-2">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-text-primary">
                 Orders Over Time
               </h3>
-              <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+              <div className="flex space-x-1 bg-surface rounded-lg p-1">
                 <button
-                  className={`px-3 py-1 text-xs font-medium rounded-md ${range === 7 ? "bg-blue-600 text-white" : "text-blue-600 bg-white"}`}
+                  className={`px-3 py-1 text-xs font-medium rounded-md ${range === 7 ? "bg-btn-primary text-text-inverse" : "text-text-link bg-background"}`}
                   onClick={() => setRange(7)}
                 >
                   7D
                 </button>
                 <button
-                  className={`px-3 py-1 text-xs font-medium rounded-md ${range === 30 ? "bg-blue-600 text-white" : "text-blue-600 bg-white"}`}
+                  className={`px-3 py-1 text-xs font-medium rounded-md ${range === 30 ? "bg-btn-primary text-text-inverse" : "text-text-link bg-background"}`}
                   onClick={() => setRange(30)}
                 >
                   30D
                 </button>
                 <button
-                  className={`px-3 py-1 text-xs font-medium rounded-md ${range === 90 ? "bg-blue-600 text-white" : "text-blue-600 bg-white"}`}
+                  className={`px-3 py-1 text-xs font-medium rounded-md ${range === 90 ? "bg-btn-primary text-text-inverse" : "text-text-link bg-background"}`}
                   onClick={() => setRange(90)}
                 >
                   90D
@@ -367,14 +367,14 @@ export default function DashboardClient({
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-xl shadow border border-gray-200 p-6">
+          <div className="bg-background rounded-xl shadow border border-border p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-text-primary">
                 Recent Activity
               </h3>
               <Link
                 href="/dashboard/orders"
-                className="text-sm text-blue-600 hover:text-blue-700"
+                className="text-sm text-text-link hover:text-text-link-hover"
               >
                 View all
               </Link>
@@ -386,16 +386,16 @@ export default function DashboardClient({
                   return (
                     <div
                       key={order.order_id}
-                      className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="flex items-center space-x-4 p-3 rounded-lg hover:bg-surface transition-colors"
                     >
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <ShoppingCart className="h-4 w-4 text-blue-600" />
+                      <div className="p-2 bg-status-info-bg rounded-lg">
+                        <ShoppingCart className="h-4 w-4 text-text-link" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-text-primary">
                           Order #{order.order_id}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-text-muted">
                           {order.order_date
                             ? new Date(order.order_date).toLocaleDateString()
                             : "Unknown date"}
@@ -403,11 +403,11 @@ export default function DashboardClient({
                       </div>
                       <div className="flex items-center space-x-2">
                         <span
-                          className={`px-2 py-1 text-xs font-medium rounded-full ${order.is_complete ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${order.is_complete ? "bg-status-success-bg text-green-700" : "bg-status-warning-bg text-yellow-700"}`}
                         >
                           {order.is_complete ? "Completed" : "In Progress"}
                         </span>
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-sm font-medium text-text-primary">
                           ${orderTotal.toFixed(2)}
                         </span>
                       </div>
@@ -416,9 +416,9 @@ export default function DashboardClient({
                 })
               ) : (
                 <div className="text-center py-8">
-                  <ShoppingCart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-lg text-gray-500">No recent orders</p>
-                  <p className="text-sm text-gray-400 mt-1">
+                  <ShoppingCart className="h-12 w-12 text-text-muted mx-auto mb-4" />
+                  <p className="text-lg text-text-muted">No recent orders</p>
+                  <p className="text-sm text-text-muted mt-1">
                     Your order history will appear here
                   </p>
                 </div>
@@ -430,53 +430,53 @@ export default function DashboardClient({
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Order Status Breakdown */}
-          <div className="bg-white rounded-xl shadow border border-gray-200 p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">
+          <div className="bg-background rounded-xl shadow border border-border p-6">
+            <h3 className="text-base font-semibold text-text-primary mb-4">
               Order Status
             </h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Completed</span>
+                  <div className="w-3 h-3 bg-status-success rounded-full"></div>
+                  <span className="text-sm text-text-secondary">Completed</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-medium text-text-primary">
                   {statusBreakdown.completed}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Active Rentals</span>
+                  <span className="text-sm text-text-secondary">Active Rentals</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-medium text-text-primary">
                   {statusBreakdown.pending}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Rental Orders</span>
+                  <div className="w-3 h-3 bg-btn-primary rounded-full"></div>
+                  <span className="text-sm text-text-secondary">Rental Orders</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-medium text-text-primary">
                   {ordersWithRentals}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Purchase Orders</span>
+                  <span className="text-sm text-text-secondary">Purchase Orders</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-medium text-text-primary">
                   {ordersWithPurchases}
                 </span>
               </div>
-              <div className="pt-3 border-t border-gray-200">
+              <div className="pt-3 border-t border-border">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-sm font-medium text-text-primary">
                     Total
                   </span>
-                  <span className="text-sm font-bold text-gray-900">
+                  <span className="text-sm font-bold text-text-primary">
                     {statusBreakdown.total}
                   </span>
                 </div>
@@ -485,20 +485,20 @@ export default function DashboardClient({
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-xl shadow border border-gray-200 p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">
+          <div className="bg-background rounded-xl shadow border border-border p-6">
+            <h3 className="text-base font-semibold text-text-primary mb-4">
               Quick Actions
             </h3>
             <div className="space-y-3">
               {mounted && (
                 <Link
                   href="/"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-surface transition-colors"
                 >
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Plus className="h-4 w-4 text-blue-600" />
+                  <div className="p-2 bg-status-info-bg rounded-lg">
+                    <Plus className="h-4 w-4 text-text-link" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-text-secondary">
                     Browse Products
                   </span>
                 </Link>
@@ -506,12 +506,12 @@ export default function DashboardClient({
               {mounted && (
                 <Link
                   href="/dashboard/orders"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-surface transition-colors"
                 >
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Eye className="h-4 w-4 text-green-600" />
+                  <div className="p-2 bg-status-success-bg rounded-lg">
+                    <Eye className="h-4 w-4 text-status-success-text" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-text-secondary">
                     View Orders
                   </span>
                 </Link>
@@ -519,12 +519,12 @@ export default function DashboardClient({
               {mounted && (
                 <Link
                   href="/dashboard/profile"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-surface transition-colors"
                 >
                   <div className="p-2 bg-purple-100 rounded-lg">
-                    <User className="h-4 w-4 text-purple-600" />
+                    <User className="h-4 w-4 text-brand-primary" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-text-secondary">
                     Edit Profile
                   </span>
                 </Link>

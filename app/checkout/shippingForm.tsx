@@ -98,7 +98,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center">
           <p className="font-medium w-36">Email Address</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"email"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -110,7 +110,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center my-2">
           <p className="font-medium w-36">First Name</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -122,7 +122,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center my-2">
           <p className="font-medium w-36">Last Name</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -134,7 +134,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center my-2">
           <p className="font-medium w-36">Street Address</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
             value={address}
             onChange={(e) => setAddress(e.target.value)}
@@ -174,7 +174,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center my-2">
           <p className="font-medium w-36">City</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -186,11 +186,11 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center my-2">
           <p className="font-medium w-36">Zip/Postal Code</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
-            placeholder="Enter Zip/Postal Code"
+            placeholder="Enter Postal Code"
           />
         </label>
       </div>
@@ -198,8 +198,8 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
         <label className="lg:flex lg:flex-row items-center">
           <p className="font-medium w-36">Phone Number</p>
           <input
-            className="flex-1 w-full border border-gray-200 rounded-md py-2 px-4"
-            type={"text"}
+            className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
+            type={"tel"}
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Enter Phone Number"

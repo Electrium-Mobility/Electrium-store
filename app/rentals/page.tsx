@@ -38,19 +38,19 @@ export default function RentalsPage() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <main className="flex-grow bg-white py-16 px-4">
+            <main className="flex-grow bg-background py-16 px-4">
                 <div className="max-w-6xl mx-auto">
                     <AboutUs />
 
                     <div className="flex justify-center space-x-10 mb-8">
                         <button
-                            className="text-xl font-semibold text-gray-500 hover:text-emerald-600"
+                            className="text-xl font-semibold text-text-muted hover:text-status-success-text"
                             onClick={() => router.push("/")}
                         >
                             Product
                         </button>
                         <button
-                            className="text-xl font-semibold text-emerald-600 border-b-4 border-emerald-600"
+                            className="text-xl font-semibold text-status-success-text border-b-4 border-emerald-600"
                         >
                             Rentals
                         </button>
@@ -60,7 +60,7 @@ export default function RentalsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {rentals.map((rental) => (
                                 <Link key={rental.bike_id} href={`/rentals/${rental.bike_id}`}>
-                                    <div className="flex flex-col items-center bg-white rounded-xl border-2 border-emerald-200 p-4 transition-all duration-300 hover:-translate-y-1 hover-border-glow">
+                                    <div className="flex flex-col items-center bg-background rounded-xl border-2 border-emerald-200 p-4 transition-all duration-300 hover:-translate-y-1 hover-border-glow">
                                         <div className="relative w-48 h-48 mb-6">
                                             <Image
                                                 src={rental.image || "/img/placeholder.png"}
@@ -73,11 +73,11 @@ export default function RentalsPage() {
                                             />
                                         </div>
                                         <div className="text-center space-y-2 w-full bg-slate-100 p-3 rounded-lg border border-slate-200">
-                                            <h3 className="text-lg font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                                            <h3 className="text-lg font-semibold text-status-success-text hover:text-emerald-700 transition-colors">
                                                 {rental.name}
                                             </h3>
                                             <div className="px-4 py-2 bg-slate-200 rounded-lg border border-slate-200">
-                                                <p className="text-gray-700 font-medium">
+                                                <p className="text-text-secondary font-medium">
                                                     CA ${rental.rental_rate.toFixed(2)}/hour
                                                 </p>
                                             </div>

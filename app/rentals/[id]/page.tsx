@@ -57,7 +57,7 @@ export default function RentalDetailPage() {
         <div className="text-xl mb-4">Rental not found</div>
         <button
           onClick={() => router.push("/rentals")}
-          className="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
+          className="px-4 py-2 bg-emerald-600 text-text-inverse rounded hover:bg-emerald-700"
         >
           Back to Rentals
         </button>
@@ -66,11 +66,11 @@ export default function RentalDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-16 px-4">
+    <div className="min-h-screen bg-background py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => router.push("/rentals")}
-          className="mb-6 text-emerald-600 hover:text-emerald-700 flex items-center"
+          className="mb-6 text-status-success-text hover:text-emerald-700 flex items-center"
         >
           <i className="fas fa-arrow-left mr-2"></i>
           Back to Rentals
@@ -90,10 +90,10 @@ export default function RentalDetailPage() {
           </div>
 
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-gray-900">{rental.name}</h1>
+            <h1 className="text-3xl font-bold text-text-primary">{rental.name}</h1>
 
             <div className="bg-emerald-50 p-4 rounded-lg">
-              <p className="text-2xl font-semibold text-emerald-600">
+              <p className="text-2xl font-semibold text-status-success-text">
                 CA ${rental.rental_rate.toFixed(2)}/hour
               </p>
             </div>
@@ -101,18 +101,18 @@ export default function RentalDetailPage() {
             {rental.description && (
               <div>
                 <h3 className="text-xl font-semibold mb-2">Description</h3>
-                <p className="text-gray-700">{rental.description}</p>
+                <p className="text-text-secondary">{rental.description}</p>
               </div>
             )}
 
             {rental.specifications && (
               <div>
                 <h3 className="text-xl font-semibold mb-2">Specifications</h3>
-                <p className="text-gray-700">{rental.specifications}</p>
+                <p className="text-text-secondary">{rental.specifications}</p>
               </div>
             )}
 
-            <button className="w-full bg-emerald-600 text-white py-3 px-6 rounded-lg hover:bg-emerald-700 transition-colors">
+            <button className="w-full bg-emerald-600 text-text-inverse py-3 px-6 rounded-lg hover:bg-emerald-700 transition-colors">
               Rent Now
             </button>
           </div>

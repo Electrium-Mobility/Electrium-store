@@ -101,10 +101,10 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+          <h1 className="text-2xl font-bold text-text-primary mb-4">
             Your cart is empty
           </h1>
-          <p className="text-gray-600">
+          <p className="text-text-secondary">
             Please add items to your cart before proceeding to checkout.
           </p>
         </div>
@@ -114,13 +114,13 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen">
-      <main className="bg-white py-16 px-16">
-        <h1 className="text-4xl font-bold text-green-600 mb-2 text-center w-full">
+      <main className="bg-background py-16 px-16">
+        <h1 className="text-4xl font-bold text-status-success-text mb-2 text-center w-full">
           Checkout
         </h1>
         {error && (
           <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            className="bg-status-error-bg border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
             role="alert"
           >
             <span className="block sm:inline">{error}</span>
@@ -128,10 +128,10 @@ export default function CheckoutPage() {
         )}
         <div className="lg:flex lg:flex-row">
           <div className="flex-1">
-            <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
+            <div className="p-8 border border-border bg-surface rounded-lg m-8">
               <ShippingForm onChange={setShippingInfo} />
             </div>
-            <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
+            <div className="p-8 border border-border bg-surface rounded-lg m-8">
               <PaymentOptions
                 total={total}
                 onPaymentSuccess={handlePaymentSuccess}

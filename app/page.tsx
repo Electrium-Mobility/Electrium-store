@@ -104,7 +104,7 @@ export default function Home() {
                                 : "Price not available"}
                             </p>
                           </div>
-                          <button className="w-full px-4 py-2 bg-btn-primary hover:bg-btn-primary-hover text-white font-semibold rounded-lg transition-all duration-200 hover:shadow-md active:scale-95">
+                          <button className="w-full px-4 py-2 bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] font-semibold rounded-lg transition-all duration-200 hover:shadow-md active:scale-95">
                             Buy Now
                           </button>
                         </div>
@@ -117,7 +117,7 @@ export default function Home() {
                                 : "Rental not available"}
                             </p>
                           </div>
-                          <button className="w-full px-4 py-2 bg-btn-primary hover:bg-btn-primary-hover text-white font-semibold rounded-lg transition-all duration-200 hover:shadow-md active:scale-95">
+                          <button className="w-full px-4 py-2 bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] font-semibold rounded-lg transition-all duration-200 hover:shadow-md active:scale-95">
                             Rent Now
                           </button>
                         </div>

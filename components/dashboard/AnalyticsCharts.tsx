@@ -200,10 +200,10 @@ export default function AnalyticsCharts({
   return (
     <div className="space-y-8">
       {/* Orders Chart */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-background rounded-2xl shadow-lg p-8">
         <div className="font-bold text-xl mb-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5 text-emerald-600" />
+            <TrendingUp className="h-5 w-5 text-status-success-text" />
             <span>Orders Over Time</span>
           </div>
           <div className="flex gap-2">
@@ -212,8 +212,8 @@ export default function AnalyticsCharts({
                 key={opt.value}
                 className={`px-4 py-1 rounded-full text-sm font-semibold transition-all border ${
                   range === opt.value
-                    ? "bg-emerald-600 text-white border-emerald-600 shadow"
-                    : "bg-gray-100 text-gray-600 border-gray-200 hover:bg-emerald-50"
+                    ? "bg-emerald-600 text-text-inverse border-emerald-600 shadow"
+                    : "bg-surface text-text-secondary border-border hover:bg-emerald-50"
                 }`}
                 onClick={() => onRangeChange(opt.value as any)}
               >
@@ -223,7 +223,7 @@ export default function AnalyticsCharts({
           </div>
         </div>
         {chartCounts.length === 0 || chartCounts.every((c) => c === 0) ? (
-          <div className="text-center text-gray-400 py-16 text-lg">
+          <div className="text-center text-text-muted py-16 text-lg">
             No order data available
           </div>
         ) : (
@@ -275,7 +275,7 @@ export default function AnalyticsCharts({
             </svg>
             {tooltip && (
               <div
-                className="absolute z-10 px-4 py-2 rounded-lg shadow-lg bg-white border border-gray-200 text-gray-900 text-sm font-semibold pointer-events-none"
+                className="absolute z-10 px-4 py-2 rounded-lg shadow-lg bg-background border border-border text-text-primary text-sm font-semibold pointer-events-none"
                 style={{
                   left: Math.max(0, Math.min(chartWidth - 100, tooltip.x - 50)),
                   top: tooltip.y - 40,
@@ -283,7 +283,7 @@ export default function AnalyticsCharts({
                 }}
               >
                 <div>{tooltip.label}</div>
-                <div className="text-emerald-600 text-lg font-bold">
+                <div className="text-status-success-text text-lg font-bold">
                   {tooltip.count} order{tooltip.count === 1 ? "" : "s"}
                 </div>
               </div>
@@ -293,13 +293,13 @@ export default function AnalyticsCharts({
       </div>
 
       {/* Order Value Chart */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-background rounded-2xl shadow-lg p-8">
         <div className="font-bold text-xl mb-4 flex items-center space-x-2">
-          <DollarSign className="h-5 w-5 text-blue-600" />
+          <DollarSign className="h-5 w-5 text-text-link" />
           <span>Order Value Over Time</span>
         </div>
         {valueChartData.length === 0 || valueChartData.every((v) => v === 0) ? (
-          <div className="text-center text-gray-400 py-16 text-lg">
+          <div className="text-center text-text-muted py-16 text-lg">
             No payment data available
           </div>
         ) : (
@@ -348,7 +348,7 @@ export default function AnalyticsCharts({
             </svg>
             {valueTooltip && (
               <div
-                className="absolute z-10 px-4 py-2 rounded-lg shadow-lg bg-white border border-gray-200 text-gray-900 text-sm font-semibold pointer-events-none"
+                className="absolute z-10 px-4 py-2 rounded-lg shadow-lg bg-background border border-border text-text-primary text-sm font-semibold pointer-events-none"
                 style={{
                   left: Math.max(
                     0,
@@ -359,7 +359,7 @@ export default function AnalyticsCharts({
                 }}
               >
                 <div>{valueTooltip.label}</div>
-                <div className="text-blue-600 text-lg font-bold">
+                <div className="text-text-link text-lg font-bold">
                   ${valueTooltip.value.toFixed(2)}
                 </div>
               </div>
@@ -369,9 +369,9 @@ export default function AnalyticsCharts({
       </div>
 
       {/* Order Status Breakdown */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-background rounded-2xl shadow-lg p-8">
         <div className="font-bold text-xl mb-6 flex items-center space-x-2">
-          <CheckCircle className="h-5 w-5 text-purple-600" />
+          <CheckCircle className="h-5 w-5 text-brand-primary" />
           <span>Order Status Breakdown</span>
         </div>
         <div className="space-y-4">
@@ -383,10 +383,10 @@ export default function AnalyticsCharts({
                     status === "Completed" ? "bg-emerald-500" : "bg-yellow-500"
                   }`}
                 ></div>
-                <span className="font-medium text-gray-700">{status}</span>
+                <span className="font-medium text-text-secondary">{status}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-24 bg-gray-200 rounded-full h-2">
+                <div className="w-24 bg-surface-hover rounded-full h-2">
                   <div
                     className={`h-2 rounded-full ${
                       status === "Completed"
@@ -398,7 +398,7 @@ export default function AnalyticsCharts({
                     }}
                   ></div>
                 </div>
-                <span className="text-sm font-semibold text-gray-600">
+                <span className="text-sm font-semibold text-text-secondary">
                   {count} ({((count / orders.length) * 100).toFixed(0)}%)
                 </span>
               </div>
