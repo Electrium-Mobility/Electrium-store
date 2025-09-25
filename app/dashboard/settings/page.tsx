@@ -95,7 +95,7 @@ export default function SettingsPage() {
             {darkMode ? (
               <Moon className="h-5 w-5 text-text-secondary" />
             ) : (
-              <Sun className="h-5 w-5 text-yellow-500" />
+              <Sun className="h-5 w-5 text-status-warning-text" />
             )}
             <span className="text-base font-semibold text-text-primary">
               Dark Mode
@@ -103,7 +103,7 @@ export default function SettingsPage() {
           </div>
           <button
             onClick={handleDarkModeToggle}
-            className={`w-12 h-7 flex items-center rounded-full p-1 transition-colors duration-300 ${darkMode ? "bg-emerald-600" : "bg-surface-hover"}`}
+            className={`w-12 h-7 flex items-center rounded-full p-1 transition-colors duration-300 ${darkMode ? "bg-btn-primary" : "bg-surface-hover"}`}
             aria-label="Toggle dark mode"
           >
             <span
@@ -143,7 +143,7 @@ export default function SettingsPage() {
           </div>
           <button
             onClick={handleNotificationsToggle}
-            className={`w-12 h-7 flex items-center rounded-full p-1 transition-colors duration-300 ${notifications ? "bg-emerald-600" : "bg-surface-hover"}`}
+            className={`w-12 h-7 flex items-center rounded-full p-1 transition-colors duration-300 ${notifications ? "bg-btn-primary" : "bg-surface-hover"}`}
             aria-label="Toggle notifications"
           >
             <span

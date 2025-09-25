@@ -93,10 +93,10 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
 
   return (
     <form>
-      <p className="font-bold text-xl pb-2">Shipping Information</p>
+      <p className="font-bold text-xl pb-2 text-[hsl(var(--text-primary))]">Shipping Information</p>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center">
-          <p className="font-medium w-36">Email Address</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Email Address</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"email"}
@@ -108,7 +108,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
       </div>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center my-2">
-          <p className="font-medium w-36">First Name</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">First Name</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
@@ -120,7 +120,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
       </div>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center my-2">
-          <p className="font-medium w-36">Last Name</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Last Name</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
@@ -132,7 +132,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
       </div>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center my-2">
-          <p className="font-medium w-36">Street Address</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Street Address</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
@@ -144,7 +144,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
       </div>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center">
-          <p className="font-medium w-36">Country</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Country</p>
           <Select
             className="flex-1"
             options={countryOptions}
@@ -152,13 +152,58 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
             onChange={handleCountryChange}
             placeholder="Select a country"
             isSearchable
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                backgroundColor: 'hsl(var(--surface))',
+                borderColor: state.isFocused ? 'hsl(var(--border-focus))' : 'hsl(var(--border))',
+                color: 'hsl(var(--text-primary))',
+                boxShadow: state.isFocused ? '0 0 0 2px hsl(var(--border-focus))' : 'none',
+                '&:hover': {
+                  borderColor: 'hsl(var(--border-focus))'
+                }
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: 'hsl(var(--text-primary))'
+              }),
+              placeholder: (provided) => ({
+                ...provided,
+                color: 'hsl(var(--text-secondary))'
+              }),
+              input: (provided) => ({
+                ...provided,
+                color: 'hsl(var(--text-primary))'
+              }),
+              menu: (provided) => ({
+                ...provided,
+                backgroundColor: 'hsl(var(--surface))',
+                border: '1px solid hsl(var(--border))'
+              }),
+              option: (provided, state) => ({
+                ...provided,
+                backgroundColor: state.isSelected 
+                  ? 'hsl(var(--primary))' 
+                  : state.isFocused 
+                    ? 'hsl(var(--surface-hover))' 
+                    : 'hsl(var(--surface))',
+                color: state.isSelected 
+                  ? 'hsl(var(--text-inverse))' 
+                  : 'hsl(var(--text-primary))',
+                '&:hover': {
+                  backgroundColor: state.isSelected 
+                    ? 'hsl(var(--primary))' 
+                    : 'hsl(var(--surface-hover))'
+                }
+              })
+            }}
           />
         </label>
       </div>
       {selectedCountry?.value === "CA" && (
         <div className="mt-6">
           <label className="lg:flex lg:flex-row items-center">
-            <p className="font-medium w-36">Province</p>
+            <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Province</p>
             <Select
               className="flex-1"
               options={provinceOptions}
@@ -166,13 +211,58 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
               onChange={setSelectedProvince}
               placeholder="Select a province"
               isSearchable
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: 'hsl(var(--surface))',
+                  borderColor: state.isFocused ? 'hsl(var(--border-focus))' : 'hsl(var(--border))',
+                  color: 'hsl(var(--text-primary))',
+                  boxShadow: state.isFocused ? '0 0 0 2px hsl(var(--border-focus))' : 'none',
+                  '&:hover': {
+                    borderColor: 'hsl(var(--border-focus))'
+                  }
+                }),
+                singleValue: (provided) => ({
+                  ...provided,
+                  color: 'hsl(var(--text-primary))'
+                }),
+                placeholder: (provided) => ({
+                  ...provided,
+                  color: 'hsl(var(--text-secondary))'
+                }),
+                input: (provided) => ({
+                  ...provided,
+                  color: 'hsl(var(--text-primary))'
+                }),
+                menu: (provided) => ({
+                  ...provided,
+                  backgroundColor: 'hsl(var(--surface))',
+                  border: '1px solid hsl(var(--border))'
+                }),
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isSelected 
+                    ? 'hsl(var(--primary))' 
+                    : state.isFocused 
+                      ? 'hsl(var(--surface-hover))' 
+                      : 'hsl(var(--surface))',
+                  color: state.isSelected 
+                    ? 'hsl(var(--text-inverse))' 
+                    : 'hsl(var(--text-primary))',
+                  '&:hover': {
+                    backgroundColor: state.isSelected 
+                      ? 'hsl(var(--primary))' 
+                      : 'hsl(var(--surface-hover))'
+                  }
+                })
+              }}
             />
           </label>
         </div>
       )}
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center my-2">
-          <p className="font-medium w-36">City</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">City</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
@@ -184,7 +274,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
       </div>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center my-2">
-          <p className="font-medium w-36">Zip/Postal Code</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Zip/Postal Code</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"text"}
@@ -196,7 +286,7 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
       </div>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center">
-          <p className="font-medium w-36">Phone Number</p>
+          <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Phone Number</p>
           <input
             className="flex-1 w-full border border-[hsl(var(--border))] rounded-md py-2 px-4 bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             type={"tel"}

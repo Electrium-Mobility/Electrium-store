@@ -139,7 +139,11 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/">
             <Image
-              src={darkMode ? "/img/logo-dark-mode.png" : "/img/logo-light-mode.png"}
+              src={
+                darkMode
+                  ? "/img/logo-dark-mode.png"
+                  : "/img/logo-light-mode.png"
+              }
               alt="Electrium Logo"
               width={150}
               height={40}
@@ -243,7 +247,7 @@ export default function Navbar() {
               {/* Always show dashboard link for testing */}
               <Link
                 href="/dashboard"
-                className="text-[hsl(var(--text-primary))] hover:text-emerald-600 mx-2"
+                className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2"
                 title="Dashboard"
               >
                 <i className="fas fa-user-circle fa-lg"></i>
@@ -253,7 +257,7 @@ export default function Navbar() {
                 <>
                   {/* Logout Button - Only show when user is logged in */}
                   <button
-                    className="text-[hsl(var(--text-primary))] hover:text-emerald-600"
+                    className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))]"
                     onClick={handleLogout}
                     title="Sign Out"
                   >

@@ -403,7 +403,7 @@ export default function DashboardClient({
                       </div>
                       <div className="flex items-center space-x-2">
                         <span
-                          className={`px-2 py-1 text-xs font-medium rounded-full ${order.is_complete ? "bg-status-success-bg text-green-700" : "bg-status-warning-bg text-yellow-700"}`}
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${order.is_complete ? "bg-status-success-bg text-status-success-text" : "bg-status-warning-bg text-status-warning-text"}`}
                         >
                           {order.is_complete ? "Completed" : "In Progress"}
                         </span>
@@ -447,7 +447,9 @@ export default function DashboardClient({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                  <span className="text-sm text-text-secondary">Active Rentals</span>
+                  <span className="text-sm text-text-secondary">
+                    Active Rentals
+                  </span>
                 </div>
                 <span className="text-sm font-medium text-text-primary">
                   {statusBreakdown.pending}
@@ -456,7 +458,9 @@ export default function DashboardClient({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-btn-primary rounded-full"></div>
-                  <span className="text-sm text-text-secondary">Rental Orders</span>
+                  <span className="text-sm text-text-secondary">
+                    Rental Orders
+                  </span>
                 </div>
                 <span className="text-sm font-medium text-text-primary">
                   {ordersWithRentals}
@@ -465,7 +469,9 @@ export default function DashboardClient({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                  <span className="text-sm text-text-secondary">Purchase Orders</span>
+                  <span className="text-sm text-text-secondary">
+                    Purchase Orders
+                  </span>
                 </div>
                 <span className="text-sm font-medium text-text-primary">
                   {ordersWithPurchases}

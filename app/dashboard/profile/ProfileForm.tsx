@@ -28,16 +28,19 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
 
     try {
       const profileData = {
-        first_name: formData.get('first_name') as string,
-        last_name: formData.get('last_name') as string,
-        phone: formData.get('phone') as string,
-        address: formData.get('address') as string,
+        first_name: formData.get("first_name") as string,
+        last_name: formData.get("last_name") as string,
+        phone: formData.get("phone") as string,
+        address: formData.get("address") as string,
       };
 
       const result = await updateProfileData(profileData);
 
       if (result && "error" in result) {
-        setMessage({ type: "error", text: result.error || "An error occurred" });
+        setMessage({
+          type: "error",
+          text: result.error || "An error occurred",
+        });
       } else {
         setMessage({ type: "success", text: "Profile updated successfully!" });
       }
@@ -113,7 +116,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="text"
                   name="first_name"
                   id="first_name"
-                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
                   defaultValue={profile.first_name}
                   required
                 />
@@ -132,7 +135,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="text"
                   name="last_name"
                   id="last_name"
-                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
                   defaultValue={profile.last_name}
                   required
                 />
@@ -151,7 +154,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="email"
                   name="email"
                   id="email"
-                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
                   defaultValue={profile.email || ""}
                   required
                 />
@@ -170,7 +173,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                   type="tel"
                   name="phone"
                   id="phone"
-                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
                   defaultValue={profile.phone}
                 />
               </div>
@@ -187,7 +190,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                 type="text"
                 name="address"
                 id="address"
-                className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
                 defaultValue={profile.address}
               />
             </div>

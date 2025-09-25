@@ -25,9 +25,9 @@ const quickActions = [
     label: "View Wishlist",
     href: "/dashboard/wishlist",
     icon: Heart,
-    bgColor: "bg-pink-100",
-    hoverColor: "hover:bg-pink-200",
-    iconColor: "text-pink-600",
+    bgColor: "bg-status-error-bg",
+    hoverColor: "hover:bg-status-error-bg-hover",
+    iconColor: "text-status-error-text",
   },
   {
     id: "billing",
@@ -35,7 +35,7 @@ const quickActions = [
     href: "/dashboard/billing",
     icon: CreditCard,
     bgColor: "bg-status-warning-bg",
-    hoverColor: "hover:bg-yellow-200",
+    hoverColor: "hover:bg-status-warning-bg-hover",
     iconColor: "text-status-warning-text",
   },
 ];
@@ -45,7 +45,9 @@ export default function QuickActions() {
 
   return (
     <div className="bg-background rounded-2xl shadow-lg p-6">
-      <h2 className="text-xl font-bold text-text-primary mb-4">Quick Actions</h2>
+      <h2 className="text-xl font-bold text-text-primary mb-4">
+        Quick Actions
+      </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {quickActions.map((action) => {
           const Icon = action.icon;
@@ -54,7 +56,7 @@ export default function QuickActions() {
               key={action.id}
               type="button"
               onClick={() => router.push(action.href)}
-              className={`flex flex-col items-center p-4 ${action.bgColor} rounded-xl ${action.hoverColor} transition-colors duration-200`}
+              className={`flex flex-col items-center p-4 ${action.bgColor} rounded-xl ${action.hoverColor} transition-shadow`}
             >
               <Icon className={`h-6 w-6 ${action.iconColor} mb-2`} />
               <span className="text-sm font-medium text-text-secondary text-center">

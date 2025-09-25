@@ -19,7 +19,9 @@ function CartNotification({
   return (
     <div className="w-80 absolute mt-24 right-6 rounded-xl bg-[hsl(var(--surface))] space-y-7 flex-col align-center p-6 drop-shadow-lg">
       <div className="flex flex-row justify-between">
-        <h1 className="text-base font-bold text-[hsl(var(--text-primary))]">Your Shopping Cart</h1>
+        <h1 className="text-base font-bold text-[hsl(var(--text-primary))]">
+          Your Shopping Cart
+        </h1>
         <button onClick={() => setNotifInfo(undefined)}>
           <i className="fas fa-xmark text-[hsl(var(--text-primary))]"></i>
         </button>
@@ -38,9 +40,15 @@ function CartNotification({
           className="w-1/3 border-2 border-[hsl(var(--border))] bg-[hsl(var(--background))] rounded-xl"
         />
         <div className="flex-col">
-          <div className="text-sm text-[hsl(var(--text-primary))]">{bike.name}</div>
-          <div className="text-sm text-[hsl(var(--text-primary))]">CA${bike.sell_price}</div>
-          <div className="text-sm text-[hsl(var(--text-muted))]">Quantity: {quantity}</div>
+          <div className="text-sm text-[hsl(var(--text-primary))]">
+            {bike.name}
+          </div>
+          <div className="text-sm text-[hsl(var(--text-primary))]">
+            CA${bike.sell_price}
+          </div>
+          <div className="text-sm text-[hsl(var(--text-muted))]">
+            Quantity: {quantity}
+          </div>
         </div>
       </div>
       <div className="flex flex-col space-y-4">

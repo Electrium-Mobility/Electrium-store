@@ -162,8 +162,8 @@ export default function ProfilePage() {
                 <div
                   className={`mb-6 p-4 rounded-lg flex items-center space-x-2 ${
                     message.type === "success"
-                      ? "bg-green-50 text-green-700 border border-green-200"
-                      : "bg-red-50 text-red-700 border border-red-200"
+                      ? "bg-green-50 text-status-success-text border border-green-200"
+                      : "bg-red-50 text-status-error-text border border-red-200"
                   }`}
                 >
                   {message.type === "success" ? (
@@ -218,7 +218,7 @@ export default function ProfilePage() {
                       disabled
                       className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-muted))] cursor-not-allowed"
                     />
-                    <div className="px-3 py-1 bg-status-success-bg text-emerald-700 rounded-full text-sm font-medium">
+                    <div className="px-3 py-1 bg-status-success-bg text-status-success-text rounded-full text-sm font-medium">
                       Verified
                     </div>
                   </div>
@@ -264,7 +264,7 @@ export default function ProfilePage() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex items-center space-x-2 px-6 py-3 bg-emerald-600 text-text-inverse rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center space-x-2 px-6 py-3 bg-btn-primary text-text-inverse rounded-lg hover:bg-btn-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <Save className="h-4 w-4" />
                     <span>{saving ? "Saving..." : "Save Changes"}</span>
@@ -306,7 +306,7 @@ export default function ProfilePage() {
                       className="flex items-center space-x-2"
                     >
                       <Icon
-                        className={`h-4 w-4 ${isCompleted ? "text-emerald-500" : "text-text-muted"}`}
+                        className={`h-4 w-4 ${isCompleted ? "text-status-success-text" : "text-text-muted"}`}
                       />
                       <span
                         className={`text-sm ${isCompleted ? "text-text-secondary" : "text-text-muted"}`}
@@ -314,7 +314,7 @@ export default function ProfilePage() {
                         {field.label}
                       </span>
                       {isCompleted && (
-                        <CheckCircle className="h-4 w-4 text-emerald-500" />
+                        <CheckCircle className="h-4 w-4 text-status-success-text" />
                       )}
                     </div>
                   );

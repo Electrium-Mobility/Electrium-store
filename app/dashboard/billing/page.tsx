@@ -10,7 +10,8 @@ export default function BillingPage() {
       <h1 className="text-2xl font-semibold text-text-primary mb-6">Billing</h1>
       <div className="bg-background p-6 rounded shadow mb-6">
         <div className="mb-2 text-text-secondary font-medium">
-          Current Plan: <span className="font-bold text-green-700">Pro</span>
+          Current Plan:{" "}
+          <span className="font-bold text-status-success-text">Pro</span>
         </div>
         <div className="mb-2 text-text-secondary font-medium">
           Payment Method: <span className="font-bold">Visa **** 4242</span>
@@ -20,7 +21,9 @@ export default function BillingPage() {
         </button>
       </div>
       <div className="bg-background p-6 rounded shadow">
-        <h2 className="text-lg font-semibold text-text-primary mb-4">Invoices</h2>
+        <h2 className="text-lg font-semibold text-text-primary mb-4">
+          Invoices
+        </h2>
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
@@ -54,8 +57,8 @@ export default function BillingPage() {
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       inv.status === "Paid"
-                        ? "bg-status-success-bg text-green-700"
-                        : "bg-status-error-bg text-red-700"
+                        ? "bg-status-success-bg text-status-success-text"
+                        : "bg-status-error-bg text-status-error-text"
                     }`}
                   >
                     {inv.status}

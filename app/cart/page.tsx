@@ -49,11 +49,15 @@ function Product({
       <div className="flex flex-1 flex-col md:flex-row md:items-center w-full justify-between gap-4">
         {/* Name */}
         <div className="min-w-[120px] flex-1">
-          <p className="font-bold text-lg text-[hsl(var(--text-primary))] mb-1">{bike.name}</p>
+          <p className="font-bold text-lg text-[hsl(var(--text-primary))] mb-1">
+            {bike.name}
+          </p>
         </div>
         {/* Price */}
-        <div className="min-w-[100px] text-[hsl(var(--text-secondary))] text-center">
-          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">Price</p>
+        <div className="min-w-[100px] text-[hsl(var(--text-primary))] text-center">
+          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">
+            Price
+          </p>
           <p>
             {bike.orderType === "rent"
               ? `CA $${bike.rental_rate.toFixed(2)}/hour`
@@ -62,7 +66,9 @@ function Product({
         </div>
         {/* Quantity */}
         <div className="min-w-[100px] text-center">
-          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">Quantity</p>
+          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">
+            Quantity
+          </p>
           <input
             type="number"
             value={bike.quantity}
@@ -74,12 +80,19 @@ function Product({
         </div>
         {/* Subtotal */}
         <div className="min-w-[100px] text-center">
-          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">Subtotal</p>
-          <p className="text-[hsl(var(--text-secondary))]">CA${subtotal.toFixed(2)}</p>
+          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">
+            Subtotal
+          </p>
+          <p className="text-[hsl(var(--text-primary))]">
+            CA${subtotal.toFixed(2)}
+          </p>
         </div>
         {/* Delete Button */}
         <div className="min-w-[80px] text-center">
-          <button className="text-status-error underline" onClick={handleOnClick}>
+          <button
+            className="text-status-error underline"
+            onClick={handleOnClick}
+          >
             Delete
           </button>
         </div>
@@ -149,12 +162,17 @@ export default function ShoppingCartPage() {
             Your Shopping Cart
           </h1>
           <div className="text-center">
-            <p className="text-[hsl(var(--text-secondary))] mb-8">Your cart is empty</p>
+            <p className="text-[hsl(var(--text-primary))] mb-8">
+              Your cart is empty
+            </p>
             <Link
               href="/"
               className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))]"
             >
-              <FaAngleLeft size={24} className="text-[hsl(var(--btn-primary-text))]" />
+              <FaAngleLeft
+                size={24}
+                className="text-[hsl(var(--btn-primary-text))]"
+              />
               Continue Shopping
             </Link>
           </div>
@@ -184,21 +202,26 @@ export default function ShoppingCartPage() {
               href="/"
               className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))] mx-auto"
             >
-              <FaAngleLeft size={24} className="text-[hsl(var(--btn-primary-text))]" />
+              <FaAngleLeft
+                size={24}
+                className="text-[hsl(var(--btn-primary-text))]"
+              />
               Continue Shopping
             </Link>
           </div>
 
           <div className="bg-[hsl(var(--surface))] p-8 rounded-lg shadow-md h-fit">
-            <h2 className="font-bold mb-6 text-lg text-[hsl(var(--text-primary))]">Cart Summary</h2>
-            <p className="text-[hsl(var(--text-secondary))] mb-6">
+            <h2 className="font-bold mb-6 text-lg text-[hsl(var(--text-primary))]">
+              Cart Summary
+            </h2>
+            <p className="text-[hsl(var(--text-primary))] mb-6">
               Shipping and tax are determined based on your selected option.
             </p>
-            <div className="flex mb-6 justify-between text-[hsl(var(--text-secondary))]">
+            <div className="flex mb-6 justify-between text-[hsl(var(--text-primary))]">
               <p>Subtotal</p>
               <p>CA${subtotal.toFixed(2)}</p>
             </div>
-            <div className="flex mb-6 justify-between text-[hsl(var(--text-secondary))]">
+            <div className="flex mb-6 justify-between text-[hsl(var(--text-primary))]">
               <p>Shipping</p>
               <p>CA${shipping.toFixed(2)}</p>
             </div>
@@ -213,8 +236,12 @@ export default function ShoppingCartPage() {
                 Secure Checkout
               </button>
             </Link>
-            <h2 className="font-bold mb-4 text-lg text-[hsl(var(--text-primary))]">Discount</h2>
-            <p className="text-[hsl(var(--text-secondary))] mb-3">Enter code for discount.</p>
+            <h2 className="font-bold mb-4 text-lg text-[hsl(var(--text-primary))]">
+              Discount
+            </h2>
+            <p className="text-[hsl(var(--text-primary))] mb-3">
+              Enter code for discount.
+            </p>
             <input
               type="text"
               placeholder="Enter code"

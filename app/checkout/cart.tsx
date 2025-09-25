@@ -22,16 +22,20 @@ function ProductDisplay({ params }: { params: { bike: CheckoutBike } }) {
           unoptimized
           width={250}
           height={250}
-          className="rounded-lg object-contain bg-background border border-border p-2"
+          className="rounded-lg object-contain bg-[hsl(var(--background))] border border-[hsl(var(--border))] p-2"
         />
         <div className="m-2 mx-8">
-          <h2 className="text-lg font-bold text-text-primary">{bike.name}</h2>
-          <p className="font-bold text-text-primary">
+          <h2 className="text-lg font-bold text-[hsl(var(--text-primary))]">
+            {bike.name}
+          </h2>
+          <p className="font-bold text-[hsl(var(--text-primary))]">
             {bike.orderType == "rent"
               ? `CA $${bike.rental_rate.toFixed(2)} per hour`
               : `CA $${bike.sell_price.toFixed(2)}`}
           </p>
-          <p className="text-text-muted mb-6">Quantity: {bike.quantity}</p>
+          <p className="text-[hsl(var(--text-secondary))] mb-6">
+            Quantity: {bike.quantity}
+          </p>
         </div>
       </div>
     </Link>
@@ -49,23 +53,31 @@ export default function Cart() {
   );
   const shipping: number = 1; // TODO
   return (
-    <div className="flex-1 p-8 border border-border bg-surface rounded-lg m-8">
-      <p className="font-bold text-xl pb-6">Items: {cart.length}</p>
+    <div className="flex-1 p-8 border border-[hsl(var(--border))] bg-[hsl(var(--surface))] rounded-lg m-8">
+      <p className="font-bold text-xl pb-6 text-[hsl(var(--text-primary))]">
+        Items: {cart.length}
+      </p>
       {cart.map((bike: CheckoutBike, i: number) => (
         <ProductDisplay key={i} params={{ bike: bike }} />
       ))}
       <div className="flex flex-row justify-between">
-        <p className="text-text-muted">Subtotal:</p>
-        <p className="text-text-muted">CA ${subtotal}</p>
+        <p className="text-[hsl(var(--text-secondary))]">Subtotal:</p>
+        <p className="text-[hsl(var(--text-secondary))]">CA ${subtotal}</p>
       </div>
       <div className="flex flex-row justify-between">
-        <p className="text-text-muted">Shipping: </p>
-        <p className="text-text-muted">how do i calculate this?</p>
+        <p className="text-[hsl(var(--text-secondary))]">Shipping: </p>
+        <p className="text-[hsl(var(--text-secondary))]">
+          how do i calculate this?
+        </p>
       </div>
-      <hr className="border-t border-border m-4" />
+      <hr className="border-t border-[hsl(var(--border))] m-4" />
       <div className="flex flex-row justify-between">
-        <p className="text-status-success-text font-bold">Order Total: </p>
-        <p className="text-status-success-text font-bold">CA ${subtotal + shipping}</p>
+        <p className="text-[hsl(var(--status-success-text))] font-bold">
+          Order Total:{" "}
+        </p>
+        <p className="text-[hsl(var(--status-success-text))] font-bold">
+          CA ${subtotal + shipping}
+        </p>
       </div>
     </div>
   );

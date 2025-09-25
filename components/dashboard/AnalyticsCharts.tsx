@@ -212,8 +212,8 @@ export default function AnalyticsCharts({
                 key={opt.value}
                 className={`px-4 py-1 rounded-full text-sm font-semibold transition-all border ${
                   range === opt.value
-                    ? "bg-emerald-600 text-text-inverse border-emerald-600 shadow"
-                    : "bg-surface text-text-secondary border-border hover:bg-emerald-50"
+                    ? "bg-btn-primary text-text-inverse border-btn-primary shadow"
+                    : "bg-surface text-text-secondary border-border hover:bg-surface-hover"
                 }`}
                 onClick={() => onRangeChange(opt.value as any)}
               >
@@ -380,18 +380,22 @@ export default function AnalyticsCharts({
               <div className="flex items-center space-x-3">
                 <div
                   className={`w-3 h-3 rounded-full ${
-                    status === "Completed" ? "bg-emerald-500" : "bg-yellow-500"
+                    status === "Completed"
+                      ? "bg-status-success-bg"
+                      : "bg-status-warning-bg"
                   }`}
                 ></div>
-                <span className="font-medium text-text-secondary">{status}</span>
+                <span className="font-medium text-text-secondary">
+                  {status}
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-24 bg-surface-hover rounded-full h-2">
                   <div
                     className={`h-2 rounded-full ${
                       status === "Completed"
-                        ? "bg-emerald-500"
-                        : "bg-yellow-500"
+                        ? "bg-status-success-bg"
+                        : "bg-status-warning-bg"
                     }`}
                     style={{
                       width: `${(count / orders.length) * 100}%`,

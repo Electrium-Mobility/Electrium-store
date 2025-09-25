@@ -85,15 +85,15 @@ function CheckoutForm({
     <form onSubmit={handleSubmit} className="w-full">
       <PaymentElement />
       {errorMessage && (
-        <div className="text-status-error-text mt-4 text-sm">{errorMessage}</div>
+        <div className="text-[hsl(var(--status-error-text))] mt-4 text-sm">{errorMessage}</div>
       )}
       <button
         type="submit"
         disabled={!stripe || isProcessing}
-        className={`w-full mt-4 py-2 px-4 rounded-lg text-text-inverse font-bold ${
+        className={`w-full mt-4 py-2 px-4 rounded-lg text-[hsl(var(--text-inverse))] font-bold ${
           !stripe || isProcessing
-            ? "bg-btn-disabled cursor-not-allowed"
-            : "bg-green-600 hover:bg-status-success"
+            ? "bg-[hsl(var(--btn-disabled))] cursor-not-allowed"
+            : "bg-green-600 hover:bg-[hsl(var(--status-success))]"
         }`}
       >
         {isProcessing ? "Processing..." : `Pay CA $${total.toFixed(2)}`}
@@ -148,7 +148,7 @@ export function PaymentOptions({
 
   return (
     <>
-      <p className="font-bold text-xl pb-2">Payment Options</p>
+      <p className="font-bold text-xl pb-2 text-[hsl(var(--text-primary))]">Payment Options</p>
 
       <div className="mb-4">
         <div className="flex gap-4 mb-4">
@@ -156,8 +156,8 @@ export function PaymentOptions({
             onClick={() => setPaymentMethod("stripe")}
             className={`flex-1 py-2 px-4 rounded-lg border ${
               paymentMethod === "stripe"
-                ? "border-green-600 bg-green-50"
-                : "border-border"
+                ? "border-[hsl(var(--border-accent))] bg-[hsl(var(--surface-secondary))] text-[hsl(var(--text-primary))]"
+                : "border-[hsl(var(--border))] bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
             }`}
           >
             Credit Card
@@ -166,8 +166,8 @@ export function PaymentOptions({
             onClick={() => setPaymentMethod("paypal")}
             className={`flex-1 py-2 px-4 rounded-lg border ${
               paymentMethod === "paypal"
-                ? "border-green-600 bg-green-50"
-                : "border-border"
+                ? "border-[hsl(var(--border-accent))] bg-[hsl(var(--surface-secondary))] text-[hsl(var(--text-primary))]"
+                : "border-[hsl(var(--border))] bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))]"
             }`}
           >
             <Image
@@ -203,13 +203,13 @@ export function PaymentOptions({
           (!clientSecret ||
             !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) && (
             <div className="text-center py-8">
-              <p className="text-status-error-text mb-4">
+              <p className="text-[hsl(var(--status-error-text))] mb-4">
                 {!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
                   ? "Stripe is not configured. Please check your environment variables."
                   : "Loading payment system..."}
               </p>
               {!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY && (
-                <p className="text-sm text-text-muted">
+                <p className="text-sm text-[hsl(var(--text-secondary))]">
                   Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in environment
                   variables
                 </p>
@@ -262,7 +262,7 @@ export function PaymentOptions({
         )}
       </div>
 
-      <div className="mt-4 text-sm text-text-muted">
+      <div className="mt-4 text-sm text-[hsl(var(--text-secondary))]">
         <p>Secure payment powered by Stripe</p>
         <p>Your payment information is encrypted and secure</p>
       </div>

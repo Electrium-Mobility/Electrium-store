@@ -71,7 +71,7 @@ export default function SignupPage() {
         className="bg-surface border border-border p-8 rounded-lg w-full max-w-sm"
         action={handleSubmit}
       >
-        <h2 className="text-2xl font-bold mb-6 text-green-700">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-6 text-text-primary">Sign Up</h2>
 
         <label htmlFor="first_name" className="block text-text-primary mb-2">
           First Name:
@@ -122,7 +122,9 @@ export default function SignupPage() {
           className="w-full p-2 mb-1 border border-[hsl(var(--border))] rounded bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:border-[hsl(var(--border-focus))] focus:outline-none"
         />
         {serverErrors.email && (
-          <p className="text-status-error text-sm mb-2">{serverErrors.email[0]}</p>
+          <p className="text-status-error text-sm mb-2">
+            {serverErrors.email[0]}
+          </p>
         )}
 
         <label htmlFor="password" className="block text-text-primary mb-2">
@@ -152,7 +154,10 @@ export default function SignupPage() {
           </p>
         )}
 
-        <label htmlFor="confirmPassword" className="block text-text-primary mb-2">
+        <label
+          htmlFor="confirmPassword"
+          className="block text-text-primary mb-2"
+        >
           Confirm Password:
         </label>
         <div className="relative">
@@ -174,7 +179,9 @@ export default function SignupPage() {
           </span>
         </div>
         {!passwordMatch && (
-          <p className="text-status-error text-sm mb-2">Passwords do not match</p>
+          <p className="text-status-error text-sm mb-2">
+            Passwords do not match
+          </p>
         )}
 
         <button
@@ -186,7 +193,7 @@ export default function SignupPage() {
         </button>
 
         <Link href="/login">
-          <p className="block text-center text-green-500 mt-4 hover:underline">
+          <p className="block text-center text-text-link mt-4 hover:text-text-link-hover hover:underline">
             Go back to login
           </p>
         </Link>

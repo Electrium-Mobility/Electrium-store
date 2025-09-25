@@ -152,7 +152,9 @@ export default function OrderSuccessPage({
                     className="flex items-center justify-between p-4 bg-surface rounded-lg"
                   >
                     <div>
-                      <p className="font-medium text-text-primary">{item.name}</p>
+                      <p className="font-medium text-text-primary">
+                        {item.name}
+                      </p>
                       <p className="text-sm text-text-muted">
                         Quantity: {item.quantity} | Type: {item.orderType}
                       </p>

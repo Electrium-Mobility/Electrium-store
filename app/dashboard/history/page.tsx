@@ -41,8 +41,8 @@ export default function OrderHistoryPage() {
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       order.status === "Delivered"
-                        ? "bg-status-success-bg text-green-700"
-                        : "bg-status-warning-bg text-yellow-700"
+                        ? "bg-status-success-bg text-status-success-text"
+                        : "bg-status-error-bg text-status-error-text"
                     }`}
                   >
                     {order.status}

@@ -57,7 +57,7 @@ export default function RentalDetailPage() {
         <div className="text-xl mb-4">Rental not found</div>
         <button
           onClick={() => router.push("/rentals")}
-          className="px-4 py-2 bg-emerald-600 text-text-inverse rounded hover:bg-emerald-700"
+          className="px-4 py-2 bg-btn-primary text-text-inverse rounded hover:bg-btn-primary-hover"
         >
           Back to Rentals
         </button>
@@ -70,7 +70,7 @@ export default function RentalDetailPage() {
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => router.push("/rentals")}
-          className="mb-6 text-status-success-text hover:text-emerald-700 flex items-center"
+          className="mb-6 text-status-success-text hover:text-text-link flex items-center"
         >
           <i className="fas fa-arrow-left mr-2"></i>
           Back to Rentals
@@ -90,9 +90,11 @@ export default function RentalDetailPage() {
           </div>
 
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-text-primary">{rental.name}</h1>
+            <h1 className="text-3xl font-bold text-text-primary">
+              {rental.name}
+            </h1>
 
-            <div className="bg-emerald-50 p-4 rounded-lg">
+            <div className="bg-status-success-bg p-4 rounded-lg">
               <p className="text-2xl font-semibold text-status-success-text">
                 CA ${rental.rental_rate.toFixed(2)}/hour
               </p>
@@ -112,7 +114,7 @@ export default function RentalDetailPage() {
               </div>
             )}
 
-            <button className="w-full bg-emerald-600 text-text-inverse py-3 px-6 rounded-lg hover:bg-emerald-700 transition-colors">
+            <button className="w-full bg-btn-primary text-text-inverse py-3 px-6 rounded-lg hover:bg-btn-primary-hover transition-colors">
               Rent Now
             </button>
           </div>

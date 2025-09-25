@@ -107,8 +107,12 @@ export default async function OrdersPage() {
         <div className="bg-background rounded-xl shadow-sm border border-border p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-text-secondary">Total Orders</p>
-              <p className="text-2xl font-bold text-text-primary">{totalOrders}</p>
+              <p className="text-sm font-medium text-text-secondary">
+                Total Orders
+              </p>
+              <p className="text-2xl font-bold text-text-primary">
+                {totalOrders}
+              </p>
             </div>
             <div className="p-3 bg-status-info-bg rounded-lg">
               <Package className="h-6 w-6 text-text-link" />
@@ -119,7 +123,9 @@ export default async function OrdersPage() {
         <div className="bg-background rounded-xl shadow-sm border border-border p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-text-secondary">Completed</p>
+              <p className="text-sm font-medium text-text-secondary">
+                Completed
+              </p>
               <p className="text-2xl font-bold text-text-primary">
                 {completedOrders}
               </p>
@@ -147,7 +153,9 @@ export default async function OrdersPage() {
         <div className="bg-background rounded-xl shadow-sm border border-border p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-text-secondary">Total Spent</p>
+              <p className="text-sm font-medium text-text-secondary">
+                Total Spent
+              </p>
               <p className="text-2xl font-bold text-text-primary">
                 ${totalSpent.toFixed(2)}
               </p>
@@ -187,7 +195,9 @@ export default async function OrdersPage() {
       {/* Orders Table */}
       <div className="bg-background rounded-xl shadow-sm border border-border overflow-hidden">
         <div className="px-6 py-4 border-b border-border">
-          <h3 className="text-lg font-semibold text-text-primary">Order History</h3>
+          <h3 className="text-lg font-semibold text-text-primary">
+            Order History
+          </h3>
         </div>
 
         <div className="overflow-x-auto">
@@ -242,8 +252,8 @@ export default async function OrdersPage() {
                         <span
                           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                             order.is_complete
-                              ? "bg-status-success-bg text-green-700"
-                              : "bg-status-warning-bg text-yellow-700"
+                              ? "bg-status-success-bg text-status-success-text"
+                              : "bg-status-warning-bg text-status-warning-text"
                           }`}
                         >
                           {order.is_complete ? (

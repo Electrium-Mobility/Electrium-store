@@ -120,7 +120,7 @@ export default function CheckoutPage() {
         </h1>
         {error && (
           <div
-            className="bg-status-error-bg border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            className="bg-status-error-bg border border-status-error-border text-status-error-text px-4 py-3 rounded relative mb-4"
             role="alert"
           >
             <span className="block sm:inline">{error}</span>

@@ -30,7 +30,7 @@ export default function LoginPage() {
         className="border border-border bg-surface p-8 rounded-lg w-full max-w-sm"
         action={handleSubmit}
       >
-        <h2 className="text-2xl font-bold mb-6 text-green-700">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-text-primary">Login</h2>
         {unsuccessfulLogin && (
           <p className="text-status-error-text mb-3 mt-[-15px]">
             Invalid email or password
@@ -82,7 +82,7 @@ export default function LoginPage() {
           Log in
         </button>
         <Link href="/signup">
-          <p className="block text-center text-green-500 mt-4 hover:underline">
+          <p className="block text-center text-text-link mt-4 hover:text-text-link-hover hover:underline">
             Create an account?
           </p>
         </Link>

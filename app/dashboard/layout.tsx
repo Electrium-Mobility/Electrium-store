@@ -58,7 +58,9 @@ export default function DashboardLayout({
               {userInitials}
             </span>
           </div>
-          <h1 className="text-xl font-bold text-[hsl(var(--text-primary))]">My Account</h1>
+          <h1 className="text-xl font-bold text-[hsl(var(--text-primary))]">
+            My Account
+          </h1>
         </div>
         <nav className="flex-1 mt-8 space-y-2 px-4">
           {navigation.map((item) => {
