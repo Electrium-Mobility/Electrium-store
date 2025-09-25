@@ -54,7 +54,7 @@ export default function OrderSuccessPage({
       <div className="min-h-screen bg-surface py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="bg-background shadow-lg rounded-lg p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[hsl(var(--btn-primary))] mx-auto"></div>
             <p className="mt-4 text-text-secondary">Loading order details...</p>
           </div>
         </div>

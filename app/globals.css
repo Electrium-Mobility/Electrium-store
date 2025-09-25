@@ -70,7 +70,7 @@
     --surface: 0 0% 12%;                 /* 卡片/表面背景 */
     --surface-hover: 0 0% 16%;           /* 表面悬停状态 */
     --surface-active: 0 0% 20%;          /* 表面激活状态 */
-    --header-background: 0 0% 100%;      /* 头部背景 - 暗色主题下为白色 */
+    --header-background: 0 0% 10%;       /* 头部背景 - 暗色主题下为暗色 */
     --footer-background: 0 0% 6%;        /* 页脚背景 */
 
     /* === 文本颜色系统 === */
@@ -127,7 +127,7 @@
   @media (prefers-color-scheme: dark) {
     :root {
       --background: 0 0% 8%;
-      --header-background: 0 0% 4%;
+      --header-background: 0 0% 10%;
       --btn-background: 0 0% 12%;
       --btn-background-hover: 0 0% 16%;
       --foreground: 0 0% 95%;

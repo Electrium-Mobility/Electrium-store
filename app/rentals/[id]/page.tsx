@@ -45,8 +45,8 @@ export default function RentalDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-xl">Loading...</div>
+      <div className="flex justify-center items-center min-h-screen bg-surface">
+        <div className="text-xl text-text-primary">Loading...</div>
       </div>
     );
   }

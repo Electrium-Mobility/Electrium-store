@@ -139,8 +139,8 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/">
             <Image
-              src="/img/logo-light-mode.png"
-              alt="Electrium Mobility"
+              src={darkMode ? "/img/logo-dark-mode.png" : "/img/logo-light-mode.png"}
+              alt="Electrium Logo"
               width={150}
               height={40}
               className="w-[150px] h-auto"
@@ -152,7 +152,7 @@ export default function Navbar() {
           {/* Cart Button */}
           <div className="relative">
             <button
-              className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--btn-primary))] relative"
+              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative"
               onClick={() => setIsCartOpen(!isCartOpen)}
             >
               <i className="fas fa-shopping-cart"></i>
@@ -230,7 +230,7 @@ export default function Navbar() {
 
           {/* Theme Toggle */}
           <button
-            className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--btn-primary))]"
+            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))]"
             onClick={handleDarkModeToggle}
             title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
@@ -243,7 +243,7 @@ export default function Navbar() {
               {/* Always show dashboard link for testing */}
               <Link
                 href="/dashboard"
-                className="text-[hsl(var(--foreground))] hover:text-emerald-600 mx-2"
+                className="text-[hsl(var(--text-primary))] hover:text-emerald-600 mx-2"
                 title="Dashboard"
               >
                 <i className="fas fa-user-circle fa-lg"></i>
@@ -253,7 +253,7 @@ export default function Navbar() {
                 <>
                   {/* Logout Button - Only show when user is logged in */}
                   <button
-                    className="text-[hsl(var(--foreground))] hover:text-emerald-600"
+                    className="text-[hsl(var(--text-primary))] hover:text-emerald-600"
                     onClick={handleLogout}
                     title="Sign Out"
                   >
