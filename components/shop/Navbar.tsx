@@ -154,10 +154,14 @@ export default function Navbar() {
 
         <div className="hidden lg:flex items-center space-x-4">
           {/* Cart Button */}
-          <div className="relative">
-            <button
-              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative"
-              onClick={() => setIsCartOpen(!isCartOpen)}
+          <div
+            className="relative"
+            onMouseEnter={() => setIsCartOpen(true)}
+            onMouseLeave={() => setIsCartOpen(false)}
+          >
+            <Link
+              href="/cart"
+              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative inline-block"
             >
               <i className="fas fa-shopping-cart"></i>
               {cartTotal > 0 && (
@@ -165,7 +169,7 @@ export default function Navbar() {
                   {cartTotal}
                 </span>
               )}
-            </button>
+            </Link>
 
             {/* Cart Dropdown */}
             {isCartOpen && (
