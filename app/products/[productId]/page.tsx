@@ -100,9 +100,10 @@ function StarRating({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((star) => (
         <svg
           key={star}
-          className={`w-4 h-4 ${
-            star <= rating ? "text-yellow-400 fill-current" : "text-gray-300"
+          className={`w-5 h-5 ${
+            star <= rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"
           }`}
+          fill="currentColor"
           viewBox="0 0 20 20"
         >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -115,19 +116,19 @@ function StarRating({ rating }: { rating: number }) {
 // Review card component
 function ReviewCard({ review }: { review: typeof mockReviews[0] }) {
   const colors = [
-    "bg-purple-100 border-purple-200",
-    "bg-pink-100 border-pink-200", 
-    "bg-green-100 border-green-200",
-    "bg-orange-100 border-orange-200"
+    "bg-purple-100 dark:bg-purple-900/30 border-purple-200 dark:border-purple-700",
+    "bg-pink-100 dark:bg-pink-900/30 border-pink-200 dark:border-pink-700", 
+    "bg-green-100 dark:bg-green-900/30 border-green-200 dark:border-green-700",
+    "bg-orange-100 dark:bg-orange-900/30 border-orange-200 dark:border-orange-700"
   ];
   
   return (
     <div className={`p-6 rounded-2xl border-2 ${colors[review.id - 1]} space-y-4`}>
       <StarRating rating={review.rating} />
-      <p className="text-sm text-gray-700 leading-relaxed">
+      <p className="text-sm text-text-secondary leading-relaxed">
         {review.comment}
       </p>
-      <p className="font-semibold text-gray-900">{review.name}</p>
+      <p className="font-semibold text-text-primary">{review.name}</p>
     </div>
   );
 }
@@ -146,15 +147,15 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-background">
       <main className="flex-grow py-16 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Main Product Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
+          <div className="bg-surface rounded-2xl shadow-lg p-8 mb-12 border border-border">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Product Image */}
               <div className="flex justify-center">
-                <div className="bg-gray-100 rounded-2xl p-8 w-full max-w-md">
+                <div className="bg-btn-background rounded-2xl p-8 w-full max-w-md border border-border-subtle">
                   <Image
                     src={bike.image || "/img/placeholder.png"}
                     alt={bike.name}
@@ -170,10 +171,10 @@ export default async function ProductPage({
               {/* Product Details */}
               <div className="space-y-6">
                 <div>
-                  <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-4xl font-bold text-text-primary mb-2">
                     {bike.name}
                   </h1>
-                  <p className="text-3xl font-bold text-green-600">
+                  <p className="text-3xl font-bold text-status-success">
                     {isRentalMode
                       ? `CA $${bike.rental_rate?.toFixed(2) || "0.00"} per hour`
                       : `CA $${bike.sell_price?.toFixed(2) || "0.00"}`}
@@ -181,7 +182,7 @@ export default async function ProductPage({
                 </div>
 
                 <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-text-secondary leading-relaxed">
                     {bike.description || "Introducing Volter: Where Innovation Meets Adventure. At the intersection of innovation and adventure, the Volter electric bicycle emerges as a true embodiment of cutting-edge design and beautiful bike description..."}
                   </p>
                 </div>
@@ -192,32 +193,32 @@ export default async function ProductPage({
                 </div>
 
                 {/* Shipping Information */}
-                <div className="border-t pt-6 space-y-2">
-                  <h3 className="font-semibold text-gray-900">Shipping Information...</h3>
-                  <p className="text-sm text-gray-600">Shipping Information...</p>
+                <div className="border-t border-border pt-6 space-y-2">
+                  <h3 className="font-semibold text-text-primary">Shipping Information...</h3>
+                  <p className="text-sm text-text-muted">Shipping Information...</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Product Overview Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Product Overview</h2>
-            <div className="space-y-4 text-gray-700">
+          <div className="bg-surface rounded-2xl shadow-lg p-8 mb-12 border border-border">
+            <h2 className="text-2xl font-bold text-text-primary mb-6">Product Overview</h2>
+            <div className="space-y-4 text-text-secondary">
               <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-status-success rounded-full mt-2 flex-shrink-0"></div>
                 <p>
                   With a top speed of 42 km/h, Volter offers a thrilling ride that combines eco-friendly mobility with an exhilarating experience. Powered by a battery supporting a maximum range of 42 km, this electric bike is not just a mode of transportation but a statement of innovation and style.
                 </p>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-status-success rounded-full mt-2 flex-shrink-0"></div>
                 <p>
                   Covering distances between 15 to 25 kilometers on a single charge, Volter ensures that every journey is not only efficient but also filled with possibilities. Whether you're commuting through urban landscapes or embarking on scenic routes, Volter empowers you to explore with confidence, knowing that its robust design and advanced components are ready for any terrain.
                 </p>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-status-success rounded-full mt-2 flex-shrink-0"></div>
                 <p>
                   Beautiful bike overview...
                 </p>
@@ -226,8 +227,8 @@ export default async function ProductPage({
           </div>
 
           {/* Reviews Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Customer Reviews</h2>
+          <div className="bg-surface rounded-2xl shadow-lg p-8 border border-border">
+            <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">Customer Reviews</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {mockReviews.map((review) => (
                 <ReviewCard key={review.id} review={review} />
