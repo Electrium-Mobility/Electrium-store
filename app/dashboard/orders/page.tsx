@@ -10,6 +10,7 @@ import {
   Clock,
   DollarSign,
   Calendar,
+  Bike,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -64,6 +65,13 @@ export default async function OrdersPage() {
     .select("order_id, payment_amount")
     .in("order_id", orderIds);
 
+  // 5. Get rental records for this customer
+  const { data: rentals } = await supabase
+    .from("rentals")
+    .select("*")
+    .eq("customer_id", customer.id)
+    .order("rental_start_date", { ascending: false });
+
   // Create a map of order_id to payment amount
   const paymentMap = new Map();
   payments?.forEach((payment) => {
@@ -77,12 +85,11 @@ export default async function OrdersPage() {
   const pendingOrders =
     orders?.filter((order) => !order.is_complete).length || 0;
 
-  // Calculate total spent from payments
-  const totalSpent =
-    payments?.reduce(
-      (sum, payment) => sum + (payment.payment_amount || 0),
-      0
-    ) || 0;
+  // Calculate active rentals (rentals that haven't ended yet)
+  const activeRentals = rentals?.filter((rental) => {
+    if (!rental.rental_end_date) return true; // No end date means still active
+    return new Date(rental.rental_end_date) > new Date(); // End date is in the future
+  }).length || 0;
 
   return (
     <div className="space-y-6">
@@ -154,14 +161,14 @@ export default async function OrdersPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-text-secondary">
-                Total Spent
+                Active Rent
               </p>
               <p className="text-2xl font-bold text-text-primary">
-                ${totalSpent.toFixed(2)}
+                {activeRentals}
               </p>
             </div>
-            <div className="p-3 bg-purple-100 rounded-lg">
-              <DollarSign className="h-6 w-6 text-brand-primary" />
+            <div className="p-3 bg-green-100 rounded-lg">
+              <Bike className="h-6 w-6 text-green-600" />
             </div>
           </div>
         </div>
@@ -288,6 +295,117 @@ export default async function OrdersPage() {
                         className="mt-4 inline-flex items-center px-4 py-2 bg-btn-primary hover:bg-btn-primary-hover text-text-inverse rounded-lg transition-colors text-sm"
                       >
                         Browse Products
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Rent History */}
+      <div className="bg-background rounded-xl shadow-sm border border-border overflow-hidden">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-semibold text-text-primary">
+            Rent History
+          </h3>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-surface">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                  Rental #
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                  Start Date
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                  End Date
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-background divide-y divide-gray-200">
+              {rentals && rentals.length > 0 ? (
+                rentals.map((rental) => {
+                  const isActive = !rental.rental_end_date || new Date(rental.rental_end_date) > new Date();
+
+                  return (
+                    <tr
+                      key={rental.rental_id}
+                      className="hover:bg-surface transition-colors"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-semibold text-text-primary">
+                          #{String(rental.rental_id).slice(-8)}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Calendar className="h-4 w-4 text-text-muted mr-2" />
+                          <div className="text-sm text-text-secondary">
+                            {rental.rental_start_date
+                              ? new Date(rental.rental_start_date).toLocaleDateString()
+                              : "Unknown date"}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Calendar className="h-4 w-4 text-text-muted mr-2" />
+                          <div className="text-sm text-text-secondary">
+                            {rental.rental_end_date
+                              ? new Date(rental.rental_end_date).toLocaleDateString()
+                              : "Ongoing"}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                            isActive
+                              ? "bg-green-100 text-green-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {isActive ? (
+                            <>
+                              <Bike className="h-3 w-3 mr-1" />
+                              Active
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Completed
+                            </>
+                          )}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={4} className="px-6 py-12 text-center">
+                    <div className="flex flex-col items-center">
+                      <Bike className="h-12 w-12 text-text-muted mb-4" />
+                      <p className="text-lg text-text-muted font-medium">
+                        No rental history found
+                      </p>
+                      <p className="text-sm text-text-muted mt-1">
+                        Start renting bikes to see your rental history here
+                      </p>
+                      <Link
+                        href="/"
+                        className="mt-4 inline-flex items-center px-4 py-2 bg-btn-primary hover:bg-btn-primary-hover text-text-inverse rounded-lg transition-colors text-sm"
+                      >
+                        Browse Bikes
                       </Link>
                     </div>
                   </td>

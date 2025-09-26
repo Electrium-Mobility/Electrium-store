@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import ShippingForm from "@/app/checkout/shippingForm";
 import { PaymentOptions } from "@/app/checkout/paymentOptions";
 import Cart from "./cart";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import useSessionStorage from "@/utils/useSessionStorage";
 import { CheckoutBike } from "@/utils/getBike";
@@ -14,6 +14,7 @@ import { LoadingButton } from "@/components/ui/LoadingSpinner";
 export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const cartText = useSessionStorage("cart");
   const cart = cartText ? JSON.parse(cartText) : [];
 
@@ -28,6 +29,46 @@ export default function CheckoutPage() {
   const [shippingInfo, setShippingInfo] = useState({
     email: "" /* ...other fields */,
   });
+
+  // Fetch user profile data on mount
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      
+      if (user) {
+        // Fetch user profile from customers table
+        const { data: profile } = await supabase
+          .from("customers")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        
+        if (profile) {
+          setUserProfile({
+            email: user.email,
+            first_name: profile.first_name || "",
+            last_name: profile.last_name || "",
+            phone: profile.phone || "",
+            address: profile.address || "",
+          });
+        } else {
+          // If no profile exists, at least set the email
+          setUserProfile({
+            email: user.email,
+            first_name: "",
+            last_name: "",
+            phone: "",
+            address: "",
+          });
+        }
+      }
+    }
+    
+    fetchUserProfile();
+  }, []);
 
   const handlePaymentSuccess = async (paymentDetails: any) => {
     setIsProcessing(true);
@@ -130,7 +171,10 @@ export default function CheckoutPage() {
         <div className="lg:flex lg:flex-row">
           <div className="flex-1">
             <div className="p-8 border border-border bg-surface rounded-lg m-8">
-              <ShippingForm onChange={setShippingInfo} />
+              <ShippingForm 
+                onChange={setShippingInfo} 
+                userProfile={userProfile}
+              />
             </div>
             <div className="p-8 border border-border bg-surface rounded-lg m-8">
               <PaymentOptions

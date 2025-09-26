@@ -15,6 +15,13 @@ interface ShippingFormProps {
     postalCode: string;
     phone: string;
   }) => void;
+  userProfile?: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    address: string;
+  } | null;
 }
 
 // Convert countries object to array format for react-select
@@ -50,7 +57,7 @@ type ProvinceOption = {
   label: string;
 };
 
-export default function ShippingForm({ onChange }: ShippingFormProps) {
+export default function ShippingForm({ onChange, userProfile }: ShippingFormProps) {
   const [email, setEmail] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -60,6 +67,23 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
   const [city, setCity] = React.useState("");
   const [postalCode, setPostalCode] = React.useState("");
   const [phone, setPhone] = React.useState("");
+
+  // Auto-fill form when userProfile is available
+  React.useEffect(() => {
+    if (userProfile) {
+      setEmail(userProfile.email || "");
+      setFirstName(userProfile.first_name || "");
+      setLastName(userProfile.last_name || "");
+      setPhone(userProfile.phone || "");
+      
+      // Parse address if it exists (assuming it's a full address string)
+      if (userProfile.address) {
+        setAddress(userProfile.address);
+        // You could add more sophisticated address parsing here
+        // For now, we'll just set the full address string
+      }
+    }
+  }, [userProfile]);
 
   const handleCountryChange = (option: any) => {
     setSelectedCountry(option);
@@ -93,7 +117,14 @@ export default function ShippingForm({ onChange }: ShippingFormProps) {
 
   return (
     <form>
-      <p className="font-bold text-xl pb-2 text-[hsl(var(--text-primary))]">Shipping Information</p>
+      <p className="font-bold text-xl pb-2 text-[hsl(var(--text-primary))]">
+        Shipping Information
+        {userProfile && (
+          <span className="text-sm font-normal text-[hsl(var(--text-secondary))] ml-2">
+            (Auto-filled from your profile)
+          </span>
+        )}
+      </p>
       <div className="mt-6">
         <label className="lg:flex lg:flex-row items-center">
           <p className="font-medium w-36 text-[hsl(var(--text-primary))]">Email Address</p>
