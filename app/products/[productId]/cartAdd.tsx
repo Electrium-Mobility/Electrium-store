@@ -72,7 +72,7 @@ function CartNotification({
 }
 
 export default function CartAdd({ bike }: { bike: Bike }) {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(1);
   const [notifInfo, setNotifInfo] = useState<{
     bike: Bike;
     subtotal: number;
