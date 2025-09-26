@@ -86,10 +86,11 @@ export default async function OrdersPage() {
     orders?.filter((order) => !order.is_complete).length || 0;
 
   // Calculate active rentals (rentals that haven't ended yet)
-  const activeRentals = rentals?.filter((rental) => {
-    if (!rental.rental_end_date) return true; // No end date means still active
-    return new Date(rental.rental_end_date) > new Date(); // End date is in the future
-  }).length || 0;
+  const activeRentals =
+    rentals?.filter((rental) => {
+      if (!rental.rental_end_date) return true; // No end date means still active
+      return new Date(rental.rental_end_date) > new Date(); // End date is in the future
+    }).length || 0;
 
   return (
     <div className="space-y-6">
@@ -334,7 +335,9 @@ export default async function OrdersPage() {
             <tbody className="bg-background divide-y divide-border">
               {rentals && rentals.length > 0 ? (
                 rentals.map((rental) => {
-                  const isActive = !rental.rental_end_date || new Date(rental.rental_end_date) > new Date();
+                  const isActive =
+                    !rental.rental_end_date ||
+                    new Date(rental.rental_end_date) > new Date();
 
                   return (
                     <tr
@@ -351,7 +354,9 @@ export default async function OrdersPage() {
                           <Calendar className="h-4 w-4 text-text-muted mr-2" />
                           <div className="text-sm text-text-secondary">
                             {rental.rental_start_date
-                              ? new Date(rental.rental_start_date).toLocaleDateString()
+                              ? new Date(
+                                  rental.rental_start_date
+                                ).toLocaleDateString()
                               : "Unknown date"}
                           </div>
                         </div>
@@ -361,7 +366,9 @@ export default async function OrdersPage() {
                           <Calendar className="h-4 w-4 text-text-muted mr-2" />
                           <div className="text-sm text-text-secondary">
                             {rental.rental_end_date
-                              ? new Date(rental.rental_end_date).toLocaleDateString()
+                              ? new Date(
+                                  rental.rental_end_date
+                                ).toLocaleDateString()
                               : "Ongoing"}
                           </div>
                         </div>

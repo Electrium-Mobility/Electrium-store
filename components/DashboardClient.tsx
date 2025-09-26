@@ -57,7 +57,7 @@ export default function DashboardClient({
 
   // Calculate stats
   const totalOrders = orders?.length || 0;
-  
+
   // Calculate active rentals - only count orders that have rental items and are not complete
   const activeRentals =
     orders?.filter((order) => {
@@ -67,7 +67,8 @@ export default function DashboardClient({
     }).length || 0;
 
   // Calculate reward points (example: 10 points per completed order)
-  const completedOrders = orders?.filter((order) => order.is_complete).length || 0;
+  const completedOrders =
+    orders?.filter((order) => order.is_complete).length || 0;
   const rewardPoints = completedOrders * 10;
 
   const recentOrders = orders?.slice(0, 5) || [];
@@ -80,7 +81,9 @@ export default function DashboardClient({
           <h1 className="text-3xl font-bold text-text-primary">
             Welcome back, {userName}!
           </h1>
-          <p className="text-text-secondary mt-2">Here's your biking journey overview</p>
+          <p className="text-text-secondary mt-2">
+            Here's your biking journey overview
+          </p>
         </div>
 
         {/* Overview Cards */}
@@ -89,8 +92,12 @@ export default function DashboardClient({
           <div className="bg-surface rounded-lg shadow-sm p-6 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-text-secondary">My Orders</p>
-                <p className="text-3xl font-bold text-text-primary">{totalOrders}</p>
+                <p className="text-sm font-medium text-text-secondary">
+                  My Orders
+                </p>
+                <p className="text-3xl font-bold text-text-primary">
+                  {totalOrders}
+                </p>
               </div>
               <div className="p-3 bg-status-info-bg rounded-full">
                 <Package className="h-6 w-6 text-status-info-text" />
@@ -102,8 +109,12 @@ export default function DashboardClient({
           <div className="bg-surface rounded-lg shadow-sm p-6 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-text-secondary">Active Rentals</p>
-                <p className="text-3xl font-bold text-text-primary">{activeRentals}</p>
+                <p className="text-sm font-medium text-text-secondary">
+                  Active Rentals
+                </p>
+                <p className="text-3xl font-bold text-text-primary">
+                  {activeRentals}
+                </p>
               </div>
               <div className="p-3 bg-status-success-bg rounded-full">
                 <ShoppingCart className="h-6 w-6 text-status-success-text" />
@@ -115,8 +126,12 @@ export default function DashboardClient({
           <div className="bg-surface rounded-lg shadow-sm p-6 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-text-secondary">Reward Points</p>
-                <p className="text-3xl font-bold text-text-primary">{rewardPoints}</p>
+                <p className="text-sm font-medium text-text-secondary">
+                  Reward Points
+                </p>
+                <p className="text-3xl font-bold text-text-primary">
+                  {rewardPoints}
+                </p>
               </div>
               <div className="p-3 bg-status-warning-bg rounded-full">
                 <Star className="h-6 w-6 text-status-warning-text" />
@@ -140,26 +155,38 @@ export default function DashboardClient({
                   {orders
                     ?.filter((order) => {
                       if (order.is_complete) return false;
-                      const orderItems = orderItemsMap.get(order.order_id) || [];
-                      return orderItems.some((item) => item.order_type === "rent");
+                      const orderItems =
+                        orderItemsMap.get(order.order_id) || [];
+                      return orderItems.some(
+                        (item) => item.order_type === "rent"
+                      );
                     })
                     .slice(0, 3)
                     .map((order) => {
-                      const orderItems = orderItemsMap.get(order.order_id) || [];
-                      const rentalItems = orderItems.filter((item) => item.order_type === "rent");
-                      
+                      const orderItems =
+                        orderItemsMap.get(order.order_id) || [];
+                      const rentalItems = orderItems.filter(
+                        (item) => item.order_type === "rent"
+                      );
+
                       return (
-                        <div key={order.order_id} className="flex items-center justify-between p-4 bg-surface-hover rounded-lg">
+                        <div
+                          key={order.order_id}
+                          className="flex items-center justify-between p-4 bg-surface-hover rounded-lg"
+                        >
                           <div>
                             <p className="font-medium text-text-primary">
-                              {rentalItems.length} bike{rentalItems.length > 1 ? 's' : ''} rented
+                              {rentalItems.length} bike
+                              {rentalItems.length > 1 ? "s" : ""} rented
                             </p>
                             <p className="text-sm text-text-secondary">
                               Order #{String(order.order_id).slice(-8)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm text-text-secondary">Due date</p>
+                            <p className="text-sm text-text-secondary">
+                              Due date
+                            </p>
                             <p className="font-medium text-text-primary">
                               {new Date(order.order_date).toLocaleDateString()}
                             </p>
@@ -203,21 +230,29 @@ export default function DashboardClient({
                   {recentOrders.map((order) => {
                     const orderItems = orderItemsMap.get(order.order_id) || [];
                     const totalAmount = paymentMap.get(order.order_id) || 0;
-                    
+
                     return (
-                      <div key={order.order_id} className="flex items-center justify-between p-4 bg-surface-hover rounded-lg">
+                      <div
+                        key={order.order_id}
+                        className="flex items-center justify-between p-4 bg-surface-hover rounded-lg"
+                      >
                         <div>
                           <p className="font-medium text-text-primary">
                             Order #{String(order.order_id).slice(-8)}
                           </p>
                           <p className="text-sm text-text-secondary">
-                            {orderItems.length} item{orderItems.length > 1 ? 's' : ''}
+                            {orderItems.length} item
+                            {orderItems.length > 1 ? "s" : ""}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium text-text-primary">${totalAmount.toFixed(2)}</p>
-                          <p className={`text-sm ${order.is_complete ? 'text-status-success-text' : 'text-status-warning-text'}`}>
-                            {order.is_complete ? 'Completed' : 'Processing'}
+                          <p className="font-medium text-text-primary">
+                            ${totalAmount.toFixed(2)}
+                          </p>
+                          <p
+                            className={`text-sm ${order.is_complete ? "text-status-success-text" : "text-status-warning-text"}`}
+                          >
+                            {order.is_complete ? "Completed" : "Processing"}
                           </p>
                         </div>
                       </div>
