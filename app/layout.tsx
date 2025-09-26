@@ -3,7 +3,8 @@ import "@fontsource/nunito/700.css";
 import "./globals.css";
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
-import { Toaster, toast } from 'sonner'
+import { Toaster, toast } from "sonner";
+import { GlobalLoadingProvider } from "@/components/ui/GlobalLoadingProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -26,12 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ fontFamily: "Nunito, sans-serif" }}>
-        <Navbar />
-        <main>
-          {children}
-          <Toaster richColors position="top-center" />
-        </main>
-        <Footer />
+        <GlobalLoadingProvider>
+          <Navbar />
+          <main>
+            {children}
+            <Toaster richColors position="top-center" />
+          </main>
+          <Footer />
+        </GlobalLoadingProvider>
       </body>
     </html>
   );

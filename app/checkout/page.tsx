@@ -9,6 +9,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import useSessionStorage from "@/utils/useSessionStorage";
 import { CheckoutBike } from "@/utils/getBike";
+import { LoadingButton } from "@/components/ui/LoadingSpinner";
 
 export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);

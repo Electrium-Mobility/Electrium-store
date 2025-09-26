@@ -10,6 +10,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 interface DashboardClientProps {
   userName: string;
@@ -28,9 +29,15 @@ export default function DashboardClient({
 }: DashboardClientProps) {
   const [range, setRange] = useState(7);
   const [mounted, setMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+    // Simulate loading for dashboard data
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
   }, []);
 
   // Calculate stats
@@ -139,6 +146,19 @@ export default function DashboardClient({
     pending: activeRentals,
     total: totalOrders,
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8 bg-surface min-h-screen py-8 px-4 md:px-8">
+        <div className="flex flex-col items-center justify-center py-20">
+          <LoadingSpinner />
+          <p className="mt-4 text-[hsl(var(--text-secondary))]">
+            Loading dashboard...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 bg-surface min-h-screen py-8 px-4 md:px-8">

@@ -4,23 +4,35 @@ import { useState } from "react";
 import { login } from "../action/auth";
 import Link from "next/link";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { LoadingButton } from "@/components/ui/LoadingSpinner";
 
 export default function LoginPage() {
   const [displayEmail, setDisplayEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [unsuccessfulLogin, setUnsuccessfulLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   async function handleSubmit(formData: FormData): Promise<void> {
-    const success = await login(formData);
-    if (!success) {
+    setIsLoading(true);
+    setUnsuccessfulLogin(false);
+
+    try {
+      const success = await login(formData);
+      if (!success) {
+        setUnsuccessfulLogin(true);
+      } else {
+        // Redirect to home page on successful login
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       setUnsuccessfulLogin(true);
-    } else {
-      // Redirect to home page on successful login
-      window.location.href = "/";
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -75,12 +87,13 @@ export default function LoginPage() {
             {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
           </span>
         </div>
-        <button
+        <LoadingButton
           type="submit"
+          isLoading={isLoading}
           className="w-full bg-green-600 text-text-inverse font-bold px-4 py-2 mt-4 rounded hover:bg-status-success"
         >
           Log in
-        </button>
+        </LoadingButton>
         <Link href="/signup">
           <p className="block text-center text-text-link mt-4 hover:text-text-link-hover hover:underline">
             Create an account?

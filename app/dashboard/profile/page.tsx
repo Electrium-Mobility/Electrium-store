@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { updateProfileData } from "@/app/action/profile";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
@@ -119,7 +120,12 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-surface">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[hsl(var(--btn-primary))]"></div>
+        <div className="flex flex-col items-center">
+          <LoadingSpinner />
+          <p className="mt-4 text-[hsl(var(--text-secondary))]">
+            Loading profile...
+          </p>
+        </div>
       </div>
     );
   }

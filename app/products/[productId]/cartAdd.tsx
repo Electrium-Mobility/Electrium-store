@@ -2,6 +2,7 @@
 import { Bike, CheckoutBike } from "@/utils/getBike";
 import { MouseEventHandler, useState } from "react";
 import Link from "next/link";
+import { LoadingButton } from "@/components/ui/LoadingSpinner";
 
 function CartNotification({
   setNotifInfo,
@@ -44,10 +45,9 @@ function CartNotification({
             {bike.name}
           </div>
           <div className="text-sm text-[hsl(var(--text-primary))]">
-            {bike.for_rent 
+            {bike.for_rent
               ? `CA$${bike.rental_rate?.toFixed(2) || "0.00"} per hour`
-              : `CA$${bike.sell_price}`
-            }
+              : `CA$${bike.sell_price}`}
           </div>
           <div className="text-sm text-[hsl(var(--text-muted))]">
             Quantity: {quantity}
@@ -73,49 +73,65 @@ function CartNotification({
 
 export default function CartAdd({ bike }: { bike: Bike }) {
   const [amount, setAmount] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [notifInfo, setNotifInfo] = useState<{
     bike: Bike;
     subtotal: number;
     quantity: number;
     numItems: number;
   }>();
-  function addToCart(e: React.MouseEvent<HTMLButtonElement>) {
-    if (amount <= 0 || amount > bike.amount_stocked) return;
-    var val = sessionStorage.getItem("cart");
-    var currentCart: CheckoutBike[] = [];
-    if (val) {
-      currentCart = JSON.parse(val);
-    }
-    var existingBike = currentCart.findIndex((b) => b.bike_id === bike.bike_id);
-    if (existingBike != -1) {
-      currentCart[existingBike].quantity = amount;
-    } else {
-      currentCart.push({
-        ...bike,
+
+  async function addToCart(e: React.MouseEvent<HTMLButtonElement>) {
+    if (amount <= 0 || amount > bike.amount_stocked || isLoading) return;
+
+    setIsLoading(true);
+
+    try {
+      // Simulate API call delay to show loading state
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      var val = sessionStorage.getItem("cart");
+      var currentCart: CheckoutBike[] = [];
+      if (val) {
+        currentCart = JSON.parse(val);
+      }
+      var existingBike = currentCart.findIndex(
+        (b) => b.bike_id === bike.bike_id
+      );
+      if (existingBike != -1) {
+        currentCart[existingBike].quantity = amount;
+      } else {
+        currentCart.push({
+          ...bike,
+          quantity: amount,
+          orderType: bike.for_rent ? "rent" : "buy",
+        });
+      }
+      const cartString = JSON.stringify(currentCart);
+      sessionStorage.setItem("cart", cartString);
+
+      // Dispatch custom event for same-window updates
+      window.dispatchEvent(
+        new CustomEvent("sessionStorageChange", {
+          detail: { key: "cart", value: cartString },
+        })
+      );
+
+      setNotifInfo({
+        bike: bike,
+        subtotal: currentCart.reduce(
+          (acc: number, cur: CheckoutBike) =>
+            acc + (cur.orderType == "rent" ? 0 : cur.sell_price * cur.quantity),
+          0
+        ),
         quantity: amount,
-        orderType: bike.for_rent ? "rent" : "buy",
+        numItems: currentCart.length,
       });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    } finally {
+      setIsLoading(false);
     }
-    const cartString = JSON.stringify(currentCart);
-    sessionStorage.setItem("cart", cartString);
-
-    // Dispatch custom event for same-window updates
-    window.dispatchEvent(
-      new CustomEvent("sessionStorageChange", {
-        detail: { key: "cart", value: cartString },
-      })
-    );
-
-    setNotifInfo({
-      bike: bike,
-      subtotal: currentCart.reduce(
-        (acc: number, cur: CheckoutBike) =>
-          acc + (cur.orderType == "rent" ? 0 : cur.sell_price * cur.quantity),
-        0
-      ),
-      quantity: amount,
-      numItems: currentCart.length,
-    });
   }
   return (
     <div className="flex items-center gap-4 mb-6">
@@ -139,7 +155,8 @@ export default function CartAdd({ bike }: { bike: Bike }) {
       ) : (
         ""
       )}
-      <button
+      <LoadingButton
+        isLoading={isLoading}
         className={`px-6 py-2 rounded transition-colors ${
           amount <= 0 || amount > bike.amount_stocked
             ? "bg-[hsl(var(--surface-secondary))] text-[hsl(var(--text-muted))] cursor-not-allowed"
@@ -149,7 +166,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
         disabled={amount <= 0 || amount > bike.amount_stocked}
       >
         {bike.for_rent ? "Rent Now" : "Add to Cart"}
-      </button>
+      </LoadingButton>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 
@@ -9,6 +9,7 @@ import { PaymentOptions } from "@/app/checkout/paymentOptions";
 import Link from "next/link";
 import { Bike, CheckoutBike } from "@/utils/getBike";
 import useSessionStorage from "@/utils/useSessionStorage";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 function ProductDisplay({ params }: { params: { bike: CheckoutBike } }) {
   const bike = params.bike;
@@ -43,8 +44,17 @@ function ProductDisplay({ params }: { params: { bike: CheckoutBike } }) {
 }
 
 export default function Cart() {
+  const [isLoading, setIsLoading] = useState(true);
   const cartText = useSessionStorage("cart");
   const cart = cartText ? JSON.parse(cartText) : [];
+
+  // Simulate loading for cart data
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const subtotal: number = cart.reduce(
     (acc: number, cur: CheckoutBike) =>
@@ -52,6 +62,20 @@ export default function Cart() {
     0
   );
   const shipping: number = 1; // TODO
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 p-8 border border-[hsl(var(--border))] bg-[hsl(var(--surface))] rounded-lg m-8">
+        <div className="flex flex-col items-center justify-center py-12">
+          <LoadingSpinner />
+          <p className="mt-4 text-[hsl(var(--text-secondary))]">
+            Loading cart...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 p-8 border border-[hsl(var(--border))] bg-[hsl(var(--surface))] rounded-lg m-8">
       <p className="font-bold text-xl pb-6 text-[hsl(var(--text-primary))]">

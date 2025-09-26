@@ -1,9 +1,9 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { signup } from "../action/auth";
 import Link from "next/link";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { LoadingButton } from "@/components/ui/LoadingSpinner";
 
 export default function SignupPage() {
   // State for form fields
@@ -18,6 +18,7 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState<{ [key: string]: string[] }>(
     {}
   );
@@ -43,25 +44,33 @@ export default function SignupPage() {
   }, [formData.password, formData.confirmPassword]);
 
   const handleSubmit = async (formDataSubmit: FormData) => {
-    if (!passwordMatch) return;
+    if (!passwordMatch || isLoading) return;
 
-    // Only clear errors for fields that have new submissions
-    const newServerErrors = { ...serverErrors };
-    Object.keys(newServerErrors).forEach((key) => {
-      if (formDataSubmit.get(key)) {
-        delete newServerErrors[key];
+    setIsLoading(true);
+
+    try {
+      // Only clear errors for fields that have new submissions
+      const newServerErrors = { ...serverErrors };
+      Object.keys(newServerErrors).forEach((key) => {
+        if (formDataSubmit.get(key)) {
+          delete newServerErrors[key];
+        }
+      });
+      setServerErrors(newServerErrors);
+
+      const response = await signup(formDataSubmit);
+
+      if (response && "errors" in response) {
+        setServerErrors((prev) => ({
+          ...prev,
+          ...response.errors,
+        }));
+        return;
       }
-    });
-    setServerErrors(newServerErrors);
-
-    const response = await signup(formDataSubmit);
-
-    if (response && "errors" in response) {
-      setServerErrors((prev) => ({
-        ...prev,
-        ...response.errors,
-      }));
-      return;
+    } catch (error) {
+      console.error("Signup error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -184,13 +193,14 @@ export default function SignupPage() {
           </p>
         )}
 
-        <button
+        <LoadingButton
           disabled={!passwordMatch}
           type="submit"
+          isLoading={isLoading}
           className="w-full bg-green-600 font-bold text-text-inverse px-4 py-2 mt-4 rounded hover:bg-status-success disabled:bg-btn-disabled disabled:cursor-not-allowed"
         >
           Sign Up
-        </button>
+        </LoadingButton>
 
         <Link href="/login">
           <p className="block text-center text-text-link mt-4 hover:text-text-link-hover hover:underline">
