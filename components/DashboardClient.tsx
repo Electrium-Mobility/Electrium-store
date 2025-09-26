@@ -7,6 +7,8 @@ import {
   MessageCircle,
   Calendar,
   Star,
+  Mail,
+  HelpCircle,
 } from "lucide-react";
 import Link from "next/link";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -44,10 +46,10 @@ export default function DashboardClient({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <LoadingSpinner size="lg" />
-          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
+          <p className="mt-4 text-text-secondary">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -71,53 +73,53 @@ export default function DashboardClient({
   const recentOrders = orders?.slice(0, 5) || [];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-text-primary">
             Welcome back, {userName}!
           </h1>
-          <p className="text-gray-600 mt-2">Here's your biking journey overview</p>
+          <p className="text-text-secondary mt-2">Here's your biking journey overview</p>
         </div>
 
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* My Orders */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div className="bg-surface rounded-lg shadow-sm p-6 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">My Orders</p>
-                <p className="text-3xl font-bold text-gray-900">{totalOrders}</p>
+                <p className="text-sm font-medium text-text-secondary">My Orders</p>
+                <p className="text-3xl font-bold text-text-primary">{totalOrders}</p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Package className="h-6 w-6 text-blue-600" />
+              <div className="p-3 bg-status-info-bg rounded-full">
+                <Package className="h-6 w-6 text-status-info-text" />
               </div>
             </div>
           </div>
 
           {/* Active Rentals */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div className="bg-surface rounded-lg shadow-sm p-6 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Active Rentals</p>
-                <p className="text-3xl font-bold text-gray-900">{activeRentals}</p>
+                <p className="text-sm font-medium text-text-secondary">Active Rentals</p>
+                <p className="text-3xl font-bold text-text-primary">{activeRentals}</p>
               </div>
-              <div className="p-3 bg-green-100 rounded-full">
-                <ShoppingCart className="h-6 w-6 text-green-600" />
+              <div className="p-3 bg-status-success-bg rounded-full">
+                <ShoppingCart className="h-6 w-6 text-status-success-text" />
               </div>
             </div>
           </div>
 
           {/* Reward Points */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+          <div className="bg-surface rounded-lg shadow-sm p-6 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Reward Points</p>
-                <p className="text-3xl font-bold text-gray-900">{rewardPoints}</p>
+                <p className="text-sm font-medium text-text-secondary">Reward Points</p>
+                <p className="text-3xl font-bold text-text-primary">{rewardPoints}</p>
               </div>
-              <div className="p-3 bg-yellow-100 rounded-full">
-                <Star className="h-6 w-6 text-yellow-600" />
+              <div className="p-3 bg-status-warning-bg rounded-full">
+                <Star className="h-6 w-6 text-status-warning-text" />
               </div>
             </div>
           </div>
@@ -125,10 +127,10 @@ export default function DashboardClient({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Current Rentals */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                <ShoppingCart className="h-5 w-5 mr-2 text-green-600" />
+          <div className="bg-surface rounded-lg shadow-sm border border-border">
+            <div className="p-6 border-b border-border">
+              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+                <ShoppingCart className="h-5 w-5 mr-2 text-status-success-text" />
                 Current Rentals
               </h2>
             </div>
@@ -147,18 +149,18 @@ export default function DashboardClient({
                       const rentalItems = orderItems.filter((item) => item.order_type === "rent");
                       
                       return (
-                        <div key={order.order_id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div key={order.order_id} className="flex items-center justify-between p-4 bg-surface-hover rounded-lg">
                           <div>
-                            <p className="font-medium text-gray-900">
+                            <p className="font-medium text-text-primary">
                               {rentalItems.length} bike{rentalItems.length > 1 ? 's' : ''} rented
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-text-secondary">
                               Order #{String(order.order_id).slice(-8)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm text-gray-600">Due date</p>
-                            <p className="font-medium text-gray-900">
+                            <p className="text-sm text-text-secondary">Due date</p>
+                            <p className="font-medium text-text-primary">
                               {new Date(order.order_date).toLocaleDateString()}
                             </p>
                           </div>
@@ -167,18 +169,18 @@ export default function DashboardClient({
                     })}
                   <Link
                     href="/rentals"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                    className="inline-flex items-center text-text-link hover:text-text-link-hover font-medium"
                   >
                     View all rentals →
                   </Link>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <ShoppingCart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No active rentals</p>
+                  <ShoppingCart className="h-12 w-12 text-text-muted mx-auto mb-4" />
+                  <p className="text-text-secondary">No active rentals</p>
                   <Link
                     href="/"
-                    className="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="inline-flex items-center mt-4 px-4 py-2 bg-btn-primary text-btn-primary-text rounded-lg hover:bg-btn-primary-hover"
                   >
                     Browse Bikes
                   </Link>
@@ -188,10 +190,10 @@ export default function DashboardClient({
           </div>
 
           {/* Order History */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                <Package className="h-5 w-5 mr-2 text-blue-600" />
+          <div className="bg-surface rounded-lg shadow-sm border border-border">
+            <div className="p-6 border-b border-border">
+              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+                <Package className="h-5 w-5 mr-2 text-status-info-text" />
                 Order History
               </h2>
             </div>
@@ -203,18 +205,18 @@ export default function DashboardClient({
                     const totalAmount = paymentMap.get(order.order_id) || 0;
                     
                     return (
-                      <div key={order.order_id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div key={order.order_id} className="flex items-center justify-between p-4 bg-surface-hover rounded-lg">
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-text-primary">
                             Order #{String(order.order_id).slice(-8)}
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-text-secondary">
                             {orderItems.length} item{orderItems.length > 1 ? 's' : ''}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium text-gray-900">${totalAmount.toFixed(2)}</p>
-                          <p className={`text-sm ${order.is_complete ? 'text-green-600' : 'text-yellow-600'}`}>
+                          <p className="font-medium text-text-primary">${totalAmount.toFixed(2)}</p>
+                          <p className={`text-sm ${order.is_complete ? 'text-status-success-text' : 'text-status-warning-text'}`}>
                             {order.is_complete ? 'Completed' : 'Processing'}
                           </p>
                         </div>
@@ -223,18 +225,18 @@ export default function DashboardClient({
                   })}
                   <Link
                     href="/dashboard/orders"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                    className="inline-flex items-center text-text-link hover:text-text-link-hover font-medium"
                   >
                     View all orders →
                   </Link>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No orders yet</p>
+                  <Package className="h-12 w-12 text-text-muted mx-auto mb-4" />
+                  <p className="text-text-secondary">No orders yet</p>
                   <Link
                     href="/"
-                    className="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="inline-flex items-center mt-4 px-4 py-2 bg-btn-primary text-btn-primary-text rounded-lg hover:bg-btn-primary-hover"
                   >
                     Start Shopping
                   </Link>
@@ -247,20 +249,20 @@ export default function DashboardClient({
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
           {/* Wishlist */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                <Heart className="h-5 w-5 mr-2 text-red-600" />
+          <div className="bg-surface rounded-lg shadow-sm border border-border">
+            <div className="p-6 border-b border-border">
+              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+                <Heart className="h-5 w-5 mr-2 text-status-error-text" />
                 Wishlist
               </h2>
             </div>
             <div className="p-6">
               <div className="text-center py-8">
-                <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-4">No saved bikes yet</p>
+                <Heart className="h-12 w-12 text-text-muted mx-auto mb-4" />
+                <p className="text-text-secondary mb-4">No saved bikes yet</p>
                 <Link
                   href="/dashboard/wishlist"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                  className="inline-flex items-center text-text-link hover:text-text-link-hover font-medium"
                 >
                   Browse bikes to add to wishlist →
                 </Link>
@@ -269,25 +271,39 @@ export default function DashboardClient({
           </div>
 
           {/* Contact Support */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                <MessageCircle className="h-5 w-5 mr-2 text-purple-600" />
+          <div className="bg-surface rounded-lg shadow-sm border border-border">
+            <div className="p-6 border-b border-border">
+              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+                <MessageCircle className="h-5 w-5 mr-2 text-status-info-text" />
                 Contact Support
               </h2>
             </div>
             <div className="p-6">
-              <div className="text-center py-8">
-                <MessageCircle className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                <p className="text-gray-600 mb-4">Need help? We're here for you!</p>
-                <div className="space-y-3">
-                  <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-                    Start Live Chat
-                  </button>
-                  <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-                    Send Email
-                  </button>
-                </div>
+              <p className="text-text-secondary mb-4">
+                Need help? Our support team is here to assist you.
+              </p>
+              <div className="space-y-3">
+                <Link
+                  href="/support"
+                  className="flex items-center text-text-link hover:text-text-link-hover"
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Live Chat
+                </Link>
+                <Link
+                  href="mailto:support@electrium.com"
+                  className="flex items-center text-text-link hover:text-text-link-hover"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email Support
+                </Link>
+                <Link
+                  href="/faq"
+                  className="flex items-center text-text-link hover:text-text-link-hover"
+                >
+                  <HelpCircle className="h-4 w-4 mr-2" />
+                  FAQ
+                </Link>
               </div>
             </div>
           </div>

@@ -75,7 +75,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center">
+    <div className="h-screen w-full flex items-center justify-center bg-background">
       <form
         className="bg-surface border border-border p-8 rounded-lg w-full max-w-sm"
         action={handleSubmit}
@@ -197,7 +197,7 @@ export default function SignupPage() {
           disabled={!passwordMatch}
           type="submit"
           isLoading={isLoading}
-          className="w-full bg-green-600 font-bold text-text-inverse px-4 py-2 mt-4 rounded hover:bg-status-success disabled:bg-btn-disabled disabled:cursor-not-allowed"
+          className="w-full bg-btn-primary font-bold text-btn-primary-text px-4 py-2 mt-4 rounded hover:bg-btn-primary-hover disabled:bg-btn-disabled disabled:cursor-not-allowed"
         >
           Sign Up
         </LoadingButton>

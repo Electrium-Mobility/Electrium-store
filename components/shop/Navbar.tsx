@@ -133,7 +133,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="p-4 bg-header-background shadow-md relative">
+    <nav className="py-6 px-6 bg-header-background shadow-md relative">
       <div className="flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
@@ -145,14 +145,14 @@ export default function Navbar() {
                   : "/img/logo-light-mode.png"
               }
               alt="Electrium Logo"
-              width={150}
-              height={40}
-              className="w-[150px] h-auto"
+              width={220}
+              height={58}
+              className="w-[220px] h-auto pl-4 pr-8 pt-1"
             />
           </Link>
         </div>
 
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-8">
           {/* Cart Button */}
           <div
             className="relative"
@@ -161,9 +161,9 @@ export default function Navbar() {
           >
             <Link
               href="/cart"
-              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative inline-block"
+              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative inline-block text-lg"
             >
-              <i className="fas fa-shopping-cart"></i>
+              <i className="fas fa-shopping-cart text-xl"></i>
               {cartTotal > 0 && (
                 <span className="absolute -top-2 -right-2 bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartTotal}
@@ -238,11 +238,11 @@ export default function Navbar() {
 
           {/* Theme Toggle */}
           <button
-            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))]"
+            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] text-lg"
             onClick={handleDarkModeToggle}
             title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
-            <i className={`fas ${darkMode ? "fa-moon" : "fa-sun"}`}></i>
+            <i className={`fas ${darkMode ? "fa-moon" : "fa-sun"} text-xl`}></i>
           </button>
 
           {/* Authentication Buttons */}
@@ -251,28 +251,28 @@ export default function Navbar() {
               {/* Always show dashboard link for testing */}
               <Link
                 href="/dashboard"
-                className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2"
+                className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2 text-lg"
                 title="Dashboard"
               >
-                <i className="fas fa-user-circle fa-lg"></i>
+                <i className="fas fa-user-circle text-xl"></i>
               </Link>
 
               {user ? (
                 <>
                   {/* Logout Button - Only show when user is logged in */}
                   <button
-                    className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))]"
+                    className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] text-lg"
                     onClick={handleLogout}
                     title="Sign Out"
                   >
-                    <i className="fas fa-sign-out-alt fa-lg"></i>
+                    <i className="fas fa-sign-out-alt text-xl"></i>
                   </button>
                 </>
               ) : (
                 /* Login Button - Only show when user is NOT logged in */
                 <Link
                   href="/login"
-                  className="bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                  className="bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] px-6 py-3 rounded-lg font-bold text-base transition-colors duration-200"
                 >
                   Log In
                 </Link>

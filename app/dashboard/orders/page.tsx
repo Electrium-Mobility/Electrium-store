@@ -208,7 +208,7 @@ export default async function OrdersPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-border">
             <thead className="bg-surface">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
@@ -225,7 +225,7 @@ export default async function OrdersPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-background divide-y divide-gray-200">
+            <tbody className="bg-background divide-y divide-border">
               {orders && orders.length > 0 ? (
                 orders.map((order) => {
                   const orderTotal = paymentMap.get(order.order_id) || 0;
@@ -314,7 +314,7 @@ export default async function OrdersPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-border">
             <thead className="bg-surface">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
@@ -331,7 +331,7 @@ export default async function OrdersPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-background divide-y divide-gray-200">
+            <tbody className="bg-background divide-y divide-border">
               {rentals && rentals.length > 0 ? (
                 rentals.map((rental) => {
                   const isActive = !rental.rental_end_date || new Date(rental.rental_end_date) > new Date();

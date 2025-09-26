@@ -37,9 +37,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="h-screen w-full flex items-center justify-center">
+    <div className="h-screen w-full flex items-center justify-center bg-background">
       <form
-        className="border border-border bg-surface p-8 rounded-lg w-full max-w-sm"
+        className="bg-surface border border-border p-8 rounded-lg w-full max-w-sm"
         action={handleSubmit}
       >
         <h2 className="text-2xl font-bold mb-6 text-text-primary">Login</h2>
@@ -90,9 +90,9 @@ export default function LoginPage() {
         <LoadingButton
           type="submit"
           isLoading={isLoading}
-          className="w-full bg-green-600 text-text-inverse font-bold px-4 py-2 mt-4 rounded hover:bg-status-success"
+          className="w-full bg-btn-primary font-bold text-btn-primary-text px-4 py-2 mt-4 rounded hover:bg-btn-primary-hover disabled:bg-btn-disabled disabled:cursor-not-allowed"
         >
-          Log in
+          Login
         </LoadingButton>
         <Link href="/signup">
           <p className="block text-center text-text-link mt-4 hover:text-text-link-hover hover:underline">
