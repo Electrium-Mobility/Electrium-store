@@ -4,124 +4,124 @@
 
 @layer base {
   :root {
-    /* === 基础背景色系统 === */
-    --background: 200 20% 98%; /* 主背景 */
-    --surface: 0 0% 100%; /* 卡片/表面背景 */
-    --surface-hover: 220 13% 95%; /* 表面悬停状态 */
-    --surface-active: 220 13% 91%; /* 表面激活状态 */
-    --header-background: 200 20% 98%; /* 头部背景 */
-    --footer-background: 220 13% 22%; /* 页脚背景 */
+    /* === Base Background Color System === */
+    --background: 200 20% 98%; /* Main background */
+    --surface: 0 0% 100%; /* Card/surface background */
+    --surface-hover: 220 13% 95%; /* Surface hover state */
+    --surface-active: 220 13% 91%; /* Surface active state */
+    --header-background: 200 20% 98%; /* Header background */
+    --footer-background: 220 13% 22%; /* Footer background */
 
-    /* === 文本颜色系统 === */
-    --foreground: 200 50% 3%; /* 前景色（与主要文本相同） */
-    --text-primary: 200 50% 3%; /* 主要文本 */
-    --text-secondary: 200 30% 25%; /* 次要文本 */
-    --text-muted: 200 20% 45%; /* 弱化文本 */
-    --text-inverse: 0 0% 100%; /* 反色文本（深色背景上的白色） */
-    --text-link: 220 91% 56%; /* 链接文本 */
-    --text-link-hover: 220 91% 46%; /* 链接悬停 */
+    /* === Text Color System === */
+    --foreground: 200 50% 3%; /* Foreground color (same as primary text) */
+    --text-primary: 200 50% 3%; /* Primary text */
+    --text-secondary: 200 30% 25%; /* Secondary text */
+    --text-muted: 200 20% 45%; /* Muted text */
+    --text-inverse: 0 0% 100%; /* Inverse text (white on dark background) */
+    --text-link: 220 91% 56%; /* Link text */
+    --text-link-hover: 220 91% 46%; /* Link hover */
 
-    /* === 边框颜色系统 === */
-    --border: 220 13% 91%; /* 默认边框 */
-    --border-subtle: 220 13% 95%; /* 细微边框 */
-    --border-hover: 220 13% 85%; /* 悬停边框 */
-    --border-focus: 142 76% 36%; /* 焦点边框 */
+    /* === Border Color System === */
+    --border: 220 13% 91%; /* Default border */
+    --border-subtle: 220 13% 95%; /* Subtle border */
+    --border-hover: 220 13% 85%; /* Hover border */
+    --border-focus: 142 76% 36%; /* Focus border */
 
-    /* === 按钮颜色系统 === */
-    --btn-primary: 142 76% 36%; /* 主要按钮 */
-    --btn-primary-hover: 142 76% 32%; /* 主要按钮悬停 */
-    --btn-primary-text: 0 0% 100%; /* 主要按钮文字 */
-    --btn-secondary: 220 13% 91%; /* 次要按钮 */
-    --btn-secondary-hover: 220 13% 85%; /* 次要按钮悬停 */
-    --btn-secondary-text: 200 50% 3%; /* 次要按钮文字 */
-    --btn-danger: 0 84% 60%; /* 危险按钮 */
-    --btn-danger-hover: 0 84% 50%; /* 危险按钮悬停 */
-    --btn-danger-text: 0 0% 100%; /* 危险按钮文字 */
-    --btn-disabled: 220 9% 65%; /* 禁用按钮 */
-    --btn-disabled-text: 0 0% 100%; /* 禁用按钮文字 */
+    /* === Button Color System === */
+    --btn-primary: 142 76% 36%; /* Primary button */
+    --btn-primary-hover: 142 76% 32%; /* Primary button hover */
+    --btn-primary-text: 0 0% 100%; /* Primary button text */
+    --btn-secondary: 220 13% 91%; /* Secondary button */
+    --btn-secondary-hover: 220 13% 85%; /* Secondary button hover */
+    --btn-secondary-text: 200 50% 3%; /* Secondary button text */
+    --btn-danger: 0 84% 60%; /* Danger button */
+    --btn-danger-hover: 0 84% 50%; /* Danger button hover */
+    --btn-danger-text: 0 0% 100%; /* Danger button text */
+    --btn-disabled: 220 9% 65%; /* Disabled button */
+    --btn-disabled-text: 0 0% 100%; /* Disabled button text */
 
-    /* === 状态颜色系统 === */
-    --status-success: 142 76% 36%; /* 成功状态 */
-    --status-success-bg: 142 76% 95%; /* 成功背景 */
-    --status-success-text: 142 76% 20%; /* 成功文字 */
-    --status-warning: 45 93% 47%; /* 警告状态 */
-    --status-warning-bg: 45 93% 95%; /* 警告背景 */
-    --status-warning-text: 45 93% 20%; /* 警告文字 */
-    --status-error: 0 84% 60%; /* 错误状态 */
-    --status-error-bg: 0 84% 95%; /* 错误背景 */
-    --status-error-text: 0 84% 30%; /* 错误文字 */
-    --status-info: 220 91% 56%; /* 信息状态 */
-    --status-info-bg: 220 91% 95%; /* 信息背景 */
-    --status-info-text: 220 91% 30%; /* 信息文字 */
+    /* === Status Color System === */
+    --status-success: 142 76% 36%; /* Success status */
+    --status-success-bg: 142 76% 95%; /* Success background */
+    --status-success-text: 142 76% 20%; /* Success text */
+    --status-warning: 45 93% 47%; /* Warning status */
+    --status-warning-bg: 45 93% 95%; /* Warning background */
+    --status-warning-text: 45 93% 20%; /* Warning text */
+    --status-error: 0 84% 60%; /* Error status */
+    --status-error-bg: 0 84% 95%; /* Error background */
+    --status-error-text: 0 84% 30%; /* Error text */
+    --status-info: 220 91% 56%; /* Info status */
+    --status-info-bg: 220 91% 95%; /* Info background */
+    --status-info-text: 220 91% 30%; /* Info text */
 
-    /* === 品牌颜色系统 === */
-    --brand-primary: 142 76% 36%; /* 主品牌色 */
-    --brand-secondary: 220 91% 56%; /* 次品牌色 */
-    --accent: 142 76% 36%; /* 强调色 */
+    /* === Brand Color System === */
+    --brand-primary: 142 76% 36%; /* Primary brand color */
+    --brand-secondary: 220 91% 56%; /* Secondary brand color */
+    --accent: 142 76% 36%; /* Accent color */
 
-    /* === 页脚专用颜色 === */
-    --footer-text-primary: 0 0% 100%; /* 页脚主要文字 */
-    --footer-text-muted: 220 9% 65%; /* 页脚次要文字 */
+    /* === Footer Specific Colors === */
+    --footer-text-primary: 0 0% 100%; /* Footer primary text */
+    --footer-text-muted: 220 9% 65%; /* Footer secondary text */
   }
 
   .dark {
-    /* === 基础背景色系统 === */
-    --background: 0 0% 8%; /* 主背景 - 更深的背景色 */
-    --surface: 0 0% 12%; /* 卡片/表面背景 */
-    --surface-hover: 0 0% 16%; /* 表面悬停状态 */
-    --surface-active: 0 0% 20%; /* 表面激活状态 */
-    --header-background: 0 0% 10%; /* 头部背景 - 暗色主题下为暗色 */
-    --footer-background: 0 0% 6%; /* 页脚背景 */
+    /* === Base Background Color System === */
+    --background: 0 0% 8%; /* Deeper background color */
+    --surface: 0 0% 12%; /* Card/surface background */
+    --surface-hover: 0 0% 16%; /* Surface hover state */
+    --surface-active: 0 0% 20%; /* Surface active state */
+    --header-background: 0 0% 10%; /* Header background - dark in dark mode */
+    --footer-background: 0 0% 6%; /* Footer background */
 
-    /* === 文本颜色系统 === */
-    --text-primary: 0 0% 95%; /* 主要文本 - 更高对比度 */
-    --text-secondary: 0 0% 75%; /* 次要文本 - 更明亮 */
-    --text-muted: 0 0% 55%; /* 弱化文本 - 更可读 */
-    --text-inverse: 200 50% 3%; /* 反色文本（浅色背景上的深色） */
-    --text-link: 220 91% 70%; /* 链接文本 - 更亮 */
-    --text-link-hover: 220 91% 80%; /* 链接悬停 */
+    /* === Text Color System === */
+    --text-primary: 0 0% 95%; /* Primary text - higher contrast */
+    --text-secondary: 0 0% 75%; /* Secondary text - brighter */
+    --text-muted: 0 0% 55%; /* Muted text - more readable */
+    --text-inverse: 200 50% 3%; /* Inverse text (dark on light background) */
+    --text-link: 220 91% 70%; /* Link text - brighter */
+    --text-link-hover: 220 91% 80%; /* Link hover */
 
-    /* === 边框颜色系统 === */
-    --border: 0 0% 20%; /* 默认边框 - 更明显 */
-    --border-subtle: 0 0% 15%; /* 细微边框 */
-    --border-hover: 0 0% 25%; /* 悬停边框 */
-    --border-focus: 142 76% 36%; /* 焦点边框 */
+    /* === Border Color System === */
+    --border: 0 0% 20%; /* Default border - more visible */
+    --border-subtle: 0 0% 15%; /* Subtle border */
+    --border-hover: 0 0% 25%; /* Hover border */
+    --border-focus: 142 76% 36%; /* Focus border */
 
-    /* === 按钮颜色系统 === */
-    --btn-primary: 142 76% 36%; /* 主要按钮 */
-    --btn-primary-hover: 142 76% 42%; /* 主要按钮悬停 */
-    --btn-primary-text: 0 0% 100%; /* 主要按钮文字 */
-    --btn-secondary: 0 0% 15%; /* 次要按钮 - 更明显 */
-    --btn-secondary-hover: 0 0% 20%; /* 次要按钮悬停 */
-    --btn-secondary-text: 0 0% 90%; /* 次要按钮文字 - 更明亮 */
-    --btn-danger: 0 84% 60%; /* 危险按钮 */
-    --btn-danger-hover: 0 84% 70%; /* 危险按钮悬停 */
-    --btn-danger-text: 0 0% 100%; /* 危险按钮文字 */
-    --btn-disabled: 0 0% 30%; /* 禁用按钮 */
-    --btn-disabled-text: 0 0% 60%; /* 禁用按钮文字 */
+    /* === Button Color System === */
+    --btn-primary: 142 76% 36%; /* Primary button */
+    --btn-primary-hover: 142 76% 42%; /* Primary button hover */
+    --btn-primary-text: 0 0% 100%; /* Primary button text */
+    --btn-secondary: 0 0% 15%; /* Secondary button - more visible */
+    --btn-secondary-hover: 0 0% 20%; /* Secondary button hover */
+    --btn-secondary-text: 0 0% 90%; /* Secondary button text - brighter */
+    --btn-danger: 0 84% 60%; /* Danger button */
+    --btn-danger-hover: 0 84% 70%; /* Danger button hover */
+    --btn-danger-text: 0 0% 100%; /* Danger button text */
+    --btn-disabled: 0 0% 30%; /* Disabled button */
+    --btn-disabled-text: 0 0% 60%; /* Disabled button text */
 
-    /* === 状态颜色系统 === */
-    --status-success: 142 76% 36%; /* 成功状态 */
-    --status-success-bg: 142 76% 15%; /* 成功背景 */
-    --status-success-text: 142 76% 70%; /* 成功文字 */
-    --status-warning: 45 93% 47%; /* 警告状态 */
-    --status-warning-bg: 45 93% 15%; /* 警告背景 */
-    --status-warning-text: 45 93% 70%; /* 警告文字 */
-    --status-error: 0 84% 60%; /* 错误状态 */
-    --status-error-bg: 0 84% 15%; /* 错误背景 */
-    --status-error-text: 0 84% 70%; /* 错误文字 */
-    --status-info: 220 91% 56%; /* 信息状态 */
-    --status-info-bg: 220 91% 15%; /* 信息背景 */
-    --status-info-text: 220 91% 70%; /* 信息文字 */
+    /* === Status Color System === */
+    --status-success: 142 76% 36%; /* Success status */
+    --status-success-bg: 142 76% 15%; /* Success background */
+    --status-success-text: 142 76% 70%; /* Success text */
+    --status-warning: 45 93% 47%; /* Warning status */
+    --status-warning-bg: 45 93% 15%; /* Warning background */
+    --status-warning-text: 45 93% 70%; /* Warning text */
+    --status-error: 0 84% 60%; /* Error status */
+    --status-error-bg: 0 84% 15%; /* Error background */
+    --status-error-text: 0 84% 70%; /* Error text */
+    --status-info: 220 91% 56%; /* Info status */
+    --status-info-bg: 220 91% 15%; /* Info background */
+    --status-info-text: 220 91% 70%; /* Info text */
 
-    /* === 品牌颜色系统 === */
-    --brand-primary: 142 76% 36%; /* 主品牌色 */
-    --brand-secondary: 220 91% 56%; /* 次品牌色 */
-    --accent: 142 76% 36%; /* 强调色 */
+    /* === Brand Color System === */
+    --brand-primary: 142 76% 36%; /* Primary brand color */
+    --brand-secondary: 220 91% 56%; /* Secondary brand color */
+    --accent: 142 76% 36%; /* Accent color */
 
-    /* === 页脚专用颜色 === */
-    --footer-text-primary: 0 0% 90%; /* 页脚主要文字 - 更明亮 */
-    --footer-text-muted: 0 0% 60%; /* 页脚次要文字 - 更可读 */
+    /* === Footer Specific Colors === */
+    --footer-text-primary: 0 0% 90%; /* Footer primary text - brighter */
+    --footer-text-muted: 0 0% 60%; /* Footer secondary text - more readable */
   }
 
   @media (prefers-color-scheme: dark) {
