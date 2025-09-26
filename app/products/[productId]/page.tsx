@@ -105,8 +105,6 @@ export default async function ProductPage({
             <div className="md:w-1/2">
               <p className="text-text-secondary mb-4">{bike.description}</p>
 
-              {!isRentalMode && <CartAdd bike={bike} />}
-
               <div className="mb-8">
                 {isRentalMode ? (
                   <>
@@ -121,9 +119,7 @@ export default async function ProductPage({
                       Damage rate: {((bike.damage_rate || 0) * 100).toFixed(2)}%
                     </p>
                     <div className="mt-6">
-                      <button className="w-full bg-btn-primary text-text-inverse py-3 px-6 rounded-lg hover:bg-btn-primary-hover transition-colors">
-                        Rent Now
-                      </button>
+                      <CartAdd bike={{...bike, for_rent: true}} />
                     </div>
                   </>
                 ) : (
@@ -134,6 +130,7 @@ export default async function ProductPage({
                     <p className="text-text-secondary">
                       Price: CA ${bike.sell_price?.toFixed(2) || "0.00"}
                     </p>
+                    <CartAdd bike={bike} />
                   </>
                 )}
               </div>
