@@ -72,7 +72,7 @@ function CartNotification({
 }
 
 export default function CartAdd({ bike }: { bike: Bike }) {
-  const [amount, setAmount] = useState<number>(1);
+  const [amount, setAmount] = useState<number>(0);
   const [notifInfo, setNotifInfo] = useState<{
     bike: Bike;
     subtotal: number;
@@ -80,7 +80,7 @@ export default function CartAdd({ bike }: { bike: Bike }) {
     numItems: number;
   }>();
   function addToCart(e: React.MouseEvent<HTMLButtonElement>) {
-    if (amount == 0 || amount > bike.amount_stocked) return;
+    if (amount <= 0 || amount > bike.amount_stocked) return;
     var val = sessionStorage.getItem("cart");
     var currentCart: CheckoutBike[] = [];
     if (val) {
@@ -122,11 +122,11 @@ export default function CartAdd({ bike }: { bike: Bike }) {
       <input
         id="select_amount"
         type="number"
-        defaultValue={0}
+        value={amount}
         min={0}
         max={bike.amount_stocked}
         className="border border-[hsl(var(--border))] bg-[hsl(var(--surface))] p-2 w-16 text-center text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
-        onChange={(e) => setAmount(parseInt(e.currentTarget.value))}
+        onChange={(e) => setAmount(parseInt(e.currentTarget.value) || 0)}
       />
       {notifInfo ? (
         <CartNotification
@@ -140,8 +140,13 @@ export default function CartAdd({ bike }: { bike: Bike }) {
         ""
       )}
       <button
-        className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] px-6 py-2 rounded hover:bg-[hsl(var(--btn-primary-hover))]"
+        className={`px-6 py-2 rounded transition-colors ${
+          amount <= 0 || amount > bike.amount_stocked
+            ? "bg-[hsl(var(--surface-secondary))] text-[hsl(var(--text-muted))] cursor-not-allowed"
+            : "bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] hover:bg-[hsl(var(--btn-primary-hover))]"
+        }`}
         onClick={addToCart}
+        disabled={amount <= 0 || amount > bike.amount_stocked}
       >
         {bike.for_rent ? "Rent Now" : "Add to Cart"}
       </button>

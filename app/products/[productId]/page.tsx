@@ -119,7 +119,7 @@ export default async function ProductPage({
                       Damage rate: {((bike.damage_rate || 0) * 100).toFixed(2)}%
                     </p>
                     <div className="mt-6">
-                      <CartAdd bike={{...bike, for_rent: true}} />
+                      <CartAdd bike={{ ...bike, for_rent: true }} />
                     </div>
                   </>
                 ) : (
