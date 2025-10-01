@@ -6,6 +6,7 @@ import { Bike, getOneBike } from "@/utils/getBike";
 import { notFound } from "next/navigation";
 import CartAdd from "./cartAdd";
 import { GetServerSideProps } from "next";
+import ReviewForm from "./ReviewForm";
 
 function CartNotification({
   bike,
@@ -272,6 +273,7 @@ export default async function ProductPage({
                 </p>
               </div>
             )}
+            <ReviewForm productId={productId} />
           </div>
         </div>
       </main>
