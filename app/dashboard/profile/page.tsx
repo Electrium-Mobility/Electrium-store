@@ -286,7 +286,7 @@ export default function ProfilePage() {
             <div className="bg-background rounded-2xl shadow-lg p-6">
               <div className="font-bold text-lg mb-4 flex items-center space-x-2">
                 <User className="h-5 w-5 text-brand-primary" />
-                <span>Profile Completion</span>
+                <span className="text-text-primary">Profile Completion</span>
               </div>
               <div className="mb-4">
                 <div className="flex justify-between text-sm text-text-secondary mb-2">
@@ -332,7 +332,7 @@ export default function ProfilePage() {
             <div className="bg-background rounded-2xl shadow-lg p-6">
               <div className="font-bold text-lg mb-4 flex items-center space-x-2">
                 <Mail className="h-5 w-5 text-text-link" />
-                <span>Account Information</span>
+                <span className="text-text-primary">Account Information</span>
               </div>
               <div className="space-y-3">
                 <div>

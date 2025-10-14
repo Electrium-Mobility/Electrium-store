@@ -21,7 +21,11 @@ export default async function DashboardPage() {
     data: { session },
   } = await supabase.auth.getSession();
   if (!session?.user) {
-    return <div className="p-8">Please log in to view your dashboard.</div>;
+    return (
+      <div className="p-8 text-text-primary">
+        Please log in to view your dashboard.
+      </div>
+    );
   }
 
   // Get user profile data
