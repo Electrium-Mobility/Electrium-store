@@ -1,5 +1,6 @@
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+"use client";
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 import {
   Search,
   Filter,
@@ -13,84 +14,106 @@ import {
   Bike,
 } from "lucide-react";
 import Link from "next/link";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+export default function OrdersPage() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [payments, setPayments] = useState<any[]>([]);
+  const [rentals, setRentals] = useState<any[]>([]);
 
-export default async function OrdersPage() {
-  const cookieStore = cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          setError("Please log in to view your orders.");
+          return;
+        }
+
+        const { data: customer } = await supabase
+          .from("customers")
+          .select("id")
+          .eq("id", user.id)
+          .single();
+
+        if (!customer) {
+          setError("No customer record found.");
+          return;
+        }
+
+        const { data: ordersData, error: ordersError } = await supabase
+          .from("orders")
+          .select("*")
+          .eq("customer_id", customer.id)
+          .order("order_date", { ascending: false });
+
+        if (ordersError) {
+          setError(`Error loading orders: ${ordersError.message}`);
+          return;
+        }
+        setOrders(ordersData || []);
+
+        const orderIds = (ordersData || []).map((order) => order.order_id);
+        if (orderIds.length > 0) {
+          const { data: paymentsData } = await supabase
+            .from("payments")
+            .select("order_id, payment_amount")
+            .in("order_id", orderIds);
+          setPayments(paymentsData || []);
+        } else {
+          setPayments([]);
+        }
+
+        const { data: rentalsData } = await supabase
+          .from("rentals")
+          .select("*")
+          .eq("customer_id", customer.id)
+          .order("rental_start_date", { ascending: false });
+
+        setRentals(rentalsData || []);
+      } catch (e) {
+        setError("Unexpected error while loading orders.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const paymentMap = new Map(
+    payments.map((p: any) => [p.order_id, p.payment_amount])
   );
-
-  // 1. Get current user
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session?.user)
-    return <div className="p-8">Please log in to view your orders.</div>;
-
-  // 2. Get customer record for this user
-  const { data: customer } = await supabase
-    .from("customers")
-    .select("id")
-    .eq("id", session.user.id)
-    .single();
-
-  if (!customer) return <div className="p-8">No customer record found.</div>;
-
-  // 3. Get orders for this customer
-  const { data: orders, error } = await supabase
-    .from("orders")
-    .select("*")
-    .eq("customer_id", customer.id)
-    .order("order_date", { ascending: false });
-
-  if (error)
-    return (
-      <div className="p-8 text-status-error-text">
-        Error loading orders: {error.message}
-      </div>
-    );
-
-  // 4. Get payments for all orders
-  const orderIds = orders?.map((order) => order.order_id) || [];
-  const { data: payments } = await supabase
-    .from("payments")
-    .select("order_id, payment_amount")
-    .in("order_id", orderIds);
-
-  // 5. Get rental records for this customer
-  const { data: rentals } = await supabase
-    .from("rentals")
-    .select("*")
-    .eq("customer_id", customer.id)
-    .order("rental_start_date", { ascending: false });
-
-  // Create a map of order_id to payment amount
-  const paymentMap = new Map();
-  payments?.forEach((payment) => {
-    paymentMap.set(payment.order_id, payment.payment_amount);
-  });
-
-  // Calculate stats
   const totalOrders = orders?.length || 0;
-  const completedOrders =
-    orders?.filter((order) => order.is_complete).length || 0;
-  const pendingOrders =
-    orders?.filter((order) => !order.is_complete).length || 0;
-
-  // Calculate active rentals (rentals that haven't ended yet)
+  const completedOrders = orders?.filter((order) => order.is_complete).length || 0;
+  const pendingOrders = orders?.filter((order) => !order.is_complete).length || 0;
   const activeRentals =
     rentals?.filter((rental) => {
-      if (!rental.rental_end_date) return true; // No end date means still active
-      return new Date(rental.rental_end_date) > new Date(); // End date is in the future
+      if (!rental.rental_end_date) return true;
+      return new Date(rental.rental_end_date) > new Date();
     }).length || 0;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-surface">
+        <div className="flex flex-col items-center">
+          <LoadingSpinner />
+          <p className="mt-4 text-[hsl(var(--text-secondary))]">
+            Loading orders...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="p-8 text-status-error-text">{error}</div>;
+  }
 
   return (
     <div className="space-y-6">

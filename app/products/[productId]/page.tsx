@@ -1,12 +1,12 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Navbar from "@/components/shop/Navbar";
-import Footer from "@/components/shop/Footer";
-import { Bike, getOneBike } from "@/utils/getBike";
-import { notFound } from "next/navigation";
+import { Bike } from "@/utils/getBike";
 import CartAdd from "./cartAdd";
-import { GetServerSideProps } from "next";
 import ReviewForm from "./ReviewForm";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { createClient } from "@/utils/supabase/client";
+import { useParams, useSearchParams } from "next/navigation";
 
 function CartNotification({
   bike,
@@ -142,21 +142,65 @@ function ReviewCard({ review }: { review: Review }) {
   );
 }
 
-export default async function ProductPage({
-  params,
-  searchParams,
-}: ProductPageProps) {
-  const { productId } = await params;
-  const { rental } = await searchParams;
-  const isRentalMode = rental === "true";
+export default function ProductPage() {
+  const { productId } = useParams<{ productId: string }>();
+  const searchParams = useSearchParams();
+  const isRentalMode = searchParams.get("rental") === "true";
 
-  const bike = await getOneBike(productId);
-  if (!bike) {
-    notFound();
+  const [bike, setBike] = useState<Bike | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const supabase = createClient();
+    async function fetchData() {
+      try {
+        setLoading(true);
+        // Fetch bike by ID
+        const { data: bikeData, error: bikeError } = await supabase
+          .from("bikes")
+          .select("*")
+          .eq("bike_id", productId)
+          .single();
+        if (bikeError) throw bikeError;
+        if (mounted) setBike(bikeData as Bike);
+
+        // Fetch reviews
+        const revs = await getProductReviews(productId);
+        if (mounted) setReviews(revs);
+      } catch (err: any) {
+        console.error("Product load error:", err);
+        if (mounted) setError("Failed to load product");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => {
+      mounted = false;
+    };
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-surface">
+        <div className="flex flex-col items-center">
+          <LoadingSpinner />
+          <p className="mt-4 text-text-secondary">Loading product...</p>
+        </div>
+      </div>
+    );
   }
 
-  // Fetch reviews from database
-  const reviews = await getProductReviews(productId);
+  if (!bike || error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-surface">
+        <div className="text-text-muted">Product not found or failed to load.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

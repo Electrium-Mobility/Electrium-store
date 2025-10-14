@@ -5,6 +5,7 @@ import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import { Toaster, toast } from "sonner";
 import { GlobalLoadingProvider } from "@/components/ui/GlobalLoadingProvider";
+import RouteProgress from "@/components/ui/RouteProgress";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ fontFamily: "Nunito, sans-serif" }}>
         <GlobalLoadingProvider>
+          <RouteProgress />
           <Navbar />
           <main>
             {children}

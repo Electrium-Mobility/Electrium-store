@@ -38,38 +38,8 @@ export function GlobalLoadingProvider({
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
 
-  // Track route changes for automatic loading states
-  useEffect(() => {
-    const handleStart = () => setIsLoading(true);
-    const handleComplete = () => setIsLoading(false);
-
-    // Listen for Next.js route changes
-    const originalPush = window.history.pushState;
-    const originalReplace = window.history.replaceState;
-
-    window.history.pushState = function (...args) {
-      handleStart();
-      originalPush.apply(window.history, args);
-      // Set a timeout to hide loading after navigation
-      setTimeout(handleComplete, 500);
-    };
-
-    window.history.replaceState = function (...args) {
-      handleStart();
-      originalReplace.apply(window.history, args);
-      setTimeout(handleComplete, 500);
-    };
-
-    // Handle browser back/forward buttons
-    window.addEventListener("popstate", handleStart);
-
-    // Cleanup
-    return () => {
-      window.history.pushState = originalPush;
-      window.history.replaceState = originalReplace;
-      window.removeEventListener("popstate", handleStart);
-    };
-  }, []);
+  // Note: Avoid overriding window.history to prevent interfering with Next's router.
+  // Consumers can still toggle global loading via context if needed.
 
   // Hide loading when pathname changes (route completed)
   useEffect(() => {

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { createClient } from "@/utils/supabase/client";
 import { signOutAction } from "@/app/action/auth";
@@ -18,6 +18,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   // Handle hydration
   useEffect(() => {
@@ -161,6 +162,7 @@ export default function Navbar() {
           >
             <Link
               href="/cart"
+              onMouseEnter={() => router.prefetch("/cart")}
               className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative inline-block text-lg"
             >
               <i className="fas fa-shopping-cart text-xl"></i>
@@ -216,12 +218,13 @@ export default function Navbar() {
                         <span>Subtotal:</span>
                         <span>CA ${cartSubtotal.toFixed(2)}</span>
                       </div>
-                      <Link
-                        href="/cart"
-                        className="block w-full text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] py-2 rounded-lg hover:bg-[hsl(var(--btn-primary-hover))]"
-                      >
-                        View Cart
-                      </Link>
+                <Link
+                  href="/cart"
+                  onMouseEnter={() => router.prefetch("/cart")}
+                  className="block w-full text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] py-2 rounded-lg hover:bg-[hsl(var(--btn-primary-hover))]"
+                >
+                  View Cart
+                </Link>
                     </div>
                   </>
                 ) : (
@@ -249,13 +252,13 @@ export default function Navbar() {
           {mounted && (
             <>
               {/* Always show dashboard link for testing */}
-              <Link
-                href="/dashboard"
-                className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2 text-lg"
-                title="Dashboard"
-              >
-                <i className="fas fa-user-circle text-xl"></i>
-              </Link>
+                <Link
+                  href="/dashboard"
+                  className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2 text-lg"
+                  title="Dashboard"
+                >
+                  <i className="fas fa-user-circle text-xl"></i>
+                </Link>
 
               {user ? (
                 <>
@@ -272,6 +275,7 @@ export default function Navbar() {
                 /* Login Button - Only show when user is NOT logged in */
                 <Link
                   href="/login"
+                  onMouseEnter={() => router.prefetch("/login")}
                   className="bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] px-6 py-3 rounded-lg font-bold text-base transition-colors duration-200"
                 >
                   Log In

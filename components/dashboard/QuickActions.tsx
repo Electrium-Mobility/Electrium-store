@@ -55,6 +55,8 @@ export default function QuickActions() {
             <button
               key={action.id}
               type="button"
+              onMouseEnter={() => router.prefetch(action.href)}
+              onFocus={() => router.prefetch(action.href)}
               onClick={() => router.push(action.href)}
               className={`flex flex-col items-center p-4 ${action.bgColor} rounded-xl ${action.hoverColor} transition-shadow`}
             >
