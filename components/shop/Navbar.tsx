@@ -154,6 +154,17 @@ export default function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center space-x-8">
+          {/* Link to main Electrium Mobility website */}
+          <a
+            href="https://electriummobility.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] text-lg"
+            title="Go to Electrium Mobility main site"
+            aria-label="Go to Electrium Mobility main site"
+          >
+            Main Site
+          </a>
           {/* Cart Button */}
           <div
             className="relative"
@@ -218,13 +229,13 @@ export default function Navbar() {
                         <span>Subtotal:</span>
                         <span>CA ${cartSubtotal.toFixed(2)}</span>
                       </div>
-                <Link
-                  href="/cart"
-                  onMouseEnter={() => router.prefetch("/cart")}
-                  className="block w-full text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] py-2 rounded-lg hover:bg-[hsl(var(--btn-primary-hover))]"
-                >
-                  View Cart
-                </Link>
+                      <Link
+                        href="/cart"
+                        onMouseEnter={() => router.prefetch("/cart")}
+                        className="block w-full text-center bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] py-2 rounded-lg hover:bg-[hsl(var(--btn-primary-hover))]"
+                      >
+                        View Cart
+                      </Link>
                     </div>
                   </>
                 ) : (
@@ -252,13 +263,13 @@ export default function Navbar() {
           {mounted && (
             <>
               {/* Always show dashboard link for testing */}
-                <Link
-                  href="/dashboard"
-                  className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2 text-lg"
-                  title="Dashboard"
-                >
-                  <i className="fas fa-user-circle text-xl"></i>
-                </Link>
+              <Link
+                href="/dashboard"
+                className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] mx-2 text-lg"
+                title="Dashboard"
+              >
+                <i className="fas fa-user-circle text-xl"></i>
+              </Link>
 
               {user ? (
                 <>
