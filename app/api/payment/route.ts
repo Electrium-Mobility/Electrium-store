@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     }
 
     let paymentVerified = false;
-    let paymentStatus = "pending";
+    let paymentStatus;
 
     if (orderDetails.method === "stripe" && orderDetails.id) {
       const stripeInstance = await getStripe();
