@@ -61,7 +61,7 @@ export default function Cart() {
       acc + (cur.orderType == "rent" ? 0 : cur.sell_price * cur.quantity),
     0
   );
-  const shipping: number = 1; // TODO
+  const shipping: number = 10;
 
   if (isLoading) {
     return (
@@ -90,9 +90,7 @@ export default function Cart() {
       </div>
       <div className="flex flex-row justify-between">
         <p className="text-[hsl(var(--text-secondary))]">Shipping: </p>
-        <p className="text-[hsl(var(--text-secondary))]">
-          how do i calculate this?
-        </p>
+        <p className="text-[hsl(var(--text-secondary))]">CA ${shipping}</p>
       </div>
       <hr className="border-t border-[hsl(var(--border))] m-4" />
       <div className="flex flex-row justify-between">

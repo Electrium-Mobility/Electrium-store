@@ -23,23 +23,45 @@ export default function Home() {
   const [allBikes, setAllBikes] = useState<Bike[]>([]); // Store all bikes from Supabase
   const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state for data fetching
   const [isTabLoading, setIsTabLoading] = useState<boolean>(false); // Loading state for tab switching
+  const [loadError, setLoadError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchAllBikes = async () => {
-      setIsLoading(true);
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("bikes")
-        .select(
-          "bike_id, name, description, image, amount_stocked, rental_rate, sell_price, damage_rate"
-        );
-      if (!error) {
-        setAllBikes(data || []);
-      } else {
-        console.error("Error fetching bikes:", error);
+      try {
+        setIsLoading(true);
+        setLoadError(null);
+        const supabase = createClient();
+
+        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+          setLoadError("Supabase is not configured. Please set environment variables.");
+          setIsLoading(false);
+          return;
+        }
+
+        const MAX_RETRIES = 3;
+        let attempt = 0;
+        let lastError: any = null;
+        while (attempt < MAX_RETRIES) {
+          const { data, error } = await supabase
+            .from("bikes")
+            .select(
+              "bike_id, name, description, image, amount_stocked, rental_rate, sell_price, damage_rate"
+            );
+          if (!error) {
+            setAllBikes(data || []);
+            setIsLoading(false);
+            return;
+          }
+          lastError = error;
+          await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+          attempt++;
+        }
+        console.error("Error fetching bikes:", lastError);
+        setLoadError("Failed to fetch products. Please try again later.");
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     fetchAllBikes();
@@ -86,6 +108,14 @@ export default function Home() {
                   <LoadingSpinner size="lg" color="primary" />
                   <p className="mt-4 text-text-secondary">
                     Loading products...
+                  </p>
+                </div>
+              </div>
+            ) : loadError ? (
+              <div className="flex justify-center items-center py-16">
+                <div className="text-center">
+                  <p className="mt-2 text-status-error-text font-medium">
+                    {loadError}
                   </p>
                 </div>
               </div>

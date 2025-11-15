@@ -134,8 +134,8 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="py-6 px-6 bg-header-background shadow-md relative">
-      <div className="flex justify-between items-center">
+    <nav className="h-[70px] px-6 bg-header-background shadow-md relative">
+      <div className="h-full flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/">
@@ -146,25 +146,14 @@ export default function Navbar() {
                   : "/img/logo-light-mode.png"
               }
               alt="Electrium Logo"
-              width={220}
-              height={58}
-              className="w-[220px] h-auto pl-4 pr-8 pt-1"
+              width={200}
+              height={50}
+              className="h-[30px] md:h-[30px] w-auto pl-2 md:pl-3 pr-4 md:pr-6"
             />
           </Link>
         </div>
 
-        <div className="hidden lg:flex items-center space-x-8">
-          {/* Link to main Electrium Mobility website */}
-          <a
-            href="https://electriummobility.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--text-link))] text-lg"
-            title="Go to Electrium Mobility main site"
-            aria-label="Go to Electrium Mobility main site"
-          >
-            Main Site
-          </a>
+        <div className="hidden lg:flex items-center space-x-5 md:space-x-6">
           {/* Cart Button */}
           <div
             className="relative"
@@ -174,7 +163,7 @@ export default function Navbar() {
             <Link
               href="/cart"
               onMouseEnter={() => router.prefetch("/cart")}
-              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative inline-block text-lg"
+              className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] relative inline-block text-lg md:text-xl"
             >
               <i className="fas fa-shopping-cart text-xl"></i>
               {cartTotal > 0 && (
@@ -252,7 +241,7 @@ export default function Navbar() {
 
           {/* Theme Toggle */}
           <button
-            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] text-lg"
+            className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] text-lg md:text-xl"
             onClick={handleDarkModeToggle}
             title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
@@ -287,7 +276,7 @@ export default function Navbar() {
                 <Link
                   href="/login"
                   onMouseEnter={() => router.prefetch("/login")}
-                  className="bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] px-6 py-3 rounded-lg font-bold text-base transition-colors duration-200"
+                  className="bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] px-4 py-2 md:px-5 md:py-2 rounded-[8px] font-semibold text-sm md:text-base transition-colors duration-200"
                 >
                   Log In
                 </Link>
