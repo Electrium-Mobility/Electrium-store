@@ -69,8 +69,8 @@ export default function DashboardLayout({
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 shadow-sm group
-                  ${isActive ? "bg-[hsl(var(--status-success-bg))] text-[hsl(var(--status-success-text))] shadow-md" : "text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:text-[hsl(var(--status-success-text))]"}
+                className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent bg-transparent
+                  ${isActive ? "bg-[hsl(var(--status-success-bg))] text-[hsl(var(--status-success-text))] border-[hsl(var(--border))] shadow-md" : "text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:text-[hsl(var(--status-success-text))] hover:border-[hsl(var(--border))] hover:shadow-sm"}
                   hover:scale-[1.03]`}
               >
                 <item.icon
