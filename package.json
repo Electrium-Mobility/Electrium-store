@@ -46,7 +46,7 @@
     "@types/react-dom": "18.2.18",
     "@types/stripe": "^8.0.416",
     "encoding": "^0.1.13",
-    "glob": "^11.0.3"
+    "glob": "^10.3.10"
   },
   "version": "0.0.0"
 }
