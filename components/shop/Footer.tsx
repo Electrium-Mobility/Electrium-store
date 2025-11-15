@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function Footer() {
   return (
     <footer className="bg-footer-background text-footer-text-primary py-8">
@@ -8,7 +6,15 @@ export default function Footer() {
           <div>
             <h3 className="text-xl mb-4 text-footer-text-primary">Pages</h3>
             <ul className="space-y-2">
-              
+              <li>
+                <a href="https://electriummobility.com/about" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">About</a>
+              </li>
+              <li>
+                <a href="https://electriummobility.com/team" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">Team</a>
+              </li>
+              <li>
+                <a href="https://electriummobility.com/contact" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">Contact</a>
+              </li>
             </ul>
           </div>
           <div>
@@ -16,7 +22,15 @@ export default function Footer() {
               Recent Projects
             </h3>
             <ul className="space-y-2">
-              
+              <li>
+                <a href="https://electriummobility.com/docs/W2024-projects/project1_2023" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">Electric Bike</a>
+              </li>
+              <li>
+                <a href="https://electriummobility.com/docs/W2024-projects/project2_2023" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">Electric Skateboard</a>
+              </li>
+              <li>
+                <a href="https://electriummobility.com/docs/W2024-projects/project3_2023" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">OneWheel</a>
+              </li>
             </ul>
           </div>
           <div>
@@ -24,7 +38,12 @@ export default function Footer() {
               Get Involved
             </h3>
             <ul className="space-y-2">
-              
+              <li>
+                <a href="https://electriummobility.com/join-our-team" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">Join Our Team</a>
+              </li>
+              <li>
+                <a href="https://electriummobility.com/sponsors" target="_blank" rel="noopener noreferrer" className="font-extralight hover:text-btn-primary hover:underline transition ease-in-out duration-300">Become A Sponsor</a>
+              </li>
             </ul>
           </div>
           <div>
@@ -82,11 +101,13 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 text-center">
-          <img
-            src="/img/logo-dark-mode.png"
-            alt="Electrium Mobility Logo"
-            className="mx-auto mb-4 logo-opacity w-1/3 "
-          />
+          <a href="https://electriummobility.com" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/img/logo-dark-mode.png"
+              alt="Electrium Mobility Logo"
+              className="mx-auto mb-4 logo-opacity w-1/3 "
+            />
+          </a>
           <p className="text-footer-text-muted">
             Copyright © {new Date().getFullYear()} Electrium Mobility. All
             Rights Reserved.
