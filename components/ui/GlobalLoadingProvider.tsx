@@ -6,7 +6,7 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import LoadingSpinner from "./LoadingSpinner";
 
 interface GlobalLoadingContextType {

@@ -14,7 +14,6 @@ interface Rental {
 }
 
 export default function RentalsPage() {
-  const [activeTab, setActiveTab] = useState<"product" | "rentals">("rentals");
   const [rentals, setRentals] = useState<Rental[]>([]); // Store rental products from Supabase
   const router = useRouter();
 

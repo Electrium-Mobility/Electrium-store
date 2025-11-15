@@ -1,13 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Navbar from "@/components/shop/Navbar";
-import Footer from "@/components/shop/Footer";
-
-import ShippingForm from "@/app/checkout/shippingForm";
 import Image from "next/image";
-import { PaymentOptions } from "@/app/checkout/paymentOptions";
 import Link from "next/link";
-import { Bike, CheckoutBike } from "@/utils/getBike";
+import { CheckoutBike } from "@/utils/getBike";
 import useSessionStorage from "@/utils/useSessionStorage";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 

@@ -11,13 +11,11 @@ import { User } from "@supabase/supabase-js";
 import { CheckoutBike } from "@/utils/getBike";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CheckoutBike[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [mounted, setMounted] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const pathname = usePathname();
   const router = useRouter();
 
   // Handle hydration

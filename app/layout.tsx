@@ -3,7 +3,7 @@ import "@fontsource/nunito/700.css";
 import "./globals.css";
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import { GlobalLoadingProvider } from "@/components/ui/GlobalLoadingProvider";
 import RouteProgress from "@/components/ui/RouteProgress";
 
