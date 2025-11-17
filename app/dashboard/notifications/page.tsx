@@ -11,14 +11,14 @@ const fakeNotifications = [
 export default function NotificationsPage() {
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+      <h1 className="text-2xl font-semibold text-text-primary mb-6">
         Notifications
       </h1>
-      <div className="bg-white p-6 rounded shadow divide-y divide-gray-100">
+      <div className="bg-background p-6 rounded shadow divide-y divide-gray-100">
         {fakeNotifications.map((n) => (
           <div key={n.id} className="py-4 flex items-center justify-between">
-            <div className="text-gray-800">{n.message}</div>
-            <div className="text-xs text-gray-500">{n.date}</div>
+            <div className="text-text-primary">{n.message}</div>
+            <div className="text-xs text-text-muted">{n.date}</div>
           </div>
         ))}
       </div>

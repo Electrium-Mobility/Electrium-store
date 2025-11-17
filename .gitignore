@@ -42,3 +42,4 @@ supabase
 *.tsbuildinfo
 next-env.d.ts
 .aider*
+.trae/

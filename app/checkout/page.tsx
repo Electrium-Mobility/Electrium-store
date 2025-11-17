@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import ShippingForm from "@/app/checkout/shippingForm";
 import { PaymentOptions } from "@/app/checkout/paymentOptions";
 import Cart from "./cart";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import useSessionStorage from "@/utils/useSessionStorage";
 import { CheckoutBike } from "@/utils/getBike";
@@ -13,6 +13,7 @@ import { CheckoutBike } from "@/utils/getBike";
 export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const cartText = useSessionStorage("cart");
   const cart = cartText ? JSON.parse(cartText) : [];
 
@@ -27,6 +28,46 @@ export default function CheckoutPage() {
   const [shippingInfo, setShippingInfo] = useState({
     email: "" /* ...other fields */,
   });
+
+  // Fetch user profile data on mount
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      
+      if (user) {
+        // Fetch user profile from customers table
+        const { data: profile } = await supabase
+          .from("customers")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        
+        if (profile) {
+          setUserProfile({
+            email: user.email,
+            first_name: profile.first_name || "",
+            last_name: profile.last_name || "",
+            phone: profile.phone || "",
+            address: profile.address || "",
+          });
+        } else {
+          // If no profile exists, at least set the email
+          setUserProfile({
+            email: user.email,
+            first_name: "",
+            last_name: "",
+            phone: "",
+            address: "",
+          });
+        }
+      }
+    }
+    
+    fetchUserProfile();
+  }, []);
 
   const handlePaymentSuccess = async (paymentDetails: any) => {
     setIsProcessing(true);
@@ -101,10 +142,10 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+          <h1 className="text-2xl font-bold text-text-primary mb-4">
             Your cart is empty
           </h1>
-          <p className="text-gray-600">
+          <p className="text-text-secondary">
             Please add items to your cart before proceeding to checkout.
           </p>
         </div>
@@ -114,13 +155,13 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen">
-      <main className="bg-white py-16 px-16">
-        <h1 className="text-4xl font-bold text-green-600 mb-2 text-center w-full">
+      <main className="bg-background py-16 px-16">
+        <h1 className="text-4xl font-bold text-status-success-text mb-2 text-center w-full">
           Checkout
         </h1>
         {error && (
           <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            className="bg-status-error-bg border border-status-error-border text-status-error-text px-4 py-3 rounded relative mb-4"
             role="alert"
           >
             <span className="block sm:inline">{error}</span>
@@ -128,10 +169,13 @@ export default function CheckoutPage() {
         )}
         <div className="lg:flex lg:flex-row">
           <div className="flex-1">
-            <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
-              <ShippingForm onChange={setShippingInfo} />
+            <div className="p-8 border border-border bg-surface rounded-lg m-8">
+              <ShippingForm 
+                onChange={setShippingInfo} 
+                userProfile={userProfile}
+              />
             </div>
-            <div className="p-8 border border-gray-200 bg-gray-100 rounded-lg m-8">
+            <div className="p-8 border border-border bg-surface rounded-lg m-8">
               <PaymentOptions
                 total={total}
                 onPaymentSuccess={handlePaymentSuccess}

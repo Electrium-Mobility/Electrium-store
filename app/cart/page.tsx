@@ -32,7 +32,7 @@ function Product({
       : bike.sell_price * bike.quantity;
 
   return (
-    <div className="flex w-full md:w-[750px] bg-gray-100 mb-8 p-6 rounded-2xl shadow-md items-center">
+    <div className="flex w-full md:w-[750px] bg-[hsl(var(--surface))] mb-8 p-6 rounded-2xl shadow-md items-center">
       {/* Product Image */}
       <div className="flex-shrink-0 mr-6">
         <Image
@@ -42,18 +42,22 @@ function Product({
           width={100}
           height={100}
           style={{ objectFit: "contain" }}
-          className="rounded-lg bg-white border border-gray-200 p-2"
+          className="rounded-lg bg-background border border-border p-2"
         />
       </div>
       {/* Product Details */}
       <div className="flex flex-1 flex-col md:flex-row md:items-center w-full justify-between gap-4">
         {/* Name */}
         <div className="min-w-[120px] flex-1">
-          <p className="font-bold text-lg text-green-700 mb-1">{bike.name}</p>
+          <p className="font-bold text-lg text-[hsl(var(--text-primary))] mb-1">
+            {bike.name}
+          </p>
         </div>
         {/* Price */}
-        <div className="min-w-[100px] text-gray-700 text-center">
-          <p className="text-sm font-semibold mb-1">Price</p>
+        <div className="min-w-[100px] text-[hsl(var(--text-primary))] text-center">
+          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">
+            Price
+          </p>
           <p>
             {bike.orderType === "rent"
               ? `CA $${bike.rental_rate.toFixed(2)}/hour`
@@ -62,24 +66,33 @@ function Product({
         </div>
         {/* Quantity */}
         <div className="min-w-[100px] text-center">
-          <p className="text-sm font-semibold mb-1">Quantity</p>
+          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">
+            Quantity
+          </p>
           <input
             type="number"
             value={bike.quantity}
             min={1}
             max={bike.amount_stocked}
-            className="border rounded-lg p-2 w-16 text-center"
+            className="border border-[hsl(var(--border))] rounded-lg p-2 w-16 text-center bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             onChange={handleInputChange}
           />
         </div>
         {/* Subtotal */}
         <div className="min-w-[100px] text-center">
-          <p className="text-sm font-semibold mb-1">Subtotal</p>
-          <p>CA${subtotal.toFixed(2)}</p>
+          <p className="text-sm font-semibold mb-1 text-[hsl(var(--text-primary))]">
+            Subtotal
+          </p>
+          <p className="text-[hsl(var(--text-primary))]">
+            CA${subtotal.toFixed(2)}
+          </p>
         </div>
         {/* Delete Button */}
         <div className="min-w-[80px] text-center">
-          <button className="text-red-500 underline" onClick={handleOnClick}>
+          <button
+            className="text-status-error underline"
+            onClick={handleOnClick}
+          >
             Delete
           </button>
         </div>
@@ -143,18 +156,23 @@ export default function ShoppingCartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="flex flex-col items-center min-h-screen">
+      <div className="flex flex-col items-center min-h-screen bg-[hsl(var(--background))]">
         <main className="w-full p-16">
-          <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-green-600">
+          <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-[hsl(var(--text-primary))]">
             Your Shopping Cart
           </h1>
           <div className="text-center">
-            <p className="text-gray-600 mb-8">Your cart is empty</p>
+            <p className="text-[hsl(var(--text-primary))] mb-8">
+              Your cart is empty
+            </p>
             <Link
               href="/"
-              className="bg-green-700 text-white flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-green-600 mx-auto"
+              className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))]"
             >
-              <FaAngleLeft size={24} className="text-green-800" />
+              <FaAngleLeft
+                size={24}
+                className="text-[hsl(var(--btn-primary-text))]"
+              />
               Continue Shopping
             </Link>
           </div>
@@ -164,9 +182,9 @@ export default function ShoppingCartPage() {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen">
+    <div className="flex flex-col items-center min-h-screen bg-[hsl(var(--background))]">
       <main className="w-full p-16">
-        <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-green-600">
+        <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-[hsl(var(--text-primary))]">
           Your Shopping Cart
         </h1>
         <div className="flex flex-col md:flex-row pb-8 justify-center">
@@ -182,45 +200,54 @@ export default function ShoppingCartPage() {
 
             <Link
               href="/"
-              className="bg-green-700 text-white flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-green-600"
+              className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] flex items-center justify-center gap-4 pr-4 w-52 h-12 mb-12 rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))] mx-auto"
             >
-              <FaAngleLeft size={24} className="text-green-800" />
+              <FaAngleLeft
+                size={24}
+                className="text-[hsl(var(--btn-primary-text))]"
+              />
               Continue Shopping
             </Link>
           </div>
 
-          <div className="bg-white p-8 rounded-lg shadow-md h-fit">
-            <h2 className="font-bold mb-6 text-lg">Cart Summary</h2>
-            <p className="text-gray-400 mb-6">
+          <div className="bg-[hsl(var(--surface))] p-8 rounded-lg shadow-md h-fit">
+            <h2 className="font-bold mb-6 text-lg text-[hsl(var(--text-primary))]">
+              Cart Summary
+            </h2>
+            <p className="text-[hsl(var(--text-primary))] mb-6">
               Shipping and tax are determined based on your selected option.
             </p>
-            <div className="flex mb-6 justify-between text-gray-400">
+            <div className="flex mb-6 justify-between text-[hsl(var(--text-primary))]">
               <p>Subtotal</p>
               <p>CA${subtotal.toFixed(2)}</p>
             </div>
-            <div className="flex mb-6 justify-between text-gray-400">
+            <div className="flex mb-6 justify-between text-[hsl(var(--text-primary))]">
               <p>Shipping</p>
               <p>CA${shipping.toFixed(2)}</p>
             </div>
-            <hr className="border-black" />
-            <div className="flex my-6 justify-between font-bold text-green-700">
+            <hr className="border-[hsl(var(--border))]" />
+            <div className="flex my-6 justify-between font-bold text-[hsl(var(--text-primary))]">
               <h3>Order Total</h3>
               <h3>CA${total.toFixed(2)}</h3>
             </div>
 
             <Link href="/checkout">
-              <button className="bg-green-700 text-white w-full h-11 mb-10 rounded-2xl hover:bg-green-600">
+              <button className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] w-full h-11 mb-10 rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))]">
                 Secure Checkout
               </button>
             </Link>
-            <h2 className="font-bold mb-4 text-lg">Discount</h2>
-            <p className="text-gray-400 mb-3">Enter code for discount.</p>
+            <h2 className="font-bold mb-4 text-lg text-[hsl(var(--text-primary))]">
+              Discount
+            </h2>
+            <p className="text-[hsl(var(--text-primary))] mb-3">
+              Enter code for discount.
+            </p>
             <input
               type="text"
               placeholder="Enter code"
-              className="border rounded-md p-2 mb-6 w-full"
+              className="border border-[hsl(var(--border))] rounded-md p-2 mb-6 w-full bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))]"
             />
-            <button className="bg-green-700 text-white w-full h-11 rounded-2xl hover:bg-green-600">
+            <button className="bg-[hsl(var(--btn-primary))] text-[hsl(var(--btn-primary-text))] w-full h-11 rounded-2xl hover:bg-[hsl(var(--btn-primary-hover))]">
               Apply
             </button>
           </div>

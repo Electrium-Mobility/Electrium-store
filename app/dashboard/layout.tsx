@@ -48,17 +48,19 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-surface">
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-emerald-50 via-white to-white shadow-xl flex flex-col rounded-r-3xl m-2">
-        <div className="flex flex-col items-center p-8 border-b">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mb-3 shadow-md">
+      <aside className="w-64 bg-[hsl(var(--background))] shadow-xl flex flex-col rounded-r-3xl m-2 border border-[hsl(var(--border))]">
+        <div className="flex flex-col items-center p-8 border-b border-[hsl(var(--border))]">
+          <div className="w-16 h-16 rounded-full bg-[hsl(var(--status-success-bg))] flex items-center justify-center mb-3 shadow-md">
             {/* User avatar placeholder */}
-            <span className="text-2xl font-bold text-emerald-600">
+            <span className="text-2xl font-bold text-[hsl(var(--status-success-text))]">
               {userInitials}
             </span>
           </div>
-          <h1 className="text-xl font-bold text-gray-800">My Account</h1>
+          <h1 className="text-xl font-bold text-[hsl(var(--text-primary))]">
+            My Account
+          </h1>
         </div>
         <nav className="flex-1 mt-8 space-y-2 px-4">
           {navigation.map((item) => {
@@ -67,19 +69,19 @@ export default function DashboardLayout({
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 shadow-sm group
-                  ${isActive ? "bg-emerald-100 text-emerald-700 shadow-md" : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-700"}
+                className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent bg-transparent
+                  ${isActive ? "bg-[hsl(var(--status-success-bg))] text-[hsl(var(--status-success-text))] border-[hsl(var(--border))] shadow-md" : "text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:text-[hsl(var(--status-success-text))] hover:border-[hsl(var(--border))] hover:shadow-sm"}
                   hover:scale-[1.03]`}
               >
                 <item.icon
-                  className={`w-5 h-5 ${isActive ? "text-emerald-600" : "text-gray-400 group-hover:text-emerald-600"}`}
+                  className={`w-5 h-5 ${isActive ? "text-[hsl(var(--status-success-text))]" : "text-[hsl(var(--text-muted))] group-hover:text-[hsl(var(--status-success-text))]"}`}
                 />
                 <span>{item.name}</span>
               </Link>
             );
           })}
         </nav>
-        <div className="mt-auto mb-6 px-8 text-xs text-gray-400 text-center">
+        <div className="mt-auto mb-6 px-8 text-xs text-[hsl(var(--text-muted))] text-center">
           &copy; {new Date().getFullYear()} Electrium Mobility
         </div>
       </aside>

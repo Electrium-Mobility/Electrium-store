@@ -2,28 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
-    --background: 200 20% 98%;
-    --btn-background: 200 10% 91%;
-    --btn-background-hover: 200 10% 89%;
-    --foreground: 200 50% 3%;
+    /* === Base Background Color System === */
+    --background: 200 20% 98%; /* Main background */
+    --surface: 0 0% 100%; /* Card/surface background */
+    --surface-hover: 220 13% 95%; /* Surface hover state */
+    --surface-active: 220 13% 91%; /* Surface active state */
+    --header-background: 200 20% 98%; /* Header background */
+    --footer-background: 220 13% 22%; /* Footer background */
+
+    /* === Text Color System === */
+    --foreground: 200 50% 3%; /* Foreground color (same as primary text) */
+    --text-primary: 200 50% 3%; /* Primary text */
+    --text-secondary: 200 30% 25%; /* Secondary text */
+    --text-muted: 200 20% 45%; /* Muted text */
+    --text-inverse: 0 0% 100%; /* Inverse text (white on dark background) */
+    --text-link: 220 91% 56%; /* Link text */
+    --text-link-hover: 220 91% 46%; /* Link hover */
+
+    /* === Border Color System === */
+    --border: 220 13% 91%; /* Default border */
+    --border-subtle: 220 13% 95%; /* Subtle border */
+    --border-hover: 220 13% 85%; /* Hover border */
+    --border-focus: 142 76% 36%; /* Focus border */
+
+    /* === Button Color System === */
+    --btn-primary: 142 76% 36%; /* Primary button */
+    --btn-primary-hover: 142 76% 32%; /* Primary button hover */
+    --btn-primary-text: 0 0% 100%; /* Primary button text */
+    --btn-secondary: 220 13% 91%; /* Secondary button */
+    --btn-secondary-hover: 220 13% 85%; /* Secondary button hover */
+    --btn-secondary-text: 200 50% 3%; /* Secondary button text */
+    --btn-danger: 0 84% 60%; /* Danger button */
+    --btn-danger-hover: 0 84% 50%; /* Danger button hover */
+    --btn-danger-text: 0 0% 100%; /* Danger button text */
+    --btn-disabled: 220 9% 65%; /* Disabled button */
+    --btn-disabled-text: 0 0% 100%; /* Disabled button text */
+
+    /* === Status Color System === */
+    --status-success: 142 76% 36%; /* Success status */
+    --status-success-bg: 142 76% 95%; /* Success background */
+    --status-success-text: 142 76% 20%; /* Success text */
+    --status-warning: 45 93% 47%; /* Warning status */
+    --status-warning-bg: 45 93% 95%; /* Warning background */
+    --status-warning-text: 45 93% 20%; /* Warning text */
+    --status-error: 0 84% 60%; /* Error status */
+    --status-error-bg: 0 84% 95%; /* Error background */
+    --status-error-text: 0 84% 30%; /* Error text */
+    --status-info: 220 91% 56%; /* Info status */
+    --status-info-bg: 220 91% 95%; /* Info background */
+    --status-info-text: 220 91% 30%; /* Info text */
+
+    /* === Brand Color System === */
+    --brand-primary: 142 76% 36%; /* Primary brand color */
+    --brand-secondary: 220 91% 56%; /* Secondary brand color */
+    --accent: 142 76% 36%; /* Accent color */
+
+    /* === Footer Specific Colors === */
+    --footer-text-primary: 0 0% 100%; /* Footer primary text */
+    --footer-text-muted: 220 9% 65%; /* Footer secondary text */
+  }
+
+  .dark {
+    /* === Base Background Color System === */
+    --background: 0 0% 8%; /* Deeper background color */
+    --surface: 0 0% 12%; /* Card/surface background */
+    --surface-hover: 0 0% 16%; /* Surface hover state */
+    --surface-active: 0 0% 20%; /* Surface active state */
+    --header-background: 0 0% 10%; /* Header background - dark in dark mode */
+    --footer-background: 0 0% 6%; /* Footer background */
+
+    /* === Text Color System === */
+    --text-primary: 0 0% 95%; /* Primary text - higher contrast */
+    --text-secondary: 0 0% 75%; /* Secondary text - brighter */
+    --text-muted: 0 0% 55%; /* Muted text - more readable */
+    --text-inverse: 200 50% 3%; /* Inverse text (dark on light background) */
+    --text-link: 220 91% 70%; /* Link text - brighter */
+    --text-link-hover: 220 91% 80%; /* Link hover */
+
+    /* === Border Color System === */
+    --border: 0 0% 20%; /* Default border - more visible */
+    --border-subtle: 0 0% 15%; /* Subtle border */
+    --border-hover: 0 0% 25%; /* Hover border */
+    --border-focus: 142 76% 36%; /* Focus border */
+
+    /* === Button Color System === */
+    --btn-primary: 142 76% 36%; /* Primary button */
+    --btn-primary-hover: 142 76% 42%; /* Primary button hover */
+    --btn-primary-text: 0 0% 100%; /* Primary button text */
+    --btn-secondary: 0 0% 15%; /* Secondary button - more visible */
+    --btn-secondary-hover: 0 0% 20%; /* Secondary button hover */
+    --btn-secondary-text: 0 0% 90%; /* Secondary button text - brighter */
+    --btn-danger: 0 84% 60%; /* Danger button */
+    --btn-danger-hover: 0 84% 70%; /* Danger button hover */
+    --btn-danger-text: 0 0% 100%; /* Danger button text */
+    --btn-disabled: 0 0% 30%; /* Disabled button */
+    --btn-disabled-text: 0 0% 60%; /* Disabled button text */
+
+    /* === Status Color System === */
+    --status-success: 142 76% 36%; /* Success status */
+    --status-success-bg: 142 76% 15%; /* Success background */
+    --status-success-text: 142 76% 70%; /* Success text */
+    --status-warning: 45 93% 47%; /* Warning status */
+    --status-warning-bg: 45 93% 15%; /* Warning background */
+    --status-warning-text: 45 93% 70%; /* Warning text */
+    --status-error: 0 84% 60%; /* Error status */
+    --status-error-bg: 0 84% 15%; /* Error background */
+    --status-error-text: 0 84% 70%; /* Error text */
+    --status-info: 220 91% 56%; /* Info status */
+    --status-info-bg: 220 91% 15%; /* Info background */
+    --status-info-text: 220 91% 70%; /* Info text */
+
+    /* === Brand Color System === */
+    --brand-primary: 142 76% 36%; /* Primary brand color */
+    --brand-secondary: 220 91% 56%; /* Secondary brand color */
+    --accent: 142 76% 36%; /* Accent color */
+
+    /* === Footer Specific Colors === */
+    --footer-text-primary: 0 0% 90%; /* Footer primary text - brighter */
+    --footer-text-muted: 0 0% 60%; /* Footer secondary text - more readable */
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --background: 200 50% 3%;
-      --btn-background: 200 10% 9%;
-      --btn-background-hover: 200 10% 12%;
-      --foreground: 200 20% 96%;
+      --background: 0 0% 8%;
+      --header-background: 0 0% 10%;
+      --btn-background: 0 0% 12%;
+      --btn-background-hover: 0 0% 16%;
+      --foreground: 0 0% 95%;
+      --border: 0 0% 20%;
+      --border-subtle: 0 0% 15%;
+      --border-hover: 0 0% 25%;
+      --text-primary: 0 0% 95%;
+      --text-secondary: 0 0% 75%;
+      --text-muted: 0 0% 55%;
+      --btn-primary: 142 76% 36%;
+      --btn-primary-hover: 142 76% 42%;
+      --btn-secondary: 0 0% 15%;
+      --btn-secondary-hover: 0 0% 20%;
+      --footer-background: 0 0% 6%;
+      --footer-text-primary: 0 0% 90%;
+      --footer-text-muted: 0 0% 60%;
     }
   }
 }
 
 @layer base {
   * {
-    @apply border-foreground/20;
+    @apply border-border;
   }
 }
 
@@ -37,28 +164,31 @@
 }
 
 @keyframes border-glow {
-    0% {
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
-                   0 0 20px rgba(16, 185, 129, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.5),
-                   0 0 40px rgba(16, 185, 129, 0.4);
-    }
-    100% {
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
-                   0 0 20px rgba(16, 185, 129, 0.2);
-    }
+  0% {
+    box-shadow:
+      0 0 10px rgba(16, 185, 129, 0.3),
+      0 0 20px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(16, 185, 129, 0.5),
+      0 0 40px rgba(16, 185, 129, 0.4);
+  }
+  100% {
+    box-shadow:
+      0 0 10px rgba(16, 185, 129, 0.3),
+      0 0 20px rgba(16, 185, 129, 0.2);
+  }
 }
 
 .hover-border-glow:hover {
-    animation: border-glow 3s linear infinite;
+  animation: border-glow 3s linear infinite;
 }
 
 .bubble-text {
-    color: #10B981;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    -webkit-text-stroke: 2px #0D9488;
+  color: #10b981;
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  -webkit-text-stroke: 2px #0d9488;
 }

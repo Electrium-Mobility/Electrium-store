@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { updateProfileData } from "@/app/action/profile";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
@@ -118,26 +119,31 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600"></div>
+      <div className="flex items-center justify-center min-h-screen bg-surface">
+        <div className="flex flex-col items-center">
+          <LoadingSpinner />
+          <p className="mt-4 text-[hsl(var(--text-secondary))]">
+            Loading profile...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 bg-gray-50 min-h-screen pb-10">
+    <div className="space-y-8 bg-surface min-h-screen pb-10">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-background shadow-sm border-b">
         <div className="px-8 py-6">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-              <User className="h-6 w-6 text-emerald-600" />
+            <div className="w-12 h-12 bg-status-success-bg rounded-full flex items-center justify-center">
+              <User className="h-6 w-6 text-status-success-text" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-text-primary">
                 Profile Settings
               </h1>
-              <p className="text-gray-600">
+              <p className="text-text-secondary">
                 Manage your account information and preferences
               </p>
             </div>
@@ -150,10 +156,10 @@ export default function ProfilePage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Profile Form */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
+            <div className="bg-background rounded-2xl shadow-lg p-8">
               <div className="flex items-center space-x-2 mb-6">
-                <User className="h-5 w-5 text-emerald-600" />
-                <h2 className="text-xl font-bold text-gray-900">
+                <User className="h-5 w-5 text-status-success-text" />
+                <h2 className="text-xl font-bold text-text-primary">
                   Personal Information
                 </h2>
               </div>
@@ -162,8 +168,8 @@ export default function ProfilePage() {
                 <div
                   className={`mb-6 p-4 rounded-lg flex items-center space-x-2 ${
                     message.type === "success"
-                      ? "bg-green-50 text-green-700 border border-green-200"
-                      : "bg-red-50 text-red-700 border border-red-200"
+                      ? "bg-green-50 text-status-success-text border border-green-200"
+                      : "bg-red-50 text-status-error-text border border-red-200"
                   }`}
                 >
                   {message.type === "success" ? (
@@ -178,7 +184,7 @@ export default function ProfilePage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-text-secondary mb-2">
                       First Name
                     </label>
                     <input
@@ -187,12 +193,12 @@ export default function ProfilePage() {
                       onChange={(e) =>
                         handleInputChange("first_name", e.target.value)
                       }
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                      className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
                       placeholder="Enter your first name"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-text-secondary mb-2">
                       Last Name
                     </label>
                     <input
@@ -201,14 +207,14 @@ export default function ProfilePage() {
                       onChange={(e) =>
                         handleInputChange("last_name", e.target.value)
                       }
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                      className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
                       placeholder="Enter your last name"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     Email Address
                   </label>
                   <div className="flex items-center space-x-3">
@@ -216,45 +222,45 @@ export default function ProfilePage() {
                       type="email"
                       value={user?.email || ""}
                       disabled
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                      className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-muted))] cursor-not-allowed"
                     />
-                    <div className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                    <div className="px-3 py-1 bg-status-success-bg text-status-success-text rounded-full text-sm font-medium">
                       Verified
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     Phone Number
                   </label>
                   <div className="flex items-center space-x-3">
-                    <Phone className="h-5 w-5 text-gray-400" />
+                    <Phone className="h-5 w-5 text-text-muted" />
                     <input
                       type="tel"
                       value={formData.phone}
                       onChange={(e) =>
                         handleInputChange("phone", e.target.value)
                       }
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                      className="flex-1 px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
                       placeholder="Enter your phone number"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     Address
                   </label>
                   <div className="flex items-start space-x-3">
-                    <MapPin className="h-5 w-5 text-gray-400 mt-3" />
+                    <MapPin className="h-5 w-5 text-text-muted mt-3" />
                     <textarea
                       value={formData.address}
                       onChange={(e) =>
                         handleInputChange("address", e.target.value)
                       }
                       rows={3}
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+                      className="flex-1 px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors resize-none"
                       placeholder="Enter your full address"
                     />
                   </div>
@@ -264,7 +270,7 @@ export default function ProfilePage() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex items-center space-x-2 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center space-x-2 px-6 py-3 bg-btn-primary text-text-inverse rounded-lg hover:bg-btn-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <Save className="h-4 w-4" />
                     <span>{saving ? "Saving..." : "Save Changes"}</span>
@@ -277,17 +283,17 @@ export default function ProfilePage() {
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Profile Completion */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
+            <div className="bg-background rounded-2xl shadow-lg p-6">
               <div className="font-bold text-lg mb-4 flex items-center space-x-2">
-                <User className="h-5 w-5 text-purple-600" />
-                <span>Profile Completion</span>
+                <User className="h-5 w-5 text-brand-primary" />
+                <span className="text-text-primary">Profile Completion</span>
               </div>
               <div className="mb-4">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
+                <div className="flex justify-between text-sm text-text-secondary mb-2">
                   <span>Progress</span>
                   <span>{profileCompletion.toFixed(0)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-surface-hover rounded-full h-2">
                   <div
                     className="bg-purple-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${profileCompletion}%` }}
@@ -306,15 +312,15 @@ export default function ProfilePage() {
                       className="flex items-center space-x-2"
                     >
                       <Icon
-                        className={`h-4 w-4 ${isCompleted ? "text-emerald-500" : "text-gray-400"}`}
+                        className={`h-4 w-4 ${isCompleted ? "text-status-success-text" : "text-text-muted"}`}
                       />
                       <span
-                        className={`text-sm ${isCompleted ? "text-gray-700" : "text-gray-500"}`}
+                        className={`text-sm ${isCompleted ? "text-text-secondary" : "text-text-muted"}`}
                       >
                         {field.label}
                       </span>
                       {isCompleted && (
-                        <CheckCircle className="h-4 w-4 text-emerald-500" />
+                        <CheckCircle className="h-4 w-4 text-status-success-text" />
                       )}
                     </div>
                   );
@@ -323,33 +329,33 @@ export default function ProfilePage() {
             </div>
 
             {/* Account Info */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
+            <div className="bg-background rounded-2xl shadow-lg p-6">
               <div className="font-bold text-lg mb-4 flex items-center space-x-2">
-                <Mail className="h-5 w-5 text-blue-600" />
-                <span>Account Information</span>
+                <Mail className="h-5 w-5 text-text-link" />
+                <span className="text-text-primary">Account Information</span>
               </div>
               <div className="space-y-3">
                 <div>
-                  <div className="text-xs text-gray-500 font-semibold">
+                  <div className="text-xs text-text-muted font-semibold">
                     Display Name
                   </div>
-                  <div className="text-sm font-medium text-gray-900">
+                  <div className="text-sm font-medium text-text-primary">
                     {getUserDisplayName()}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500 font-semibold">
+                  <div className="text-xs text-text-muted font-semibold">
                     Email
                   </div>
-                  <div className="text-sm font-medium text-gray-900">
+                  <div className="text-sm font-medium text-text-primary">
                     {user?.email}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500 font-semibold">
+                  <div className="text-xs text-text-muted font-semibold">
                     Member Since
                   </div>
-                  <div className="text-sm font-medium text-gray-900">
+                  <div className="text-sm font-medium text-text-primary">
                     {user?.created_at
                       ? new Date(user.created_at).toLocaleDateString()
                       : "N/A"}
