@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { LayoutDashboard, User, ShoppingCart } from "lucide-react";
+import { LayoutDashboard, User, ShoppingCart, ClipboardList } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -17,6 +17,7 @@ export default function DashboardLayout({
   const navigation = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { name: "My Orders", href: "/dashboard/orders", icon: ShoppingCart },
+    { name: "Tasks", href: "/dashboard/tasks", icon: ClipboardList },
     { name: "Profile", href: "/dashboard/profile", icon: User },
   ];
 
@@ -70,8 +71,8 @@ export default function DashboardLayout({
                 key={item.name}
                 href={item.href}
                 className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 group border border-transparent bg-transparent
-                  ${isActive ? "bg-[hsl(var(--status-success-bg))] text-[hsl(var(--status-success-text))] border-[hsl(var(--border))] shadow-md" : "text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:text-[hsl(var(--status-success-text))] hover:border-[hsl(var(--border))] hover:shadow-sm"}
-                  hover:scale-[1.03]`}
+                ${isActive ? "bg-[hsl(var(--status-success-bg))] text-[hsl(var(--status-success-text))] border-[hsl(var(--border))] shadow-md" : "text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:text-[hsl(var(--status-success-text))] hover:border-[hsl(var(--border))] hover:shadow-sm"}
+                hover:scale-[1.03]`}
               >
                 <item.icon
                   className={`w-5 h-5 ${isActive ? "text-[hsl(var(--status-success-text))]" : "text-[hsl(var(--text-muted))] group-hover:text-[hsl(var(--status-success-text))]"}`}
