@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import AboutUs from "../components/shop/AboutUs"; // Import shared About Us section
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; // Supabase client
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import SortButton from "@/components/ui/SortButton";
 
 interface Bike {
   bike_id: number;
@@ -25,9 +26,11 @@ export default function Home() {
   const [isTabLoading, setIsTabLoading] = useState<boolean>(false); // Loading state for tab switching
   const [loadError, setLoadError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sortOrder = searchParams.get("sort") || "name_asc";
 
   useEffect(() => {
-    const fetchAllBikes = async () => {
+    const getSortedItems = async () => {
       try {
         setIsLoading(true);
         setLoadError(null);
@@ -35,8 +38,15 @@ export default function Home() {
 
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
           setLoadError("Supabase is not configured. Please set environment variables.");
-          setIsLoading(false);
           return;
+        }
+
+        const [sortKey, sortDirection] = sortOrder.split('_');
+        const ascending = sortDirection === 'asc';
+
+        let column = 'name'; // default sort column
+        if (sortKey === 'price') {
+          column = activeTab === 'product' ? 'sell_price' : 'rental_rate';
         }
 
         const MAX_RETRIES = 3;
@@ -47,10 +57,10 @@ export default function Home() {
             .from("bikes")
             .select(
               "bike_id, name, description, image, amount_stocked, rental_rate, sell_price, damage_rate"
-            );
+            )
+            .order(column, { ascending });
           if (!error) {
             setAllBikes(data || []);
-            setIsLoading(false);
             return;
           }
           lastError = error;
@@ -64,8 +74,8 @@ export default function Home() {
       }
     };
 
-    fetchAllBikes();
-  }, []);
+    getSortedItems();
+  }, [sortOrder, activeTab]);
 
   const handleTabClick = async (tab: "product" | "rentals") => {
     if (tab === activeTab) return; // Don't reload if same tab
@@ -98,6 +108,10 @@ export default function Home() {
             >
               Rentals
             </button>
+          </div>
+
+          <div className="flex justify-end mb-4">
+            <SortButton />
           </div>
 
           {/* Bikes Section - Show all bikes with different buttons based on tab */}
