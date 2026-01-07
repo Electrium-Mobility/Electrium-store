@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS orders (
   shipping_address JSONB,
   payment_id TEXT,
   order_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  is_complete BOOLEAN DEFAULT false
+  is_complete BOOLEAN DEFAULT false,
+  donation DECIMAL(10,2) DEFAULT 0
 );
 
 -- Create order_items table

@@ -75,7 +75,8 @@ export async function POST(request: Request) {
       0
     );
     const shippingFee = 10;
-    const totalAmount = Number(itemSubtotal) + Number(shippingFee);
+    const donation = orderDetails.donation || 0;
+    const totalAmount = Number(itemSubtotal) + Number(shippingFee) + Number(donation);
 
     if (typeof orderDetails.amount !== "number" || Math.round(orderDetails.amount * 100) !== Math.round(totalAmount * 100)) {
       return NextResponse.json({ error: "Amount mismatch" }, { status: 400 });
@@ -120,6 +121,7 @@ export async function POST(request: Request) {
         shipping_address: shippingInfo,
         payment_id: orderDetails.id,
         status: paymentStatus === "completed" ? "paid" : "pending",
+        donation: donation,
       })
       .select()
       .single();

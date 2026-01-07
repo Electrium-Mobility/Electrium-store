@@ -16,6 +16,8 @@ export default function CheckoutPage() {
   const [userProfile, setUserProfile] = useState<any>(null);
   const cartText = useSessionStorage("cart");
   const cart = cartText ? JSON.parse(cartText) : [];
+  const [donation, setDonation] = useState(0);
+  const [customDonation, setCustomDonation] = useState(false);
 
   const subtotal = cart.reduce(
     (acc: number, cur: CheckoutBike) =>
@@ -23,7 +25,7 @@ export default function CheckoutPage() {
     0
   );
   const shipping = 10; // Fixed shipping cost for now
-  const total = subtotal + shipping;
+  const total = subtotal + shipping + donation;
 
   const [shippingInfo, setShippingInfo] = useState({
     email: "" /* ...other fields */,
@@ -83,6 +85,7 @@ export default function CheckoutPage() {
             amount: total,
             id: paymentDetails.id || `pay_${Date.now()}`,
             method: paymentDetails.method || "unknown",
+            donation: donation,
           },
           shippingInfo: shippingInfo,
           cart: cart,
@@ -138,6 +141,18 @@ export default function CheckoutPage() {
     setError(errorMessage);
   };
 
+  const handleDonationChange = (amount: number) => {
+    setDonation(amount);
+    setCustomDonation(false);
+  };
+
+  const handleCustomDonationChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const amount = parseFloat(e.target.value);
+    setDonation(isNaN(amount) ? 0 : amount);
+  };
+
   if (cart.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -176,6 +191,49 @@ export default function CheckoutPage() {
               />
             </div>
             <div className="p-8 border border-border bg-surface rounded-lg m-8">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-text-primary mb-2">
+                  Add a donation
+                </label>
+                <div className="flex space-x-2">
+                  {[5, 10, 20].map((amount) => (
+                    <button
+                      key={amount}
+                      onClick={() => handleDonationChange(amount)}
+                      className={`px-4 py-2 rounded-md ${
+                        donation === amount && !customDonation
+                          ? "bg-btn-primary text-btn-primary-text"
+                          : "bg-btn-secondary text-btn-secondary-text"
+                      }`}
+                    >
+                      ${amount}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCustomDonation(true)}
+                    className={`px-4 py-2 rounded-md ${
+                      customDonation
+                        ? "bg-btn-primary text-btn-primary-text"
+                        : "bg-btn-secondary text-btn-secondary-text"
+                    }`}
+                  >
+                    Other
+                  </button>
+                </div>
+                {customDonation && (
+                  <div className="mt-4">
+                    <input
+                      type="number"
+                      id="donation"
+                      name="donation"
+                      className="mt-1 block w-full px-3 py-2 bg-background border border-border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                      onChange={handleCustomDonationChange}
+                      value={donation || ""}
+                      placeholder="Enter amount in CAD (e.g., 10.00)"
+                    />
+                  </div>
+                )}
+              </div>
               <PaymentOptions
                 total={total}
                 onPaymentSuccess={handlePaymentSuccess}
@@ -185,7 +243,7 @@ export default function CheckoutPage() {
             </div>
           </div>
           <div className="flex-1">
-            <Cart />
+            <Cart donation={donation} total={total} />
           </div>
         </div>
       </main>
