@@ -65,7 +65,7 @@ export default function PageContent() {
             setAllBikes(data || []);
             return;
           }
-          lastError = error;
+          lastError = new Error(error.message);
           await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
           attempt++;
         }
