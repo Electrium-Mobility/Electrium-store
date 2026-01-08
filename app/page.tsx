@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import AboutUs from "../components/shop/AboutUs"; // Import shared About Us section
+import AboutUs from "@/components/shop/AboutUs"; // Import shared About Us section
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; // Supabase client
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -19,7 +19,7 @@ interface Bike {
   damage_rate?: number;
 }
 
-export default function Home() {
+function PageContent() {
   const [activeTab, setActiveTab] = useState<"product" | "rentals">("product");
   const [allBikes, setAllBikes] = useState<Bike[]>([]); // Store all bikes from Supabase
   const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state for data fetching
@@ -30,6 +30,7 @@ export default function Home() {
   const sortOrder = searchParams.get("sort") || "name_asc";
 
   useEffect(() => {
+    let isCancelled = false;
     const getSortedItems = async () => {
       try {
         setIsLoading(true);
@@ -51,7 +52,7 @@ export default function Home() {
 
         const MAX_RETRIES = 3;
         let attempt = 0;
-        let lastError: any = null;
+        let lastError: Error | null = null;
         while (attempt < MAX_RETRIES) {
           const { data, error } = await supabase
             .from("bikes")
@@ -59,6 +60,7 @@ export default function Home() {
               "bike_id, name, description, image, amount_stocked, rental_rate, sell_price, damage_rate"
             )
             .order(column, { ascending });
+          if (isCancelled) return;
           if (!error) {
             setAllBikes(data || []);
             return;
@@ -68,13 +70,21 @@ export default function Home() {
           attempt++;
         }
         console.error("Error fetching bikes:", lastError);
-        setLoadError("Failed to fetch products. Please try again later.");
+        if (!isCancelled) {
+          setLoadError("Failed to fetch products. Please try again later.");
+        }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
       }
     };
 
     getSortedItems();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [sortOrder, activeTab]);
 
   const handleTabClick = async (tab: "product" | "rentals") => {
@@ -97,13 +107,13 @@ export default function Home() {
           {/* Tab Navigation */}
           <div className="flex justify-center space-x-10 mb-8">
             <button
-              className={`text-xl font-semibold transition-colors ${activeTab === "product" ? "text-btn-primary border-b-4 border-btn-primary" : "text-text-secondary hover:text-text-primary"}`}
+              className={`text-xl font-semibold transition-.colors ${"activeTab === "product" ? "text-btn-primary border-b-4 border-btn-primary" : "text-text-secondary hover:text-text-primary""}`}
               onClick={() => handleTabClick("product")}
             >
               Product
             </button>
             <button
-              className={`text-xl font-semibold transition-colors ${activeTab === "rentals" ? "text-btn-primary border-b-4 border-btn-primary" : "text-text-secondary hover:text-text-primary"}`}
+              className={`text-xl font-semibold transition-colors ${"activeTab === "rentals" ? "text-btn-primary border-b-4 border-btn-primary" : "text-text-secondary hover:text-text-primary""}`}
               onClick={() => handleTabClick("rentals")}
             >
               Rentals
@@ -138,7 +148,7 @@ export default function Home() {
                 <div className="text-center">
                   <LoadingSpinner size="lg" color="primary" />
                   <p className="mt-4 text-text-secondary">
-                    Loading {activeTab === "product" ? "products" : "rentals"}
+                    Loading ${"activeTab === "product" ? "products" : "rentals"}
                     ...
                   </p>
                 </div>
@@ -162,8 +172,7 @@ export default function Home() {
                           unoptimized
                           width={192}
                           height={192}
-                          className="rounded-lg transition-transform duration-300 group-hover:scale-105"
-                          style={{ objectFit: "contain" }}
+                          className="rounded-lg transition-transform duration-300 group-hover:scale-105 object-contain"
                         />
                       </div>
                       <div className="text-center space-y-3 w-full bg-[hsl(var(--background))] p-4 rounded-lg border border-border-subtle group-hover:border-border-hover transition-colors">
@@ -174,9 +183,9 @@ export default function Home() {
                           <div className="space-y-3">
                             <div className="px-4 py-2 bg-btn-secondary rounded-lg border border-border-subtle group-hover:border-border-hover transition-colors">
                               <p className="text-text-muted font-medium">
-                                {bike.sell_price
-                                  ? `CA $${bike.sell_price.toFixed(2)}`
-                                  : "Price not available"}
+                                ${"bike.sell_price"
+                                  ? "`CA $${bike.sell_price.toFixed(2)}`"
+                                  : ""Price not available""}
                               </p>
                             </div>
                             <button className="w-full px-4 py-2 bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] font-semibold rounded-lg transition-all duration-200 hover:shadow-md active:scale-95">
@@ -187,9 +196,9 @@ export default function Home() {
                           <div className="space-y-3">
                             <div className="px-4 py-2 bg-btn-secondary rounded-lg border border-border-subtle group-hover:border-border-hover transition-colors">
                               <p className="text-text-muted font-medium">
-                                {bike.rental_rate
-                                  ? `CA $${bike.rental_rate.toFixed(2)}/day`
-                                  : "Rental not available"}
+                                ${"bike.rental_rate"
+                                  ? "`CA $${bike.rental_rate.toFixed(2)}/day`"
+                                  : ""Rental not available""}
                               </p>
                             </div>
                             <button className="w-full px-4 py-2 bg-[hsl(var(--btn-primary))] hover:bg-[hsl(var(--btn-primary-hover))] text-[hsl(var(--btn-primary-text))] font-semibold rounded-lg transition-all duration-200 hover:shadow-md active:scale-95">
@@ -208,4 +217,12 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-screen"><LoadingSpinner size="lg" /></div>}>
+        <PageContent />
+    </Suspense>
+  )
 }
