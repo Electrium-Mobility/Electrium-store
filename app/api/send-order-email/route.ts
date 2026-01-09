@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 // Only import Resend if we're in a runtime environment (not build time)
 let Resend: any = null;
 let resend: any = null;

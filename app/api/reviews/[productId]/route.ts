@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/reviews/[productId]
  * Fetch all reviews for a specific product/bike
