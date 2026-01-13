@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    serverActions: {
-      allowedOrigins: ["localhost:3000"],
-    },
+  serverActions: {
+    allowedOrigins: [
+      "localhost:3000",
+      "*.netlify.app",
+      "electrium-mobility.netlify.app",
+    ],
   },
   images: {
-    domains: ["rhwkcqrojvsiaklnyclo.supabase.co"],
     remotePatterns: [
       {
         protocol: "https",

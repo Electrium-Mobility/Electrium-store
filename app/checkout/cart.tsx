@@ -38,7 +38,7 @@ function ProductDisplay({ params }: { params: { bike: CheckoutBike } }) {
   );
 }
 
-export default function Cart() {
+export default function Cart({ donation, total }: { donation: number, total: number }) {
   const [isLoading, setIsLoading] = useState(true);
   const cartText = useSessionStorage("cart");
   const cart = cartText ? JSON.parse(cartText) : [];
@@ -87,13 +87,19 @@ export default function Cart() {
         <p className="text-[hsl(var(--text-secondary))]">Shipping: </p>
         <p className="text-[hsl(var(--text-secondary))]">CA ${shipping}</p>
       </div>
+      {donation > 0 && (
+        <div className="flex flex-row justify-between">
+          <p className="text-[hsl(var(--text-secondary))]">Donation: </p>
+          <p className="text-[hsl(var(--text-secondary))]">CA ${donation.toFixed(2)}</p>
+        </div>
+      )}
       <hr className="border-t border-[hsl(var(--border))] m-4" />
       <div className="flex flex-row justify-between">
         <p className="text-[hsl(var(--status-success-text))] font-bold">
           Order Total:{" "}
         </p>
         <p className="text-[hsl(var(--status-success-text))] font-bold">
-          CA ${subtotal + shipping}
+          CA ${total.toFixed(2)}
         </p>
       </div>
     </div>
