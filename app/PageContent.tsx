@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/client";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import SortButton from "@/components/ui/SortButton";
 import AboutUs from "@/components/shop/AboutUs";
+import ProductComparison from "@/components/shop/ProductComparison";
 
 interface Bike {
   bike_id: number;
@@ -212,6 +213,10 @@ export default function PageContent() {
                 ))}
               </div>
             )}
+          </section>
+          {/* Product Comparison Section */}
+          <section className="mb-16 rounded-xl p-8 shadow-md border border-border-subtle">
+            <ProductComparison />
           </section>
         </div>
       </main>
