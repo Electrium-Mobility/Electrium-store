@@ -51,7 +51,7 @@ const ProductComparison = () => {
             onClick={() => handleSelectBike(bike)}
           >
             <img
-              src={bike.image}
+              src={bike.image || ''}
               alt={bike.name}
               className="w-full h-32 object-cover mb-2"
             />
