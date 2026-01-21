@@ -32,3 +32,14 @@ export type FormState =
       message?: string;
     }
   | undefined;
+
+export interface Bike {
+  bike_id: number;
+  name: string;
+  description?: string;
+  image: string | null;
+  amount_stocked?: number;
+  rental_rate?: number;
+  sell_price?: number;
+  damage_rate?: number;
+}

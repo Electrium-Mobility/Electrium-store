@@ -7,17 +7,8 @@ import { createClient } from "@/utils/supabase/client";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import SortButton from "@/components/ui/SortButton";
 import AboutUs from "@/components/shop/AboutUs";
-
-interface Bike {
-  bike_id: number;
-  name: string;
-  description?: string;
-  image: string | null;
-  amount_stocked?: number;
-  rental_rate?: number;
-  sell_price?: number;
-  damage_rate?: number;
-}
+import ProductComparison from "@/components/shop/ProductComparison";
+import { type Bike } from "@/app/lib/definitions";
 
 export default function PageContent() {
   const [activeTab, setActiveTab] = useState<"product" | "rentals">("product");
@@ -212,6 +203,10 @@ export default function PageContent() {
                 ))}
               </div>
             )}
+          </section>
+          {/* Product Comparison Section */}
+          <section className="mb-16 rounded-xl p-8 shadow-md border border-border-subtle">
+            <ProductComparison />
           </section>
         </div>
       </main>
