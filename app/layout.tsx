@@ -29,6 +29,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-4532033066279183" />
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT_ID}`}
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body style={{ fontFamily: "Nunito, sans-serif" }}>
         <GlobalLoadingProvider>
           <RouteProgress />
