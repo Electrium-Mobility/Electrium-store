@@ -15,24 +15,11 @@ export default function Navbar() {
   const [cartItems, setCartItems] = useState<CheckoutBike[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const router = useRouter();
 
   // Handle hydration
   useEffect(() => {
     setMounted(true);
-
-    // Check for dark mode preference in localStorage
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("theme");
-      if (stored === "dark") {
-        setDarkMode(true);
-        document.documentElement.classList.add("dark");
-      } else {
-        setDarkMode(false);
-        document.documentElement.classList.remove("dark");
-      }
-    }
   }, []);
 
   // Simple auth state management
@@ -98,20 +85,10 @@ export default function Navbar() {
   }, []);
 
   const handleDarkModeToggle = () => {
-    setDarkMode((prev) => {
-      const next = !prev;
-      if (typeof window !== "undefined") {
-        const root = document.documentElement;
-        if (next) {
-          root.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-        } else {
-          root.classList.remove("dark");
-          localStorage.setItem("theme", "light");
-        }
-      }
-      return next;
-    });
+    const root = document.documentElement;
+    const isDark = root.classList.contains("dark");
+    root.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "light" : "dark");
   };
 
   const handleLogout = async () => {
@@ -138,15 +115,18 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/">
             <Image
-              src={
-                darkMode
-                  ? "/img/logo-dark-mode.png"
-                  : "/img/logo-light-mode.png"
-              }
+              src={"/img/logo-light-mode.png"}
               alt="Electrium Logo"
               width={200}
               height={50}
-              className="h-[30px] md:h-[30px] w-auto pl-2 md:pl-3 pr-4 md:pr-6"
+              className="h-[30px] md:h-[30px] w-auto pl-2 md:pl-3 pr-4 md:pr-6 dark:hidden"
+            />
+            <Image
+              src={"/img/logo-dark-mode.png"}
+              alt="Electrium Logo"
+              width={200}
+              height={50}
+              className="h-[30px] md:h-[30px] w-auto pl-2 md:pl-3 pr-4 md:pr-6 hidden dark:block"
             />
           </Link>
         </div>
@@ -241,9 +221,10 @@ export default function Navbar() {
           <button
             className="text-[hsl(var(--text-primary))] hover:text-[hsl(var(--btn-primary))] text-lg md:text-xl"
             onClick={handleDarkModeToggle}
-            title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            title={"Switch theme"}
           >
-            <i className={`fas ${darkMode ? "fa-moon" : "fa-sun"} text-xl`}></i>
+            <i className={`fas fa-moon text-xl hidden dark:block`}></i>
+            <i className={`fas fa-sun text-xl dark:hidden`}></i>
           </button>
 
           {/* Authentication Buttons */}

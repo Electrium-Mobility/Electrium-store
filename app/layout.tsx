@@ -6,13 +6,14 @@ import Footer from "@/components/shop/Footer";
 import { Toaster } from "sonner";
 import { GlobalLoadingProvider } from "@/components/ui/GlobalLoadingProvider";
 import RouteProgress from "@/components/ui/RouteProgress";
+import { ThemeScript } from "@/components/ThemeScript";
 
 export const dynamic = 'force-dynamic';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
-
+  
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Electrium Shop",
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <ThemeScript />
         <meta name="google-adsense-account" content="ca-pub-4532033066279183" />
         <script
           async
