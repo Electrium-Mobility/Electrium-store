@@ -7,7 +7,7 @@ export default async function ForgotPassword(props: {
 }) {
   const searchParams = await props.searchParams;
   return (
-    <div className="h-screen w-full flex items-center justify-center">
+    <div className="h-screen w-full flex items-center justify-center bg-background text-text-primary">
       <form
         action={forgotPasswordAction}
         className="border border-border bg-surface p-8 rounded-lg w-full max-w-sm"

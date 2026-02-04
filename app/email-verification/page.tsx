@@ -85,7 +85,7 @@ const EmailVerificationContent = () => {
 
 const EmailVerification = () => {
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-surface">
+    <div className="h-screen w-full flex items-center justify-center bg-background text-text-primary">
       <Suspense fallback={<div className="text-text-primary">Loading...</div>}>
         <EmailVerificationContent />
       </Suspense>

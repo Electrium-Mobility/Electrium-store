@@ -22,28 +22,33 @@ export async function signup(formData: FormData) {
   }
 
   const supabase = await createClient();
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signUp({
+    email,
+    password,
     options: {
       data: {
         first_name: formData.get("first_name") as string,
         last_name: formData.get("last_name") as string,
       },
     },
-  };
-
-  const { error } = await supabase.auth.signUp(data);
+  });
 
   if (error) {
     return redirect("/error");
   }
 
+  if (!user) {
+    return redirect("/error");
+  }
+
   revalidatePath("/", "layout");
-  return redirect(
-    `/email-verification?email=${encodeURIComponent(data.email)}`
-  );
+  return redirect(`/email-verification?email=${encodeURIComponent(email)}`);
 }
 
 export async function login(formData: FormData): Promise<boolean> {
