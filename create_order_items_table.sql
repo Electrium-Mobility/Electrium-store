@@ -1,10 +1,11 @@
 -- Create order_items table for Electrium Store
 -- Run this in your Supabase SQL Editor
 
-CREATE TABLE IF NOT EXISTS order_items (
+DROP TABLE IF EXISTS order_items;
+CREATE TABLE order_items (
   item_id SERIAL PRIMARY KEY,
   order_id INTEGER REFERENCES orders(order_id) ON DELETE CASCADE,
-  bike_id INTEGER REFERENCES bikes(bike_id),
+  product_id INTEGER REFERENCES products(id),
   quantity INTEGER NOT NULL,
   unit_price DECIMAL(10,2) NOT NULL,
   order_type TEXT NOT NULL -- 'rent' or 'sell'
