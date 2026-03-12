@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FaAngleLeft } from "react-icons/fa";
 import { CheckoutBike } from "@/utils/getBike";
 import useSessionStorage from "@/utils/useSessionStorage";
+import GroupOrder from "../../components/GroupOrder"
 
 // Display products in shopping cart
 function Product({
@@ -104,6 +105,7 @@ function Product({
 export default function ShoppingCartPage() {
   const cartText = useSessionStorage("cart");
   const [cart, setCart] = useState<CheckoutBike[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (cartText) {
@@ -184,9 +186,11 @@ export default function ShoppingCartPage() {
   return (
     <div className="flex flex-col items-center min-h-screen bg-[hsl(var(--background))]">
       <main className="w-full p-16">
-        <h1 className="text-center mb-10 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-[hsl(var(--text-primary))]">
+        <h1 className="text-center mb-1 md:text-4xl text-3xl lg:leading-normal leading-normal font-bold text-[hsl(var(--text-primary))]">
           Your Shopping Cart
         </h1>
+        {isOpen ? <GroupOrder isOpen={isOpen} setIsOpen={setIsOpen}/> : ""}
+        <button onClick = {() => setIsOpen (true)} className="block mx-auto mb-3 md:text-sm text-sm lg:leading-normal leading-normal font-bold text-green-500 cursor-pointer underline underline-offset-2">Create group order </button>
         <div className="flex flex-col md:flex-row pb-8 justify-center">
           <div className="flex flex-col md:mr-10">
             {cart.map((bike) => (
