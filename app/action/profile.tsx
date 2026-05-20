@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function updateProfileData(profileData: {
   first_name: string;
@@ -49,68 +48,5 @@ export async function updateProfileData(profileData: {
   } catch (error) {
     console.error("Unexpected error in updateProfileData:", error);
     return { success: false, error: "An unexpected error occurred" };
-  }
-}
-
-export async function getProfile() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return null;
-  }
-  // Get customer profile data
-  const { data: customer, error } = await supabase
-    .from("customers")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-  if (error) {
-    console.error("Error fetching customer profile:", error);
-    return null;
-  }
-  return {
-    id: user.id,
-    email: user.email,
-    first_name: customer?.first_name || "",
-    last_name: customer?.last_name || "",
-    phone: customer?.phone || "",
-    address: customer?.address || "",
-    avatar_url: customer?.avatar_url || "",
-  };
-}
-
-export async function testDatabaseConnection() {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-    if (userError) {
-      console.error("Auth error:", userError);
-      return { success: false, error: "Authentication failed" };
-    }
-    if (!user) {
-      return { success: false, error: "No user found" };
-    }
-    // Test customers table access
-    const { data: testData, error: testError } = await supabase
-      .from("customers")
-      .select("id")
-      .eq("id", user.id)
-      .limit(1);
-    if (testError) {
-      console.error("Customers table access error:", testError);
-      return {
-        success: false,
-        error: `Customers table error: ${testError.message}`,
-      };
-    }
-    return { success: true, message: "Database connection OK" };
-  } catch (error) {
-    console.error("Database connection test failed:", error);
-    return { success: false, error: "Database connection failed" };
   }
 }
