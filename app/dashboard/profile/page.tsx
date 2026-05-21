@@ -9,13 +9,15 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { updateProfileData } from "@/app/action/profile";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{
@@ -34,32 +36,40 @@ export default function ProfilePage() {
   useEffect(() => {
     async function fetchProfile() {
       setLoading(true);
-      const supabase = createClient();
-      // Get current user
-      const {
-        data: { user: currentUser },
-      } = await supabase.auth.getUser();
-      if (!currentUser) return;
-      setUser(currentUser);
-      // Fetch user profile from customers table
-      const { data: userProfile } = await supabase
-        .from("customers")
-        .select("*")
-        .eq("id", currentUser.id)
-        .single();
-      setProfile(userProfile);
-      if (userProfile) {
-        setFormData({
-          first_name: userProfile.first_name || "",
-          last_name: userProfile.last_name || "",
-          phone: userProfile.phone || "",
-          address: userProfile.address || "",
-        });
+      try {
+        const supabase = createClient();
+        // Get current user
+        const {
+          data: { user: currentUser },
+        } = await supabase.auth.getUser();
+        // No session: bounce to login. This is a page-level guard for now; the
+        // real fix is route protection in middleware/dashboard layout (deferred
+        // to the shell pass, since that protects all 5 dashboard routes at once).
+        if (!currentUser) {
+          router.replace("/login");
+          return;
+        }
+        setUser(currentUser);
+        // Fetch user profile from customers table
+        const { data: userProfile } = await supabase
+          .from("customers")
+          .select("*")
+          .eq("id", currentUser.id)
+          .single();
+        if (userProfile) {
+          setFormData({
+            first_name: userProfile.first_name || "",
+            last_name: userProfile.last_name || "",
+            phone: userProfile.phone || "",
+            address: userProfile.address || "",
+          });
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchProfile();
-  }, []);
+  }, [router]);
 
   // Calculate profile completion
   const profileFields = [
@@ -91,7 +101,6 @@ export default function ProfilePage() {
       const result = await updateProfileData(formData);
       if (result.success) {
         setMessage({ type: "success", text: "Profile updated successfully!" });
-        setProfile((prev: any) => ({ ...prev, ...formData }));
       } else {
         setMessage({
           type: "error",
@@ -128,6 +137,12 @@ export default function ProfilePage() {
         </div>
       </div>
     );
+  }
+
+  // Logged-out: the effect has already called router.replace("/login").
+  // Render nothing to avoid flashing the empty form during the redirect.
+  if (!user) {
+    return null;
   }
 
   return (
@@ -295,7 +310,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="w-full bg-surface-hover rounded-full h-2">
                   <div
-                    className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-brand-primary h-2 rounded-full transition-all duration-300"
                     style={{ width: `${profileCompletion}%` }}
                   ></div>
                 </div>
