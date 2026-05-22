@@ -1,12 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Bike } from "@/utils/getBike";
 import CartAdd from "./cartAdd";
+import CompareWithPicker from "@/components/shop/configurator/CompareWithPicker";
+import BikeViewerSkeleton from "@/components/shop/configurator/BikeViewerSkeleton";
 import ReviewForm from "./ReviewForm";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { createClient } from "@/utils/supabase/client";
 import { useParams, useSearchParams } from "next/navigation";
+
+const BikeViewer = dynamic(
+  () => import("@/components/shop/configurator/BikeViewer"),
+  {
+    ssr: false,
+    loading: () => <BikeViewerSkeleton />,
+  },
+);
 
 function CartNotification({
   bike,
@@ -209,18 +220,13 @@ export default function ProductPage() {
           {/* Main Product Section */}
           <div className="bg-surface rounded-2xl shadow-lg p-8 mb-12 border border-border">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Product Image */}
+              {/* Product viewer — interactive 3D primitive replaces the static image */}
               <div className="flex justify-center">
-                <div className="bg-btn-background rounded-2xl p-8 w-full max-w-md border border-border-subtle">
-                  <Image
-                    src={bike.image || "/img/placeholder.png"}
-                    alt={bike.name}
-                    unoptimized
-                    width={400}
-                    height={400}
-                    style={{ objectFit: "contain" }}
-                    className="w-full h-auto"
-                  />
+                <div className="bg-surface rounded-2xl w-full max-w-md border border-border-subtle aspect-square overflow-hidden relative">
+                  <BikeViewer bike={bike} className="absolute inset-0" />
+                  <div className="absolute top-2 left-2 text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm border border-dashed border-border text-text-muted pointer-events-none">
+                    3D preview · placeholder geometry
+                  </div>
                 </div>
               </div>
 
@@ -250,6 +256,9 @@ export default function ProductPage() {
                     bike={isRentalMode ? { ...bike, for_rent: true } : bike}
                   />
                 </div>
+
+                {/* Compare with another bike */}
+                <CompareWithPicker currentBike={bike} />
 
                 {/* Shipping Information */}
                 <div className="border-t border-border pt-6 space-y-2">
