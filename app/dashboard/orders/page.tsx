@@ -5,13 +5,10 @@ import {
   Search,
   Filter,
   Download,
-  Eye,
   Package,
   CheckCircle,
   Clock,
-  DollarSign,
   Calendar,
-  Bike,
 } from "lucide-react";
 import Link from "next/link";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -20,7 +17,6 @@ export default function OrdersPage() {
   const [error, setError] = useState<string | null>(null);
   const [orders, setOrders] = useState<any[]>([]);
   const [payments, setPayments] = useState<any[]>([]);
-  const [rentals, setRentals] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,14 +64,6 @@ export default function OrdersPage() {
         } else {
           setPayments([]);
         }
-
-        const { data: rentalsData } = await supabase
-          .from("rentals")
-          .select("*")
-          .eq("customer_id", customer.id)
-          .order("rental_start_date", { ascending: false });
-
-        setRentals(rentalsData || []);
       } catch (e) {
         setError("Unexpected error while loading orders.");
       } finally {
@@ -92,11 +80,6 @@ export default function OrdersPage() {
   const totalOrders = orders?.length || 0;
   const completedOrders = orders?.filter((order) => order.is_complete).length || 0;
   const pendingOrders = orders?.filter((order) => !order.is_complete).length || 0;
-  const activeRentals =
-    rentals?.filter((rental) => {
-      if (!rental.rental_end_date) return true;
-      return new Date(rental.rental_end_date) > new Date();
-    }).length || 0;
 
   if (loading) {
     return (
@@ -122,7 +105,7 @@ export default function OrdersPage() {
         <div>
           <h1 className="text-3xl font-bold text-text-primary">My Orders</h1>
           <p className="text-base text-text-secondary mt-1">
-            Track and manage your rental orders
+            Track and manage your orders
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -134,7 +117,7 @@ export default function OrdersPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-background rounded-xl shadow-sm border border-border p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -177,22 +160,6 @@ export default function OrdersPage() {
             </div>
             <div className="p-3 bg-status-warning-bg rounded-lg">
               <Clock className="h-6 w-6 text-status-warning-text" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-background rounded-xl shadow-sm border border-border p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-text-secondary">
-                Active Rent
-              </p>
-              <p className="text-2xl font-bold text-text-primary">
-                {activeRentals}
-              </p>
-            </div>
-            <div className="p-3 bg-green-100 rounded-lg">
-              <Bike className="h-6 w-6 text-green-600" />
             </div>
           </div>
         </div>
@@ -319,123 +286,6 @@ export default function OrdersPage() {
                         className="mt-4 inline-flex items-center px-4 py-2 bg-btn-primary hover:bg-btn-primary-hover text-text-inverse rounded-lg transition-colors text-sm"
                       >
                         Browse Products
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Rent History */}
-      <div className="bg-background rounded-xl shadow-sm border border-border overflow-hidden">
-        <div className="px-6 py-4 border-b border-border">
-          <h3 className="text-lg font-semibold text-text-primary">
-            Rent History
-          </h3>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-border">
-            <thead className="bg-surface">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                  Rental #
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                  Start Date
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                  End Date
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-background divide-y divide-border">
-              {rentals && rentals.length > 0 ? (
-                rentals.map((rental) => {
-                  const isActive =
-                    !rental.rental_end_date ||
-                    new Date(rental.rental_end_date) > new Date();
-
-                  return (
-                    <tr
-                      key={rental.rental_id}
-                      className="hover:bg-surface transition-colors"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-semibold text-text-primary">
-                          #{String(rental.rental_id).slice(-8)}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <Calendar className="h-4 w-4 text-text-muted mr-2" />
-                          <div className="text-sm text-text-secondary">
-                            {rental.rental_start_date
-                              ? new Date(
-                                  rental.rental_start_date
-                                ).toLocaleDateString()
-                              : "Unknown date"}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <Calendar className="h-4 w-4 text-text-muted mr-2" />
-                          <div className="text-sm text-text-secondary">
-                            {rental.rental_end_date
-                              ? new Date(
-                                  rental.rental_end_date
-                                ).toLocaleDateString()
-                              : "Ongoing"}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                            isActive
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {isActive ? (
-                            <>
-                              <Bike className="h-3 w-3 mr-1" />
-                              Active
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle className="h-3 w-3 mr-1" />
-                              Completed
-                            </>
-                          )}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center">
-                    <div className="flex flex-col items-center">
-                      <Bike className="h-12 w-12 text-text-muted mb-4" />
-                      <p className="text-lg text-text-muted font-medium">
-                        No rental history found
-                      </p>
-                      <p className="text-sm text-text-muted mt-1">
-                        Start renting bikes to see your rental history here
-                      </p>
-                      <Link
-                        href="/"
-                        className="mt-4 inline-flex items-center px-4 py-2 bg-btn-primary hover:bg-btn-primary-hover text-text-inverse rounded-lg transition-colors text-sm"
-                      >
-                        Browse Bikes
                       </Link>
                     </div>
                   </td>
