@@ -62,7 +62,17 @@ export const updateSession = async (request: NextRequest) => {
 
     // This will refresh session if expired - required for Server Components
     // https://supabase.com/docs/guides/auth/server-side/nextjs
-    await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // Route protection: gate the dashboard behind a logged-in user. This is the
+    // real auth gate (runs before any page renders, covers all /dashboard routes
+    // at once); the per-page redirect in profile/page.tsx is now a backstop.
+    if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
 
     return response;
   } catch (e) {
