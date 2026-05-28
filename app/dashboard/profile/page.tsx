@@ -140,9 +140,19 @@ export default function ProfilePage() {
   }
 
   // Logged-out: the effect has already called router.replace("/login").
-  // Render nothing to avoid flashing the empty form during the redirect.
+  // Show a redirecting indicator so users aren't staring at a blank panel
+  // during the client-side navigation.
   if (!user) {
-    return null;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-surface">
+        <div className="flex flex-col items-center">
+          <LoadingSpinner />
+          <p className="mt-4 text-[hsl(var(--text-secondary))]">
+            Redirecting to login...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -210,6 +220,7 @@ export default function ProfilePage() {
                       }
                       className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
                       placeholder="Enter your first name"
+                      required
                     />
                   </div>
                   <div>
@@ -224,6 +235,7 @@ export default function ProfilePage() {
                       }
                       className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
                       placeholder="Enter your last name"
+                      required
                     />
                   </div>
                 </div>

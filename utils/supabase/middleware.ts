@@ -71,14 +71,25 @@ export const updateSession = async (request: NextRequest) => {
     // at once); the per-page redirect in profile/page.tsx is now a backstop.
     if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
       const loginUrl = new URL("/login", request.url);
-      return NextResponse.redirect(loginUrl);
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      // Carry forward any Set-Cookie headers Supabase wrote on `response` during
+      // session refresh — otherwise the browser keeps stale cookies and gets
+      // stuck in a redirect loop.
+      response.cookies.getAll().forEach((cookie) => {
+        redirectResponse.cookies.set(cookie);
+      });
+      return redirectResponse;
     }
 
     return response;
   } catch (e) {
-    // If you are here, a Supabase client could not be created!
-    // This is likely because you have not set up environment variables.
-    // Check out http://localhost:3000 for Next Steps.
+    // The auth check itself failed (missing env vars, Supabase network blip,
+    // malformed cookies, etc.). Don't fail-open on protected paths — bounce
+    // to /login. Other paths pass through so the rest of the app still works.
+    if (request.nextUrl.pathname.startsWith("/dashboard")) {
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
     return NextResponse.next({
       request: {
         headers: request.headers,
