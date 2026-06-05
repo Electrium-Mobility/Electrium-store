@@ -60,7 +60,7 @@ function Product({
           </p>
           <p>
             {bike.orderType === "rent"
-              ? `CA $${bike.rental_rate.toFixed(2)}/hour`
+              ? `CA $${bike.rental_rate.toFixed(2)}/day`
               : `CA $${bike.sell_price.toFixed(2)}`}
           </p>
         </div>

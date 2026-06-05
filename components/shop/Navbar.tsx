@@ -184,7 +184,7 @@ export default function Navbar() {
                             </p>
                             <p className="text-xs text-[hsl(var(--text-secondary))]">
                               {item.orderType === "rent"
-                                ? `CA $${item.rental_rate}/hour x ${item.quantity}`
+                                ? `CA $${item.rental_rate}/day x ${item.quantity}`
                                 : `CA $${item.sell_price} x ${item.quantity}`}
                             </p>
                           </div>

@@ -77,7 +77,7 @@ export default function RentalsPage() {
                       </h3>
                       <div className="px-4 py-2 bg-slate-200 rounded-lg border border-slate-200">
                         <p className="text-text-secondary font-medium">
-                          CA ${rental.rental_rate.toFixed(2)}/hour
+                          CA ${rental.rental_rate.toFixed(2)}/day
                         </p>
                       </div>
                     </div>

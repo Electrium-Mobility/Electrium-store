@@ -28,7 +28,15 @@ export default function CheckoutPage() {
   const total = subtotal + shipping + donation;
 
   const [shippingInfo, setShippingInfo] = useState({
-    email: "" /* ...other fields */,
+    email: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    country: null as string | null,
+    province: null as string | null,
+    city: "",
+    postalCode: "",
+    phone: "",
   });
 
   // Fetch user profile data on mount
@@ -111,8 +119,20 @@ export default function CheckoutPage() {
           to: shippingInfo.email,
           order: {
             items: cart,
+            subtotal: subtotal,
+            shipping: shipping,
+            donation: donation,
             total: total,
             orderId: orderId,
+          },
+          customer: {
+            firstName: shippingInfo.firstName,
+            lastName: shippingInfo.lastName,
+            address: shippingInfo.address,
+            city: shippingInfo.city,
+            province: shippingInfo.province,
+            postalCode: shippingInfo.postalCode,
+            country: shippingInfo.country,
           },
         }),
       });

@@ -143,9 +143,9 @@ function ReviewCard({ review }: { review: Review }) {
 }
 
 export default function ProductPage() {
-  const { productId } = useParams<{ productId: string }>();
+  const { productId } = useParams<{ productId: string }>()!;
   const searchParams = useSearchParams();
-  const isRentalMode = searchParams.get("rental") === "true";
+  const isRentalMode = searchParams?.get("rental") === "true";
 
   const [bike, setBike] = useState<Bike | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -232,7 +232,7 @@ export default function ProductPage() {
                   </h1>
                   <p className="text-3xl font-bold text-status-success">
                     {isRentalMode
-                      ? `CA $${bike.rental_rate?.toFixed(2) || "0.00"} per hour`
+                      ? `CA $${bike.rental_rate?.toFixed(2) || "0.00"} per day`
                       : `CA $${bike.sell_price?.toFixed(2) || "0.00"}`}
                   </p>
                 </div>

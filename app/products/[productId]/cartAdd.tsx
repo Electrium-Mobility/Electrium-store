@@ -46,7 +46,7 @@ function CartNotification({
           </div>
           <div className="text-sm text-[hsl(var(--text-primary))]">
             {bike.for_rent
-              ? `CA$${bike.rental_rate?.toFixed(2) || "0.00"} per hour`
+              ? `CA$${bike.rental_rate?.toFixed(2) || "0.00"} per day`
               : `CA$${bike.sell_price}`}
           </div>
           <div className="text-sm text-[hsl(var(--text-muted))]">

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { buildHtml, buildText } from "./template";
 
 export const dynamic = "force-dynamic";
 
@@ -21,9 +22,9 @@ async function getResend() {
 }
 
 export async function POST(req: NextRequest) {
-  const { to, order } = await req.json();
+  const { to, order = {}, customer = {} } = await req.json();
 
-  console.log("[EMAIL API] Called with:", to, order);
+  console.log("[EMAIL API] Called with:", to, order?.orderId);
 
   try {
     // Get Resend instance dynamically
@@ -38,23 +39,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // `from` must use a domain you've verified at resend.com/domains.
+    // Until then it falls back to Resend's sandbox sender, which only
+    // delivers to the Resend account owner's own address.
+    const from =
+      process.env.RESEND_FROM || "Electrium Store <onboarding@resend.dev>";
+
+    // Order confirmation time. Formatted for a Canadian audience.
+    const dateStr = new Date().toLocaleDateString("en-CA", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
     const { data, error } = await resendInstance.emails.send({
-      from: "Electrium Store <onboarding@resend.dev>", // or your verified sender
+      from,
       to,
-      subject: "Your Order Confirmation",
-      html: `
-        <h1>Thank you for your order!</h1>
-        <p>Your order was placed successfully. Here are your order details:</p>
-        <ul>
-          ${order.items
-            .map(
-              (item: any) =>
-                `<li>${item.name} x ${item.quantity} - $${item.sell_price}</li>`
-            )
-            .join("")}
-        </ul>
-        <p><b>Total: $${order.total}</b></p>
-      `,
+      subject: order?.orderId ? `Your Electrium order #${order.orderId}` : "Your Order Confirmation",
+      html: buildHtml(order, customer, dateStr),
+      text: buildText(order, customer, dateStr),
     });
 
     if (error) {

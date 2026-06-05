@@ -26,7 +26,7 @@ function ProductDisplay({ params }: { params: { bike: CheckoutBike } }) {
           </h2>
           <p className="font-bold text-[hsl(var(--text-primary))]">
             {bike.orderType == "rent"
-              ? `CA $${bike.rental_rate.toFixed(2)} per hour`
+              ? `CA $${bike.rental_rate.toFixed(2)} per day`
               : `CA $${bike.sell_price.toFixed(2)}`}
           </p>
           <p className="text-[hsl(var(--text-secondary))] mb-6">

@@ -7,11 +7,11 @@ export default function SortButton() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentSort = searchParams.get("sort") || "name_asc";
+  const currentSort = searchParams?.get("sort") || "name_asc";
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newSort = e.target.value;
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString());
     params.set("sort", newSort);
     
     // Push the new URL with the updated sort query parameter

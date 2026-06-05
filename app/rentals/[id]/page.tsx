@@ -14,7 +14,7 @@ interface RentalDetail {
 }
 
 export default function RentalDetailPage() {
-  const params = useParams();
+  const params = useParams()!;
   const router = useRouter();
   const [rental, setRental] = useState<RentalDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -96,7 +96,7 @@ export default function RentalDetailPage() {
 
             <div className="bg-status-success-bg p-4 rounded-lg">
               <p className="text-2xl font-semibold text-status-success-text">
-                CA ${rental.rental_rate.toFixed(2)}/hour
+                CA ${rental.rental_rate.toFixed(2)}/day
               </p>
             </div>
 

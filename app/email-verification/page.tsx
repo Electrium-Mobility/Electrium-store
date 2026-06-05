@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 const EmailVerificationContent = () => {
   const [cooldown, setCooldown] = useState(0);
   const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+  const email = searchParams?.get("email");
 
   useEffect(() => {
     const cooldownEndTime = localStorage.getItem("cooldownEndTime");

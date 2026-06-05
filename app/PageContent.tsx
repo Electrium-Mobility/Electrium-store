@@ -19,7 +19,7 @@ export default function PageContent() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const sortOrder = searchParams.get("sort") || "name_asc";
+  const sortOrder = searchParams?.get("sort") || "name_asc";
 
   useEffect(() => {
     let isCancelled = false;
