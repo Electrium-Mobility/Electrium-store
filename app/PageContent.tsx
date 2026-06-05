@@ -9,7 +9,6 @@ import SortButton from "@/components/ui/SortButton";
 import AboutUs from "@/components/shop/AboutUs";
 import ProductComparison from "@/components/shop/ProductComparison";
 import { type Bike } from "@/app/lib/definitions";
-import GoogleAd from "@/components/shop/GoogleAd";
 
 export default function PageContent() {
   const [activeTab, setActiveTab] = useState<"product" | "rentals">("product");
@@ -91,10 +90,7 @@ export default function PageContent() {
 
   return (
     <div className="flex min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
-      <aside className="w-1/6 hidden lg:block p-4">
-        <GoogleAd client={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT_ID!} slot="6945559901" />
-      </aside>
-      <main className="flex-grow py-16 px-4 w-4/6">
+      <main className="flex-grow py-16 px-4 w-full">
         <div className="max-w-6xl mx-auto">
           {/* About Us Section */}
           <AboutUs />
@@ -212,15 +208,8 @@ export default function PageContent() {
           <section className="mb-16 rounded-xl p-8 shadow-md border border-border-subtle">
             <ProductComparison />
           </section>
-          {/* Ad Banner 2 */}
-          <section className="mb-16">
-            <GoogleAd client={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT_ID!} slot="5924972336" />
-          </section>
         </div>
       </main>
-      <aside className="w-1/6 hidden lg:block p-4">
-        <GoogleAd client={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT_ID!} slot="6945559901" />
-      </aside>
     </div>
   );
 }
