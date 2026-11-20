@@ -23,6 +23,7 @@ export default function ProfilePage() {
     text: string;
   } | null>(null);
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -83,8 +84,32 @@ export default function ProfilePage() {
     }));
   };
 
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.first_name.trim()) {
+      newErrors.first_name = "First name is required.";
+    }
+
+    if (!formData.last_name.trim()) {
+      newErrors.last_name = "Last name is required."
+    }
+
+    if (formData.phone.trim() && !/^[\d\s()+-]{7,20}$/.test(formData.phone.trim())) {
+      newErrors.phone = "please enter a valid phone number"
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setSaving(true);
     setMessage(null);
     try {
@@ -193,9 +218,14 @@ export default function ProfilePage() {
                       onChange={(e) =>
                         handleInputChange("first_name", e.target.value)
                       }
-                      className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
+                      className={`w-full px-4 py-3 border rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors ${
+                        errors.first_name ? "border-status-error-text" : "border-[hsl(var(--border))]"
+                      }`}
                       placeholder="Enter your first name"
                     />
+                    {errors.first_name && (
+                      <p className="mt-1 text-sm text-status-error-text">{errors.first_name}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-text-secondary mb-2">
@@ -207,9 +237,14 @@ export default function ProfilePage() {
                       onChange={(e) =>
                         handleInputChange("last_name", e.target.value)
                       }
-                      className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
+                      className={`w-full px-4 py-3 border rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors ${
+                        errors.last_name ? "border-status-error-text" : "border-[hsl(var(--border))]"
+                      }`}
                       placeholder="Enter your last name"
                     />
+                    {errors.last_name && (
+                      <p className="mt-1 text-sm text-status-error-text">{errors.last_name}</p>
+                    )}
                   </div>
                 </div>
 
@@ -242,10 +277,15 @@ export default function ProfilePage() {
                       onChange={(e) =>
                         handleInputChange("phone", e.target.value)
                       }
-                      className="flex-1 px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors"
+                      className={`flex-1 px-4 py-3 border rounded-lg bg-[hsl(var(--surface))] text-[hsl(var(--text-primary))] focus:ring-2 focus:ring-[hsl(var(--border-focus))] focus:border-[hsl(var(--border-focus))] transition-colors ${
+                        errors.phone ? "border-status-error-text" : "border-[hsl(var(--border))]"
+                      }`}
                       placeholder="Enter your phone number"
                     />
                   </div>
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-status-error-text">{errors.phone}</p>
+                  )}
                 </div>
 
                 <div>
